@@ -89,11 +89,13 @@ class TestJobManager(unittest.TestCase):
         job_dir = self._create_job_config("DuplicateJob")
 
         job1 = self.job_manager.add_job(str(job_dir))
-        job2 = self.job_manager.add_job(str(job_dir))
 
-        # Should return None for duplicate
+        # Second attempt should raise ValueError for duplicate
+        with self.assertRaises(ValueError):
+            job2 = self.job_manager.add_job(str(job_dir))
+
+        # Verify first job was still added successfully
         self.assertIsNotNone(job1)
-        self.assertIsNone(job2)
 
     def test_remove_job(self):
         """Test removing a job"""
