@@ -23,6 +23,9 @@ class TestJobManager(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures"""
+        # Reset JobManager singleton for clean test environment
+        JobManager.reset_singleton_for_testing()
+
         self.temp_dir = Path(tempfile.mkdtemp())
         self.jobs_dir = self.temp_dir / "batch_jobs"
         self.jobs_dir.mkdir()
