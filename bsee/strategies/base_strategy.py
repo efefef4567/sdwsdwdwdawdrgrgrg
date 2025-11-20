@@ -1,89 +1,89 @@
 """
-# DISABLED: Base strategy interface for BSEE search strategies.
+Base strategy interface for BSEE search strategies.
 """
 
-# DISABLED: from abc import ABC, abstractmethod
-# DISABLED: from typing import Dict, Any, Tuple
-# DISABLED: from bsee.engine.state import State
+from abc import ABC, abstractmethod
+from typing import Dict, Any, Tuple
+from bsee.engine.state import State
 
 
-# DISABLED: class BaseStrategy(ABC):
+class BaseStrategy(ABC):
     """Abstract base class for search strategies."""
 
-# DISABLED:     def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: Dict[str, Any]):
         """Initialize strategy with configuration."""
-# DISABLED:         self.config = config
-# DISABLED:         self.name = self.__class__.__name__
-# DISABLED:         self.iteration_count = 0
-# DISABLED:         self.best_score = float('-inf')
-# DISABLED:         self.no_improvement_count = 0
-# DISABLED:         self.converged = False
+        self.config = config
+        self.name = self.__class__.__name__
+        self.iteration_count = 0
+        self.best_score = float('-inf')
+        self.no_improvement_count = 0
+        self.converged = False
 
-# DISABLED:     @abstractmethod
-# DISABLED:     def propose(self, current_state: State) -> Tuple[str, Dict[str, Any]]:
+    @abstractmethod
+    def propose(self, current_state: State) -> Tuple[str, Dict[str, Any]]:
         """Propose next operation to apply.
 
-# DISABLED:         Args:
-# DISABLED:             current_state: Current state of the binary data
+        Args:
+            current_state: Current state of the binary data
 
-# DISABLED:         Returns:
-# DISABLED:             Tuple of (operation_name, operation_parameters)
+        Returns:
+            Tuple of (operation_name, operation_parameters)
         """
-# DISABLED:         pass
+        pass
 
-# DISABLED:     @abstractmethod
-# DISABLED:     def accept(self, new_state: State) -> bool:
+    @abstractmethod
+    def accept(self, new_state: State) -> bool:
         """Decide whether to accept a new state.
 
-# DISABLED:         Args:
-# DISABLED:             new_state: Proposed new state
+        Args:
+            new_state: Proposed new state
 
-# DISABLED:         Returns:
-# DISABLED:             True if the state should be accepted, False otherwise
+        Returns:
+            True if the state should be accepted, False otherwise
         """
-# DISABLED:         pass
+        pass
 
-# DISABLED:     def is_converged(self) -> bool:
+    def is_converged(self) -> bool:
         """Check if the search has converged."""
-# DISABLED:         return self.converged
+        return self.converged
 
-# DISABLED:     def reset(self) -> None:
+    def reset(self) -> None:
         """Reset the strategy state."""
-# DISABLED:         self.iteration_count = 0
-# DISABLED:         self.best_score = float('-inf')
-# DISABLED:         self.no_improvement_count = 0
-# DISABLED:         self.converged = False
+        self.iteration_count = 0
+        self.best_score = float('-inf')
+        self.no_improvement_count = 0
+        self.converged = False
 
-# DISABLED:     def update_statistics(self, state: State, accepted: bool) -> None:
+    def update_statistics(self, state: State, accepted: bool) -> None:
         """Update strategy statistics based on state evaluation."""
-# DISABLED:         self.iteration_count += 1
+        self.iteration_count += 1
 
-# DISABLED:         if accepted and state.score > self.best_score:
-# DISABLED:             self.best_score = state.score
-# DISABLED:             self.no_improvement_count = 0
-# DISABLED:         else:
-# DISABLED:             self.no_improvement_count += 1
+        if accepted and state.score > self.best_score:
+            self.best_score = state.score
+            self.no_improvement_count = 0
+        else:
+            self.no_improvement_count += 1
 
         # Check convergence criteria
-# DISABLED:         self._check_convergence()
+        self._check_convergence()
 
-# DISABLED:     def _check_convergence(self) -> None:
+    def _check_convergence(self) -> None:
         """Check if convergence criteria are met."""
-# DISABLED:         max_no_improvement = self.config.get('max_no_improvement', 50)
-# DISABLED:         max_iterations = self.config.get('max_iterations', 1000)
+        max_no_improvement = self.config.get('max_no_improvement', 50)
+        max_iterations = self.config.get('max_iterations', 1000)
 
-# DISABLED:         if self.no_improvement_count >= max_no_improvement:
-# DISABLED:             self.converged = True
+        if self.no_improvement_count >= max_no_improvement:
+            self.converged = True
 
-# DISABLED:         if self.iteration_count >= max_iterations:
-# DISABLED:             self.converged = True
+        if self.iteration_count >= max_iterations:
+            self.converged = True
 
-# DISABLED:     def get_strategy_info(self) -> Dict[str, Any]:
+    def get_strategy_info(self) -> Dict[str, Any]:
         """Get information about the strategy's current state."""
-# DISABLED:         return {
-# DISABLED:             'name': self.name,
-# DISABLED:             'iteration_count': self.iteration_count,
-# DISABLED:             'best_score': self.best_score,
-# DISABLED:             'no_improvement_count': self.no_improvement_count,
-# DISABLED:             'converged': self.converged
-# DISABLED:         }
+        return {
+            'name': self.name,
+            'iteration_count': self.iteration_count,
+            'best_score': self.best_score,
+            'no_improvement_count': self.no_improvement_count,
+            'converged': self.converged
+        }

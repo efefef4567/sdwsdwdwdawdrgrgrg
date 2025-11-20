@@ -1,42 +1,42 @@
 """
-# DISABLED: Metrics module for BSEE
-# DISABLED: Contains metrics calculation functions.
+Metrics module for BSEE
+Contains metrics calculation functions.
 """
 
-# DISABLED: def calculate_metric(data: bytes, metric_name: str) -> float:
+def calculate_metric(data: bytes, metric_name: str) -> float:
     """Calculate a specific metric for binary data"""
-# DISABLED:     if metric_name == "entropy":
-# DISABLED:         return calculate_entropy(data)
-# DISABLED:     elif metric_name == "compression_ratio":
-# DISABLED:         return calculate_compression_ratio(data)
-# DISABLED:     else:
-# DISABLED:         return 0.0
+    if metric_name == "entropy":
+        return calculate_entropy(data)
+    elif metric_name == "compression_ratio":
+        return calculate_compression_ratio(data)
+    else:
+        return 0.0
 
-# DISABLED: def calculate_entropy(data: bytes) -> float:
+def calculate_entropy(data: bytes) -> float:
     """Calculate entropy of binary data"""
-# DISABLED:     if not data:
-# DISABLED:         return 0.0
+    if not data:
+        return 0.0
 
     # Count byte frequencies
-# DISABLED:     freq = [0] * 256
-# DISABLED:     for byte in data:
-# DISABLED:         freq[byte] += 1
+    freq = [0] * 256
+    for byte in data:
+        freq[byte] += 1
 
     # Calculate entropy
-# DISABLED:     entropy = 0.0
-# DISABLED:     data_len = len(data)
-# DISABLED:     for count in freq:
-# DISABLED:         if count > 0:
-# DISABLED:             p = count / data_len
-# DISABLED:             import math
-# DISABLED:             entropy -= p * math.log2(p)
+    entropy = 0.0
+    data_len = len(data)
+    for count in freq:
+        if count > 0:
+            p = count / data_len
+            import math
+            entropy -= p * math.log2(p)
 
-# DISABLED:     return entropy
+    return entropy
 
-# DISABLED: def calculate_compression_ratio(data: bytes) -> float:
+def calculate_compression_ratio(data: bytes) -> float:
     """Simple compression ratio calculation"""
-# DISABLED:     import zlib
-# DISABLED:     if not data:
-# DISABLED:         return 1.0
-# DISABLED:     compressed = zlib.compress(data)
-# DISABLED:     return len(compressed) / len(data)
+    import zlib
+    if not data:
+        return 1.0
+    compressed = zlib.compress(data)
+    return len(compressed) / len(data)

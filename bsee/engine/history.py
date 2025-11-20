@@ -1,610 +1,610 @@
 """
-# DISABLED: Enhanced History Management for BSEE
+Enhanced History Management for BSEE
 
-# DISABLED: Provides comprehensive history tracking for transformation replay functionality.
-# DISABLED: Stores complete state snapshots for each operation with timing information
-# DISABLED: and metrics evolution for advanced visualization.
+Provides comprehensive history tracking for transformation replay functionality.
+Stores complete state snapshots for each operation with timing information
+and metrics evolution for advanced visualization.
 """
 
-# DISABLED: import json
-# DISABLED: import time
-# DISABLED: import threading
-# DISABLED: from dataclasses import dataclass, asdict
-# DISABLED: from datetime import datetime
-# DISABLED: from pathlib import Path
-# DISABLED: from typing import Callable, Dict, List, Optional, Any, Tuple
+import json
+import time
+import threading
+from dataclasses import dataclass, asdict
+from datetime import datetime
+from pathlib import Path
+from typing import Callable, Dict, List, Optional, Any, Tuple
 
 
-# DISABLED: @dataclass
-# DISABLED: class OperationSnapshot:
+@dataclass
+class OperationSnapshot:
     """Enhanced snapshot of operation state for advanced replay."""
-# DISABLED:     operation_name: str
-# DISABLED:     operation_params: Dict[str, Any]
-# DISABLED:     before_data: bytes
-# DISABLED:     after_data: bytes
-# DISABLED:     before_hex: str
-# DISABLED:     after_hex: str
-# DISABLED:     metrics_before: Dict[str, float]
-# DISABLED:     metrics_after: Dict[str, float]
-# DISABLED:     timing_info: Dict[str, float]
-# DISABLED:     byte_changes: List[Tuple[int, int, int]]  # (index, old_value, new_value)
-# DISABLED:     metadata: Dict[str, Any]
-# DISABLED:     timestamp: float
+    operation_name: str
+    operation_params: Dict[str, Any]
+    before_data: bytes
+    after_data: bytes
+    before_hex: str
+    after_hex: str
+    metrics_before: Dict[str, float]
+    metrics_after: Dict[str, float]
+    timing_info: Dict[str, float]
+    byte_changes: List[Tuple[int, int, int]]  # (index, old_value, new_value)
+    metadata: Dict[str, Any]
+    timestamp: float
 
 
-# DISABLED: @dataclass
-# DISABLED: class AnalysisSession:
+@dataclass
+class AnalysisSession:
     """Complete analysis session with all operations."""
-# DISABLED:     session_id: str
-# DISABLED:     start_time: float
-# DISABLED:     end_time: float
-# DISABLED:     initial_data: bytes
-# DISABLED:     final_data: bytes
-# DISABLED:     operations: List[OperationSnapshot]
-# DISABLED:     session_metadata: Dict[str, Any]
-# DISABLED:     total_execution_time: float
+    session_id: str
+    start_time: float
+    end_time: float
+    initial_data: bytes
+    final_data: bytes
+    operations: List[OperationSnapshot]
+    session_metadata: Dict[str, Any]
+    total_execution_time: float
 
 
-# DISABLED: @dataclass
-# DISABLED: class OperationEntry:
+@dataclass
+class OperationEntry:
     """Represents a single operation in the history."""
-# DISABLED:     step_number: int                 # Sequential step number
-# DISABLED:     operation_name: str             # Name of operation applied
-# DISABLED:     parameters: Dict[str, any]      # Parameters used
-# DISABLED:     inverse_function: Callable      # Function to reverse operation
-# DISABLED:     cost: float                     # Cost of operation
-# DISABLED:     timestamp: datetime             # When operation was applied
-# DISABLED:     parent_state_id: str            # State before operation
-# DISABLED:     resulting_state_id: str         # State after operation
-# DISABLED:     effectiveness_score: float      # Score improvement achieved
-# DISABLED:     snapshot: Optional[OperationSnapshot] = None  # Enhanced replay data
+    step_number: int                 # Sequential step number
+    operation_name: str             # Name of operation applied
+    parameters: Dict[str, any]      # Parameters used
+    inverse_function: Callable      # Function to reverse operation
+    cost: float                     # Cost of operation
+    timestamp: datetime             # When operation was applied
+    parent_state_id: str            # State before operation
+    resulting_state_id: str         # State after operation
+    effectiveness_score: float      # Score improvement achieved
+    snapshot: Optional[OperationSnapshot] = None  # Enhanced replay data
 
-# DISABLED:     def to_dict(self) -> Dict:
+    def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization."""
-# DISABLED:         return {
-# DISABLED:             'step_number': self.step_number,
-# DISABLED:             'operation_name': self.operation_name,
-# DISABLED:             'parameters': self.parameters,
-# DISABLED:             'cost': self.cost,
-# DISABLED:             'timestamp': self.timestamp.isoformat(),
-# DISABLED:             'parent_state_id': self.parent_state_id,
-# DISABLED:             'resulting_state_id': self.resulting_state_id,
-# DISABLED:             'effectiveness_score': self.effectiveness_score
-# DISABLED:         }
+        return {
+            'step_number': self.step_number,
+            'operation_name': self.operation_name,
+            'parameters': self.parameters,
+            'cost': self.cost,
+            'timestamp': self.timestamp.isoformat(),
+            'parent_state_id': self.parent_state_id,
+            'resulting_state_id': self.resulting_state_id,
+            'effectiveness_score': self.effectiveness_score
+        }
 
 
-# DISABLED: class HistoryManager:
+class HistoryManager:
     """Enhanced history manager for replay and advanced visualization."""
 
-# DISABLED:     def __init__(self, max_history_size: int = 1000, auto_save: bool = True):
+    def __init__(self, max_history_size: int = 1000, auto_save: bool = True):
         """
-# DISABLED:         Initialize enhanced history manager.
+        Initialize enhanced history manager.
 
-# DISABLED:         Args:
-# DISABLED:             max_history_size: Maximum number of operations to keep in memory
-# DISABLED:             auto_save: Whether to automatically save history to disk
+        Args:
+            max_history_size: Maximum number of operations to keep in memory
+            auto_save: Whether to automatically save history to disk
         """
-# DISABLED:         self.max_history_size = max_history_size
-# DISABLED:         self.auto_save = auto_save
+        self.max_history_size = max_history_size
+        self.auto_save = auto_save
 
         # Current session
-# DISABLED:         self.current_session: Optional[AnalysisSession] = None
-# DISABLED:         self.session_start_time: Optional[float] = None
+        self.current_session: Optional[AnalysisSession] = None
+        self.session_start_time: Optional[float] = None
 
         # Original entries for backward compatibility
-# DISABLED:         self.entries: List[OperationEntry] = []
-# DISABLED:         self.state_index: Dict[str, int] = {}  # state_id -> step_number
-# DISABLED:         self.operation_counts: Dict[str, int] = {}  # operation_name -> count
+        self.entries: List[OperationEntry] = []
+        self.state_index: Dict[str, int] = {}  # state_id -> step_number
+        self.operation_counts: Dict[str, int] = {}  # operation_name -> count
 
         # Enhanced operation snapshots
-# DISABLED:         self.operation_snapshots: List[OperationSnapshot] = []
+        self.operation_snapshots: List[OperationSnapshot] = []
 
         # Session history storage
-# DISABLED:         self.session_history: List[AnalysisSession] = []
-# DISABLED:         self.storage_directory = Path("history")
-# DISABLED:         self.storage_directory.mkdir(exist_ok=True)
+        self.session_history: List[AnalysisSession] = []
+        self.storage_directory = Path("history")
+        self.storage_directory.mkdir(exist_ok=True)
 
         # Threading lock for thread safety
-# DISABLED:         self._lock = threading.Lock()
+        self._lock = threading.Lock()
 
         # Callbacks for events
-# DISABLED:         self.on_operation_added: Optional[callable] = None
-# DISABLED:         self.on_session_completed: Optional[callable] = None
+        self.on_operation_added: Optional[callable] = None
+        self.on_session_completed: Optional[callable] = None
 
-# DISABLED:     def add_entry(self, entry: OperationEntry) -> None:
+    def add_entry(self, entry: OperationEntry) -> None:
         """Add a new operation entry to the history."""
-# DISABLED:         self.entries.append(entry)
-# DISABLED:         self.state_index[entry.resulting_state_id] = entry.step_number
+        self.entries.append(entry)
+        self.state_index[entry.resulting_state_id] = entry.step_number
 
         # Update operation counts
-# DISABLED:         self.operation_counts[entry.operation_name] = \
-# DISABLED:             self.operation_counts.get(entry.operation_name, 0) + 1
+        self.operation_counts[entry.operation_name] = \
+            self.operation_counts.get(entry.operation_name, 0) + 1
 
-# DISABLED:     def get_chain_to_state(self, state_id: str) -> List[OperationEntry]:
+    def get_chain_to_state(self, state_id: str) -> List[OperationEntry]:
         """Get the complete operation chain from root to specified state."""
-# DISABLED:         if state_id not in self.state_index:
-# DISABLED:             return []
+        if state_id not in self.state_index:
+            return []
 
-# DISABLED:         target_step = self.state_index[state_id]
-# DISABLED:         return self.entries[:target_step]
+        target_step = self.state_index[state_id]
+        return self.entries[:target_step]
 
-# DISABLED:     def generate_inverse_chain(self, state_id: str) -> List[Callable]:
+    def generate_inverse_chain(self, state_id: str) -> List[Callable]:
         """Generate the chain of inverse functions to reverse to original state."""
-# DISABLED:         chain = self.get_chain_to_state(state_id)
-# DISABLED:         return [entry.inverse_function for entry in reversed(chain)]
+        chain = self.get_chain_to_state(state_id)
+        return [entry.inverse_function for entry in reversed(chain)]
 
-# DISABLED:     def export_to_json(self, state_id: str, original_file: str) -> Dict:
+    def export_to_json(self, state_id: str, original_file: str) -> Dict:
         """Export operation history to JSON format for external analysis."""
-# DISABLED:         chain = self.get_chain_to_state(state_id)
+        chain = self.get_chain_to_state(state_id)
 
         # Extract inverse operations (functions can't be serialized, so we save names)
-# DISABLED:         inverse_operations = []
-# DISABLED:         for entry in reversed(chain):
-# DISABLED:             inverse_op = {
-# DISABLED:                 'step': entry.step_number,
-# DISABLED:                 'operation': self._get_inverse_operation_name(entry.operation_name),
-# DISABLED:                 'params': entry.parameters
-# DISABLED:             }
-# DISABLED:             inverse_operations.append(inverse_op)
+        inverse_operations = []
+        for entry in reversed(chain):
+            inverse_op = {
+                'step': entry.step_number,
+                'operation': self._get_inverse_operation_name(entry.operation_name),
+                'params': entry.parameters
+            }
+            inverse_operations.append(inverse_op)
 
-# DISABLED:         return {
-# DISABLED:             'original_file': original_file,
-# DISABLED:             'final_state_id': state_id,
-# DISABLED:             'total_operations': len(chain),
-# DISABLED:             'total_cost': sum(entry.cost for entry in chain),
-# DISABLED:             'operations': [entry.to_dict() for entry in chain],
-# DISABLED:             'inverse_operations': inverse_operations,
-# DISABLED:             'operation_statistics': self._get_operation_statistics()
-# DISABLED:         }
+        return {
+            'original_file': original_file,
+            'final_state_id': state_id,
+            'total_operations': len(chain),
+            'total_cost': sum(entry.cost for entry in chain),
+            'operations': [entry.to_dict() for entry in chain],
+            'inverse_operations': inverse_operations,
+            'operation_statistics': self._get_operation_statistics()
+        }
 
-# DISABLED:     def validate_reversibility(self, final_state_id: str, original_binary: bytes) -> bool:
+    def validate_reversibility(self, final_state_id: str, original_binary: bytes) -> bool:
         """Validate that the inverse chain correctly reproduces the original binary."""
-# DISABLED:         try:
-# DISABLED:             inverse_chain = self.generate_inverse_chain(final_state_id)
+        try:
+            inverse_chain = self.generate_inverse_chain(final_state_id)
 
             # Start with current state (we would need the current binary data)
             # For now, this is a placeholder that validates the chain structure
-# DISABLED:             if not inverse_chain:
-# DISABLED:                 return len(self.entries) == 0
+            if not inverse_chain:
+                return len(self.entries) == 0
 
             # Validate that we have the right number of inverse functions
-# DISABLED:             chain_length = len(self.get_chain_to_state(final_state_id))
-# DISABLED:             return len(inverse_chain) == chain_length
+            chain_length = len(self.get_chain_to_state(final_state_id))
+            return len(inverse_chain) == chain_length
 
-# DISABLED:         except Exception:
-# DISABLED:             return False
+        except Exception:
+            return False
 
-# DISABLED:     def get_operation_count(self, operation_name: str) -> int:
+    def get_operation_count(self, operation_name: str) -> int:
         """Get the total count of a specific operation."""
-# DISABLED:         return self.operation_counts.get(operation_name, 0)
+        return self.operation_counts.get(operation_name, 0)
 
-# DISABLED:     def get_total_cost(self) -> float:
+    def get_total_cost(self) -> float:
         """Get total cost of all operations."""
-# DISABLED:         return sum(entry.cost for entry in self.entries)
+        return sum(entry.cost for entry in self.entries)
 
-# DISABLED:     def get_operation_effectiveness(self, operation_name: str) -> float:
+    def get_operation_effectiveness(self, operation_name: str) -> float:
         """Get average effectiveness score for an operation."""
-# DISABLED:         operation_entries = [e for e in self.entries if e.operation_name == operation_name]
-# DISABLED:         if not operation_entries:
-# DISABLED:             return 0.0
+        operation_entries = [e for e in self.entries if e.operation_name == operation_name]
+        if not operation_entries:
+            return 0.0
 
-# DISABLED:         total_effectiveness = sum(e.effectiveness_score for e in operation_entries)
-# DISABLED:         return total_effectiveness / len(operation_entries)
+        total_effectiveness = sum(e.effectiveness_score for e in operation_entries)
+        return total_effectiveness / len(operation_entries)
 
-# DISABLED:     def get_most_effective_operations(self, top_n: int = 10) -> List[Dict]:
+    def get_most_effective_operations(self, top_n: int = 10) -> List[Dict]:
         """Get the most effective operations by score/cost ratio."""
-# DISABLED:         operation_stats = {}
+        operation_stats = {}
 
-# DISABLED:         for entry in self.entries:
-# DISABLED:             if entry.operation_name not in operation_stats:
-# DISABLED:                 operation_stats[entry.operation_name] = {
-# DISABLED:                     'total_cost': 0.0,
-# DISABLED:                     'total_effectiveness': 0.0,
-# DISABLED:                     'count': 0
-# DISABLED:                 }
+        for entry in self.entries:
+            if entry.operation_name not in operation_stats:
+                operation_stats[entry.operation_name] = {
+                    'total_cost': 0.0,
+                    'total_effectiveness': 0.0,
+                    'count': 0
+                }
 
-# DISABLED:             stats = operation_stats[entry.operation_name]
-# DISABLED:             stats['total_cost'] += entry.cost
-# DISABLED:             stats['total_effectiveness'] += entry.effectiveness_score
-# DISABLED:             stats['count'] += 1
+            stats = operation_stats[entry.operation_name]
+            stats['total_cost'] += entry.cost
+            stats['total_effectiveness'] += entry.effectiveness_score
+            stats['count'] += 1
 
         # Calculate score/cost ratio
-# DISABLED:         results = []
-# DISABLED:         for op_name, stats in operation_stats.items():
-# DISABLED:             if stats['total_cost'] > 0:
-# DISABLED:                 ratio = stats['total_effectiveness'] / stats['total_cost']
-# DISABLED:                 results.append({
-# DISABLED:                     'operation': op_name,
-# DISABLED:                     'score_per_cost': ratio,
-# DISABLED:                     'total_cost': stats['total_cost'],
-# DISABLED:                     'total_effectiveness': stats['total_effectiveness'],
-# DISABLED:                     'count': stats['count']
-# DISABLED:                 })
+        results = []
+        for op_name, stats in operation_stats.items():
+            if stats['total_cost'] > 0:
+                ratio = stats['total_effectiveness'] / stats['total_cost']
+                results.append({
+                    'operation': op_name,
+                    'score_per_cost': ratio,
+                    'total_cost': stats['total_cost'],
+                    'total_effectiveness': stats['total_effectiveness'],
+                    'count': stats['count']
+                })
 
         # Sort by ratio and return top N
-# DISABLED:         results.sort(key=lambda x: x['score_per_cost'], reverse=True)
-# DISABLED:         return results[:top_n]
+        results.sort(key=lambda x: x['score_per_cost'], reverse=True)
+        return results[:top_n]
 
-# DISABLED:     def clear(self) -> None:
+    def clear(self) -> None:
         """Clear all history."""
-# DISABLED:         self.entries.clear()
-# DISABLED:         self.state_index.clear()
-# DISABLED:         self.operation_counts.clear()
+        self.entries.clear()
+        self.state_index.clear()
+        self.operation_counts.clear()
 
-# DISABLED:     def get_summary(self) -> Dict:
+    def get_summary(self) -> Dict:
         """Get a summary of the operation history."""
-# DISABLED:         if not self.entries:
-# DISABLED:             return {
-# DISABLED:                 'total_operations': 0,
-# DISABLED:                 'total_cost': 0.0,
-# DISABLED:                 'unique_operations': 0,
-# DISABLED:                 'most_used_operation': None
-# DISABLED:             }
+        if not self.entries:
+            return {
+                'total_operations': 0,
+                'total_cost': 0.0,
+                'unique_operations': 0,
+                'most_used_operation': None
+            }
 
-# DISABLED:         return {
-# DISABLED:             'total_operations': len(self.entries),
-# DISABLED:             'total_cost': self.get_total_cost(),
-# DISABLED:             'unique_operations': len(self.operation_counts),
-# DISABLED:             'most_used_operation': max(self.operation_counts.items(), key=lambda x: x[1])[0] if self.operation_counts else None,
-# DISABLED:             'operation_counts': self.operation_counts.copy()
-# DISABLED:         }
+        return {
+            'total_operations': len(self.entries),
+            'total_cost': self.get_total_cost(),
+            'unique_operations': len(self.operation_counts),
+            'most_used_operation': max(self.operation_counts.items(), key=lambda x: x[1])[0] if self.operation_counts else None,
+            'operation_counts': self.operation_counts.copy()
+        }
 
-# DISABLED:     def _get_inverse_operation_name(self, operation_name: str) -> str:
+    def _get_inverse_operation_name(self, operation_name: str) -> str:
         """Get the name of the inverse operation."""
         # This would be expanded based on the operations registry
-# DISABLED:         inverse_map = {
-# DISABLED:             'xor_constant': 'xor_constant',
-# DISABLED:             'xor_range': 'xor_range',
-# DISABLED:             'rotate_left': 'rotate_right',
-# DISABLED:             'rotate_right': 'rotate_left',
-# DISABLED:             'bitplane_extract': 'bitplane_insert',
-# DISABLED:             'bitplane_insert': 'bitplane_extract',
+        inverse_map = {
+            'xor_constant': 'xor_constant',
+            'xor_range': 'xor_range',
+            'rotate_left': 'rotate_right',
+            'rotate_right': 'rotate_left',
+            'bitplane_extract': 'bitplane_insert',
+            'bitplane_insert': 'bitplane_extract',
             # Add more mappings as needed
-# DISABLED:         }
-# DISABLED:         return inverse_map.get(operation_name, f'inverse_{operation_name}')
+        }
+        return inverse_map.get(operation_name, f'inverse_{operation_name}')
 
-# DISABLED:     def _get_operation_statistics(self) -> Dict:
+    def _get_operation_statistics(self) -> Dict:
         """Get detailed statistics about operations used."""
-# DISABLED:         stats = {}
-# DISABLED:         for op_name, count in self.operation_counts.items():
-# DISABLED:             operation_entries = [e for e in self.entries if e.operation_name == op_name]
-# DISABLED:             total_cost = sum(e.cost for e in operation_entries)
-# DISABLED:             avg_cost = total_cost / len(operation_entries) if operation_entries else 0
-# DISABLED:             avg_effectiveness = sum(e.effectiveness_score for e in operation_entries) / len(operation_entries) if operation_entries else 0
+        stats = {}
+        for op_name, count in self.operation_counts.items():
+            operation_entries = [e for e in self.entries if e.operation_name == op_name]
+            total_cost = sum(e.cost for e in operation_entries)
+            avg_cost = total_cost / len(operation_entries) if operation_entries else 0
+            avg_effectiveness = sum(e.effectiveness_score for e in operation_entries) / len(operation_entries) if operation_entries else 0
 
-# DISABLED:             stats[op_name] = {
-# DISABLED:                 'count': count,
-# DISABLED:                 'total_cost': total_cost,
-# DISABLED:                 'average_cost': avg_cost,
-# DISABLED:                 'average_effectiveness': avg_effectiveness
-# DISABLED:             }
+            stats[op_name] = {
+                'count': count,
+                'total_cost': total_cost,
+                'average_cost': avg_cost,
+                'average_effectiveness': avg_effectiveness
+            }
 
-# DISABLED:         return stats
+        return stats
 
     # Enhanced methods for transformation viewer
-# DISABLED:     def start_session(self, session_id: str = None, initial_data: bytes = b"",
-# DISABLED:                      metadata: Dict[str, Any] = None) -> str:
+    def start_session(self, session_id: str = None, initial_data: bytes = b"",
+                     metadata: Dict[str, Any] = None) -> str:
         """
-# DISABLED:         Start a new analysis session.
+        Start a new analysis session.
 
-# DISABLED:         Args:
-# DISABLED:             session_id: Optional session ID (auto-generated if not provided)
-# DISABLED:             initial_data: Initial binary data
-# DISABLED:             metadata: Session metadata
+        Args:
+            session_id: Optional session ID (auto-generated if not provided)
+            initial_data: Initial binary data
+            metadata: Session metadata
 
-# DISABLED:         Returns:
-# DISABLED:             Session ID
+        Returns:
+            Session ID
         """
-# DISABLED:         with self._lock:
-# DISABLED:             if session_id is None:
-# DISABLED:                 session_id = f"session_{int(time.time())}_{len(self.session_history)}"
+        with self._lock:
+            if session_id is None:
+                session_id = f"session_{int(time.time())}_{len(self.session_history)}"
 
-# DISABLED:             self.session_start_time = time.time()
+            self.session_start_time = time.time()
 
-# DISABLED:             self.current_session = AnalysisSession(
-# DISABLED:                 session_id=session_id,
-# DISABLED:                 start_time=self.session_start_time,
-# DISABLED:                 end_time=0.0,
-# DISABLED:                 initial_data=initial_data,
-# DISABLED:                 final_data=initial_data,
-# DISABLED:                 operations=[],
-# DISABLED:                 session_metadata=metadata or {},
-# DISABLED:                 total_execution_time=0.0
-# DISABLED:             )
+            self.current_session = AnalysisSession(
+                session_id=session_id,
+                start_time=self.session_start_time,
+                end_time=0.0,
+                initial_data=initial_data,
+                final_data=initial_data,
+                operations=[],
+                session_metadata=metadata or {},
+                total_execution_time=0.0
+            )
 
             # Clear operation snapshots for new session
-# DISABLED:             self.operation_snapshots.clear()
+            self.operation_snapshots.clear()
 
-# DISABLED:             return session_id
+            return session_id
 
-# DISABLED:     def add_operation_snapshot(self, operation_name: str, operation_params: Dict[str, Any],
-# DISABLED:                              before_data: bytes, after_data: bytes,
-# DISABLED:                              metrics_before: Dict[str, float] = None,
-# DISABLED:                              metrics_after: Dict[str, float] = None,
-# DISABLED:                              timing_info: Dict[str, float] = None,
-# DISABLED:                              metadata: Dict[str, Any] = None) -> OperationSnapshot:
+    def add_operation_snapshot(self, operation_name: str, operation_params: Dict[str, Any],
+                             before_data: bytes, after_data: bytes,
+                             metrics_before: Dict[str, float] = None,
+                             metrics_after: Dict[str, float] = None,
+                             timing_info: Dict[str, float] = None,
+                             metadata: Dict[str, Any] = None) -> OperationSnapshot:
         """
-# DISABLED:         Add enhanced operation snapshot for replay.
+        Add enhanced operation snapshot for replay.
 
-# DISABLED:         Args:
-# DISABLED:             operation_name: Name of the operation
-# DISABLED:             operation_params: Parameters used for the operation
-# DISABLED:             before_data: Data before operation
-# DISABLED:             after_data: Data after operation
-# DISABLED:             metrics_before: Metrics calculated before operation
-# DISABLED:             metrics_after: Metrics calculated after operation
-# DISABLED:             timing_info: Timing information for the operation
-# DISABLED:             metadata: Additional operation metadata
+        Args:
+            operation_name: Name of the operation
+            operation_params: Parameters used for the operation
+            before_data: Data before operation
+            after_data: Data after operation
+            metrics_before: Metrics calculated before operation
+            metrics_after: Metrics calculated after operation
+            timing_info: Timing information for the operation
+            metadata: Additional operation metadata
 
-# DISABLED:         Returns:
-# DISABLED:             Created operation snapshot
+        Returns:
+            Created operation snapshot
         """
-# DISABLED:         with self._lock:
-# DISABLED:             if self.current_session is None:
-# DISABLED:                 raise ValueError("No active session. Call start_session() first.")
+        with self._lock:
+            if self.current_session is None:
+                raise ValueError("No active session. Call start_session() first.")
 
             # Create snapshot
-# DISABLED:             snapshot = OperationSnapshot(
-# DISABLED:                 operation_name=operation_name,
-# DISABLED:                 operation_params=operation_params or {},
-# DISABLED:                 before_data=before_data,
-# DISABLED:                 after_data=after_data,
-# DISABLED:                 before_hex=before_data.hex(),
-# DISABLED:                 after_hex=after_data.hex(),
-# DISABLED:                 metrics_before=metrics_before or {},
-# DISABLED:                 metrics_after=metrics_after or {},
-# DISABLED:                 timing_info=timing_info or {},
-# DISABLED:                 byte_changes=self._analyze_byte_changes(before_data, after_data),
-# DISABLED:                 metadata=metadata or {},
-# DISABLED:                 timestamp=time.time()
-# DISABLED:             )
+            snapshot = OperationSnapshot(
+                operation_name=operation_name,
+                operation_params=operation_params or {},
+                before_data=before_data,
+                after_data=after_data,
+                before_hex=before_data.hex(),
+                after_hex=after_data.hex(),
+                metrics_before=metrics_before or {},
+                metrics_after=metrics_after or {},
+                timing_info=timing_info or {},
+                byte_changes=self._analyze_byte_changes(before_data, after_data),
+                metadata=metadata or {},
+                timestamp=time.time()
+            )
 
             # Add to current session
-# DISABLED:             self.current_session.operations.append(snapshot)
-# DISABLED:             self.current_session.final_data = after_data
+            self.current_session.operations.append(snapshot)
+            self.current_session.final_data = after_data
 
             # Update session execution time
-# DISABLED:             if timing_info and 'execution_time' in timing_info:
-# DISABLED:                 self.current_session.total_execution_time += timing_info['execution_time']
+            if timing_info and 'execution_time' in timing_info:
+                self.current_session.total_execution_time += timing_info['execution_time']
 
             # Add to snapshots list
-# DISABLED:             self.operation_snapshots.append(snapshot)
+            self.operation_snapshots.append(snapshot)
 
             # Limit history size
-# DISABLED:             if len(self.operation_snapshots) > self.max_history_size:
-# DISABLED:                 self.operation_snapshots.pop(0)
+            if len(self.operation_snapshots) > self.max_history_size:
+                self.operation_snapshots.pop(0)
 
             # Auto-save if enabled
-# DISABLED:             if self.auto_save:
-# DISABLED:                 self._save_session_snapshot(snapshot)
+            if self.auto_save:
+                self._save_session_snapshot(snapshot)
 
             # Notify callback
-# DISABLED:             if self.on_operation_added:
-# DISABLED:                 self.on_operation_added(snapshot)
+            if self.on_operation_added:
+                self.on_operation_added(snapshot)
 
-# DISABLED:             return snapshot
+            return snapshot
 
-# DISABLED:     def end_session(self, final_metadata: Dict[str, Any] = None) -> AnalysisSession:
+    def end_session(self, final_metadata: Dict[str, Any] = None) -> AnalysisSession:
         """
-# DISABLED:         End current session and add to history.
+        End current session and add to history.
 
-# DISABLED:         Args:
-# DISABLED:             final_metadata: Additional metadata for session completion
+        Args:
+            final_metadata: Additional metadata for session completion
 
-# DISABLED:         Returns:
-# DISABLED:             Completed session
+        Returns:
+            Completed session
         """
-# DISABLED:         with self._lock:
-# DISABLED:             if self.current_session is None:
-# DISABLED:                 raise ValueError("No active session to end.")
+        with self._lock:
+            if self.current_session is None:
+                raise ValueError("No active session to end.")
 
-# DISABLED:             self.current_session.end_time = time.time()
-# DISABLED:             self.current_session.session_metadata.update(final_metadata or {})
+            self.current_session.end_time = time.time()
+            self.current_session.session_metadata.update(final_metadata or {})
 
             # Add to history
-# DISABLED:             self.session_history.append(self.current_session)
+            self.session_history.append(self.current_session)
 
             # Auto-save complete session
-# DISABLED:             if self.auto_save:
-# DISABLED:                 self._save_complete_session(self.current_session)
+            if self.auto_save:
+                self._save_complete_session(self.current_session)
 
             # Notify callback
-# DISABLED:             if self.on_session_completed:
-# DISABLED:                 self.on_session_completed(self.current_session)
+            if self.on_session_completed:
+                self.on_session_completed(self.current_session)
 
-# DISABLED:             completed_session = self.current_session
-# DISABLED:             self.current_session = None
-# DISABLED:             self.session_start_time = None
+            completed_session = self.current_session
+            self.current_session = None
+            self.session_start_time = None
 
-# DISABLED:             return completed_session
+            return completed_session
 
-# DISABLED:     def get_current_session(self) -> Optional[AnalysisSession]:
+    def get_current_session(self) -> Optional[AnalysisSession]:
         """Get currently active session."""
-# DISABLED:         return self.current_session
+        return self.current_session
 
-# DISABLED:     def get_session_history(self, limit: int = None) -> List[AnalysisSession]:
+    def get_session_history(self, limit: int = None) -> List[AnalysisSession]:
         """
-# DISABLED:         Get session history.
+        Get session history.
 
-# DISABLED:         Args:
-# DISABLED:             limit: Maximum number of sessions to return
+        Args:
+            limit: Maximum number of sessions to return
 
-# DISABLED:         Returns:
-# DISABLED:             List of analysis sessions
+        Returns:
+            List of analysis sessions
         """
-# DISABLED:         with self._lock:
-# DISABLED:             history = self.session_history.copy()
-# DISABLED:             if limit:
-# DISABLED:                 return history[-limit:]
-# DISABLED:             return history
+        with self._lock:
+            history = self.session_history.copy()
+            if limit:
+                return history[-limit:]
+            return history
 
-# DISABLED:     def get_session_by_id(self, session_id: str) -> Optional[AnalysisSession]:
+    def get_session_by_id(self, session_id: str) -> Optional[AnalysisSession]:
         """Get session by ID."""
-# DISABLED:         with self._lock:
-# DISABLED:             for session in self.session_history:
-# DISABLED:                 if session.session_id == session_id:
-# DISABLED:                     return session
-# DISABLED:             return None
+        with self._lock:
+            for session in self.session_history:
+                if session.session_id == session_id:
+                    return session
+            return None
 
-# DISABLED:     def get_operation_snapshots(self, session_id: str = None) -> List[OperationSnapshot]:
+    def get_operation_snapshots(self, session_id: str = None) -> List[OperationSnapshot]:
         """
-# DISABLED:         Get operation snapshots.
+        Get operation snapshots.
 
-# DISABLED:         Args:
-# DISABLED:             session_id: Optional session ID (uses current session if not provided)
+        Args:
+            session_id: Optional session ID (uses current session if not provided)
 
-# DISABLED:         Returns:
-# DISABLED:             List of operation snapshots
+        Returns:
+            List of operation snapshots
         """
-# DISABLED:         with self._lock:
-# DISABLED:             if session_id:
-# DISABLED:                 session = self.get_session_by_id(session_id)
-# DISABLED:                 return session.operations if session else []
-# DISABLED:             elif self.current_session:
-# DISABLED:                 return self.current_session.operations.copy()
-# DISABLED:             else:
-# DISABLED:                 return self.operation_snapshots.copy()
+        with self._lock:
+            if session_id:
+                session = self.get_session_by_id(session_id)
+                return session.operations if session else []
+            elif self.current_session:
+                return self.current_session.operations.copy()
+            else:
+                return self.operation_snapshots.copy()
 
-# DISABLED:     def export_session_for_replay(self, session_id: str = None) -> Dict[str, Any]:
+    def export_session_for_replay(self, session_id: str = None) -> Dict[str, Any]:
         """
-# DISABLED:         Export session data in format suitable for transformation viewer.
+        Export session data in format suitable for transformation viewer.
 
-# DISABLED:         Args:
-# DISABLED:             session_id: Optional session ID (uses current session if not provided)
+        Args:
+            session_id: Optional session ID (uses current session if not provided)
 
-# DISABLED:         Returns:
-# DISABLED:             Export data dictionary
+        Returns:
+            Export data dictionary
         """
-# DISABLED:         with self._lock:
-# DISABLED:             if session_id:
-# DISABLED:                 session = self.get_session_by_id(session_id)
-# DISABLED:             else:
-# DISABLED:                 session = self.current_session
+        with self._lock:
+            if session_id:
+                session = self.get_session_by_id(session_id)
+            else:
+                session = self.current_session
 
-# DISABLED:             if not session:
-# DISABLED:                 return {}
+            if not session:
+                return {}
 
             # Convert operations to replay format
-# DISABLED:             operations = []
-# DISABLED:             for op in session.operations:
-# DISABLED:                 operation_data = {
-# DISABLED:                     'name': op.operation_name,
-# DISABLED:                     'params': op.operation_params,
-# DISABLED:                     'before_hex': op.before_hex,
-# DISABLED:                     'after_hex': op.after_hex,
-# DISABLED:                     'metrics_before': op.metrics_before,
-# DISABLED:                     'metrics_after': op.metrics_after,
-# DISABLED:                     'timing': op.timing_info,
-# DISABLED:                     'byte_changes': op.byte_changes,
-# DISABLED:                     'metadata': op.metadata,
-# DISABLED:                     'timestamp': op.timestamp
-# DISABLED:                 }
-# DISABLED:                 operations.append(operation_data)
+            operations = []
+            for op in session.operations:
+                operation_data = {
+                    'name': op.operation_name,
+                    'params': op.operation_params,
+                    'before_hex': op.before_hex,
+                    'after_hex': op.after_hex,
+                    'metrics_before': op.metrics_before,
+                    'metrics_after': op.metrics_after,
+                    'timing': op.timing_info,
+                    'byte_changes': op.byte_changes,
+                    'metadata': op.metadata,
+                    'timestamp': op.timestamp
+                }
+                operations.append(operation_data)
 
-# DISABLED:             return {
-# DISABLED:                 'session_id': session.session_id,
-# DISABLED:                 'start_time': session.start_time,
-# DISABLED:                 'end_time': session.end_time,
-# DISABLED:                 'initial_data': session.initial_data.hex(),
-# DISABLED:                 'final_data': session.final_data.hex(),
-# DISABLED:                 'operations': operations,
-# DISABLED:                 'session_metadata': session.session_metadata,
-# DISABLED:                 'total_execution_time': session.total_execution_time
-# DISABLED:             }
+            return {
+                'session_id': session.session_id,
+                'start_time': session.start_time,
+                'end_time': session.end_time,
+                'initial_data': session.initial_data.hex(),
+                'final_data': session.final_data.hex(),
+                'operations': operations,
+                'session_metadata': session.session_metadata,
+                'total_execution_time': session.total_execution_time
+            }
 
-# DISABLED:     def _analyze_byte_changes(self, before: bytes, after: bytes) -> List[Tuple[int, int, int]]:
+    def _analyze_byte_changes(self, before: bytes, after: bytes) -> List[Tuple[int, int, int]]:
         """Analyze byte changes between before and after data."""
-# DISABLED:         changes = []
-# DISABLED:         min_len = min(len(before), len(after))
+        changes = []
+        min_len = min(len(before), len(after))
 
         # Find changed bytes
-# DISABLED:         for i in range(min_len):
-# DISABLED:             if before[i] != after[i]:
-# DISABLED:                 changes.append((i, before[i], after[i]))
+        for i in range(min_len):
+            if before[i] != after[i]:
+                changes.append((i, before[i], after[i]))
 
         # Handle insertions/deletions
-# DISABLED:         if len(before) < len(after):
+        if len(before) < len(after):
             # Insertions
-# DISABLED:             for i in range(len(before), len(after)):
-# DISABLED:                 changes.append((i, -1, after[i]))  # -1 indicates insertion
-# DISABLED:         elif len(before) > len(after):
+            for i in range(len(before), len(after)):
+                changes.append((i, -1, after[i]))  # -1 indicates insertion
+        elif len(before) > len(after):
             # Deletions
-# DISABLED:             for i in range(len(after), len(before)):
-# DISABLED:                 changes.append((i, before[i], -1))  # -1 indicates deletion
+            for i in range(len(after), len(before)):
+                changes.append((i, before[i], -1))  # -1 indicates deletion
 
-# DISABLED:         return changes
+        return changes
 
-# DISABLED:     def _save_session_snapshot(self, snapshot: OperationSnapshot):
+    def _save_session_snapshot(self, snapshot: OperationSnapshot):
         """Save individual operation snapshot."""
-# DISABLED:         try:
-# DISABLED:             snapshot_file = self.storage_directory / f"snapshot_{int(snapshot.timestamp)}.json"
-# DISABLED:             with open(snapshot_file, 'w') as f:
-# DISABLED:                 json.dump(asdict(snapshot), f, indent=2, default=str)
-# DISABLED:         except Exception as e:
+        try:
+            snapshot_file = self.storage_directory / f"snapshot_{int(snapshot.timestamp)}.json"
+            with open(snapshot_file, 'w') as f:
+                json.dump(asdict(snapshot), f, indent=2, default=str)
+        except Exception as e:
             # Log error but don't crash
-# DISABLED:             print(f"Error saving snapshot: {e}")
+            print(f"Error saving snapshot: {e}")
 
-# DISABLED:     def _save_complete_session(self, session: AnalysisSession):
+    def _save_complete_session(self, session: AnalysisSession):
         """Save complete session to disk."""
-# DISABLED:         try:
-# DISABLED:             session_file = self.storage_directory / f"session_{session.session_id}.json"
-# DISABLED:             session_data = {
-# DISABLED:                 'session': asdict(session),
-# DISABLED:                 'export_timestamp': datetime.now().isoformat()
-# DISABLED:             }
-# DISABLED:             with open(session_file, 'w') as f:
-# DISABLED:                 json.dump(session_data, f, indent=2, default=str)
-# DISABLED:         except Exception as e:
-# DISABLED:             print(f"Error saving session: {e}")
+        try:
+            session_file = self.storage_directory / f"session_{session.session_id}.json"
+            session_data = {
+                'session': asdict(session),
+                'export_timestamp': datetime.now().isoformat()
+            }
+            with open(session_file, 'w') as f:
+                json.dump(session_data, f, indent=2, default=str)
+        except Exception as e:
+            print(f"Error saving session: {e}")
 
-# DISABLED:     def analyze_session(self, session_id: str = None) -> Dict[str, Any]:
+    def analyze_session(self, session_id: str = None) -> Dict[str, Any]:
         """
-# DISABLED:         Analyze a session and return comprehensive statistics.
+        Analyze a session and return comprehensive statistics.
 
-# DISABLED:         Args:
-# DISABLED:             session_id: Optional session ID (uses current session if not provided)
+        Args:
+            session_id: Optional session ID (uses current session if not provided)
 
-# DISABLED:         Returns:
-# DISABLED:             Session analysis data
+        Returns:
+            Session analysis data
         """
-# DISABLED:         with self._lock:
-# DISABLED:             if session_id:
-# DISABLED:                 session = self.get_session_by_id(session_id)
-# DISABLED:             else:
-# DISABLED:                 session = self.current_session
+        with self._lock:
+            if session_id:
+                session = self.get_session_by_id(session_id)
+            else:
+                session = self.current_session
 
-# DISABLED:             if not session:
-# DISABLED:                 return {}
+            if not session:
+                return {}
 
             # Calculate statistics
-# DISABLED:             total_operations = len(session.operations)
-# DISABLED:             total_byte_changes = 0
-# DISABLED:             data_size_change = len(session.final_data) - len(session.initial_data)
+            total_operations = len(session.operations)
+            total_byte_changes = 0
+            data_size_change = len(session.final_data) - len(session.initial_data)
 
-# DISABLED:             for op in session.operations:
-# DISABLED:                 total_byte_changes += len(op.byte_changes)
+            for op in session.operations:
+                total_byte_changes += len(op.byte_changes)
 
-# DISABLED:             return {
-# DISABLED:                 'total_operations': total_operations,
-# DISABLED:                 'total_byte_changes': total_byte_changes,
-# DISABLED:                 'data_size_change': data_size_change,
-# DISABLED:                 'total_execution_time': session.total_execution_time,
-# DISABLED:                 'session_duration': session.end_time - session.start_time if session.end_time > 0 else 0,
-# DISABLED:                 'operations_by_type': self._count_operations_by_type(session.operations),
-# DISABLED:                 'average_operation_time': session.total_execution_time / total_operations if total_operations > 0 else 0
-# DISABLED:             }
+            return {
+                'total_operations': total_operations,
+                'total_byte_changes': total_byte_changes,
+                'data_size_change': data_size_change,
+                'total_execution_time': session.total_execution_time,
+                'session_duration': session.end_time - session.start_time if session.end_time > 0 else 0,
+                'operations_by_type': self._count_operations_by_type(session.operations),
+                'average_operation_time': session.total_execution_time / total_operations if total_operations > 0 else 0
+            }
 
-# DISABLED:     def _count_operations_by_type(self, operations: List[OperationSnapshot]) -> Dict[str, int]:
+    def _count_operations_by_type(self, operations: List[OperationSnapshot]) -> Dict[str, int]:
         """Count operations by type."""
-# DISABLED:         counts = {}
-# DISABLED:         for op in operations:
-# DISABLED:             counts[op.operation_name] = counts.get(op.operation_name, 0) + 1
-# DISABLED:         return counts
+        counts = {}
+        for op in operations:
+            counts[op.operation_name] = counts.get(op.operation_name, 0) + 1
+        return counts
 
-# DISABLED:     def set_callbacks(self, on_operation_added: callable = None,
-# DISABLED:                      on_session_completed: callable = None):
+    def set_callbacks(self, on_operation_added: callable = None,
+                     on_session_completed: callable = None):
         """Set callback functions for events."""
-# DISABLED:         if on_operation_added:
-# DISABLED:             self.on_operation_added = on_operation_added
-# DISABLED:         if on_session_completed:
-# DISABLED:             self.on_session_completed = on_session_completed
+        if on_operation_added:
+            self.on_operation_added = on_operation_added
+        if on_session_completed:
+            self.on_session_completed = on_session_completed

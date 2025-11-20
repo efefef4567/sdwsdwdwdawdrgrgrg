@@ -1,194 +1,194 @@
 """
-# DISABLED: Run-length metrics for binary analysis.
+Run-length metrics for binary analysis.
 """
 
-# DISABLED: from typing import Dict, List
+from typing import Dict, List
 
 
-# DISABLED: class RunLengthMetrics:
+class RunLengthMetrics:
     """Collection of run-length based metrics."""
 
-# DISABLED:     def __init__(self):
+    def __init__(self):
         """Initialize run-length metrics."""
-# DISABLED:         self.metrics = self._create_metrics()
+        self.metrics = self._create_metrics()
 
-# DISABLED:     def _create_metrics(self) -> Dict[str, callable]:
+    def _create_metrics(self) -> Dict[str, callable]:
         """Create all run-length metrics."""
-# DISABLED:         return {
-# DISABLED:             'run_count_total': self.run_count_total,
-# DISABLED:             'average_run_length': self.average_run_length,
-# DISABLED:             'max_run_length': self.max_run_length,
-# DISABLED:             'run_length_variance': self.run_length_variance,
-# DISABLED:             'run_length_entropy': self.run_length_entropy,
-# DISABLED:             'homogeneity_index': self.homogeneity_index,
-# DISABLED:             'run_efficiency': self.run_efficiency,
-# DISABLED:             'compression_potential': self.compression_potential
-# DISABLED:         }
+        return {
+            'run_count_total': self.run_count_total,
+            'average_run_length': self.average_run_length,
+            'max_run_length': self.max_run_length,
+            'run_length_variance': self.run_length_variance,
+            'run_length_entropy': self.run_length_entropy,
+            'homogeneity_index': self.homogeneity_index,
+            'run_efficiency': self.run_efficiency,
+            'compression_potential': self.compression_potential
+        }
 
-# DISABLED:     def get_metrics(self) -> Dict[str, callable]:
+    def get_metrics(self) -> Dict[str, callable]:
         """Get all metrics."""
-# DISABLED:         return self.metrics
+        return self.metrics
 
-# DISABLED:     def get_metadata(self, metric_name: str) -> Dict[str, any]:
+    def get_metadata(self, metric_name: str) -> Dict[str, any]:
         """Get metadata for a metric."""
-# DISABLED:         metadata_map = {
-# DISABLED:             'run_count_total': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Total number of runs',
-# DISABLED:                 'range': [0, 'file_size'],
-# DISABLED:                 'higher_better': False
-# DISABLED:             },
-# DISABLED:             'average_run_length': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Average length of runs',
-# DISABLED:                 'range': [1, 'file_size'],
-# DISABLED:                 'higher_better': True
-# DISABLED:             },
-# DISABLED:             'max_run_length': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Maximum run length',
-# DISABLED:                 'range': [1, 'file_size'],
-# DISABLED:                 'higher_better': True
-# DISABLED:             },
-# DISABLED:             'run_length_variance': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Variance of run lengths',
-# DISABLED:                 'range': [0, 'file_size²'],
-# DISABLED:                 'higher_better': False
-# DISABLED:             },
-# DISABLED:             'run_length_entropy': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Entropy of run length distribution',
-# DISABLED:                 'range': [0, 'log2(max_run_length)'],
-# DISABLED:                 'higher_better': False
-# DISABLED:             },
-# DISABLED:             'homogeneity_index': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Index of data homogeneity',
-# DISABLED:                 'range': [0, 1],
-# DISABLED:                 'higher_better': True
-# DISABLED:             },
-# DISABLED:             'run_efficiency': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Efficiency of run structure',
-# DISABLED:                 'range': [0, 1],
-# DISABLED:                 'higher_better': True
-# DISABLED:             },
-# DISABLED:             'compression_potential': {
-# DISABLED:                 'category': 'runlength',
-# DISABLED:                 'description': 'Potential for run-length compression',
-# DISABLED:                 'range': [0, 1],
-# DISABLED:                 'higher_better': True
-# DISABLED:             }
-# DISABLED:         }
-# DISABLED:         return metadata_map.get(metric_name, {})
+        metadata_map = {
+            'run_count_total': {
+                'category': 'runlength',
+                'description': 'Total number of runs',
+                'range': [0, 'file_size'],
+                'higher_better': False
+            },
+            'average_run_length': {
+                'category': 'runlength',
+                'description': 'Average length of runs',
+                'range': [1, 'file_size'],
+                'higher_better': True
+            },
+            'max_run_length': {
+                'category': 'runlength',
+                'description': 'Maximum run length',
+                'range': [1, 'file_size'],
+                'higher_better': True
+            },
+            'run_length_variance': {
+                'category': 'runlength',
+                'description': 'Variance of run lengths',
+                'range': [0, 'file_size²'],
+                'higher_better': False
+            },
+            'run_length_entropy': {
+                'category': 'runlength',
+                'description': 'Entropy of run length distribution',
+                'range': [0, 'log2(max_run_length)'],
+                'higher_better': False
+            },
+            'homogeneity_index': {
+                'category': 'runlength',
+                'description': 'Index of data homogeneity',
+                'range': [0, 1],
+                'higher_better': True
+            },
+            'run_efficiency': {
+                'category': 'runlength',
+                'description': 'Efficiency of run structure',
+                'range': [0, 1],
+                'higher_better': True
+            },
+            'compression_potential': {
+                'category': 'runlength',
+                'description': 'Potential for run-length compression',
+                'range': [0, 1],
+                'higher_better': True
+            }
+        }
+        return metadata_map.get(metric_name, {})
 
-# DISABLED:     def _analyze_runs(self, binary_data: bytes) -> List[int]:
+    def _analyze_runs(self, binary_data: bytes) -> List[int]:
         """Analyze runs in binary data."""
-# DISABLED:         if not binary_data:
-# DISABLED:             return []
+        if not binary_data:
+            return []
 
-# DISABLED:         runs = []
-# DISABLED:         current_value = binary_data[0]
-# DISABLED:         current_length = 1
+        runs = []
+        current_value = binary_data[0]
+        current_length = 1
 
-# DISABLED:         for i in range(1, len(binary_data)):
-# DISABLED:             if binary_data[i] == current_value:
-# DISABLED:                 current_length += 1
-# DISABLED:             else:
-# DISABLED:                 runs.append(current_length)
-# DISABLED:                 current_value = binary_data[i]
-# DISABLED:                 current_length = 1
+        for i in range(1, len(binary_data)):
+            if binary_data[i] == current_value:
+                current_length += 1
+            else:
+                runs.append(current_length)
+                current_value = binary_data[i]
+                current_length = 1
 
-# DISABLED:         runs.append(current_length)  # Add last run
-# DISABLED:         return runs
+        runs.append(current_length)  # Add last run
+        return runs
 
-# DISABLED:     def run_count_total(self, binary_data: bytes) -> float:
+    def run_count_total(self, binary_data: bytes) -> float:
         """Total number of runs."""
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         return float(len(runs))
+        runs = self._analyze_runs(binary_data)
+        return float(len(runs))
 
-# DISABLED:     def average_run_length(self, binary_data: bytes) -> float:
+    def average_run_length(self, binary_data: bytes) -> float:
         """Average length of runs."""
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         if not runs:
-# DISABLED:             return 0.0
-# DISABLED:         return sum(runs) / len(runs)
+        runs = self._analyze_runs(binary_data)
+        if not runs:
+            return 0.0
+        return sum(runs) / len(runs)
 
-# DISABLED:     def max_run_length(self, binary_data: bytes) -> float:
+    def max_run_length(self, binary_data: bytes) -> float:
         """Maximum run length."""
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         return float(max(runs)) if runs else 0.0
+        runs = self._analyze_runs(binary_data)
+        return float(max(runs)) if runs else 0.0
 
-# DISABLED:     def run_length_variance(self, binary_data: bytes) -> float:
+    def run_length_variance(self, binary_data: bytes) -> float:
         """Variance of run lengths."""
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         if len(runs) < 2:
-# DISABLED:             return 0.0
+        runs = self._analyze_runs(binary_data)
+        if len(runs) < 2:
+            return 0.0
 
-# DISABLED:         mean_length = sum(runs) / len(runs)
-# DISABLED:         variance = sum((length - mean_length) ** 2 for length in runs) / len(runs)
-# DISABLED:         return variance
+        mean_length = sum(runs) / len(runs)
+        variance = sum((length - mean_length) ** 2 for length in runs) / len(runs)
+        return variance
 
-# DISABLED:     def run_length_entropy(self, binary_data: bytes) -> float:
+    def run_length_entropy(self, binary_data: bytes) -> float:
         """Entropy of run length distribution."""
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         if not runs:
-# DISABLED:             return 0.0
+        runs = self._analyze_runs(binary_data)
+        if not runs:
+            return 0.0
 
         # Count frequency of each run length
-# DISABLED:         from collections import Counter
-# DISABLED:         run_counts = Counter(runs)
-# DISABLED:         total_runs = len(runs)
+        from collections import Counter
+        run_counts = Counter(runs)
+        total_runs = len(runs)
 
         # Calculate entropy
-# DISABLED:         import math
-# DISABLED:         entropy = 0.0
-# DISABLED:         for count in run_counts.values():
-# DISABLED:             probability = count / total_runs
-# DISABLED:             entropy -= probability * math.log2(probability)
+        import math
+        entropy = 0.0
+        for count in run_counts.values():
+            probability = count / total_runs
+            entropy -= probability * math.log2(probability)
 
-# DISABLED:         return entropy
+        return entropy
 
-# DISABLED:     def homogeneity_index(self, binary_data: bytes) -> float:
+    def homogeneity_index(self, binary_data: bytes) -> float:
         """Index of data homogeneity."""
-# DISABLED:         if not binary_data:
-# DISABLED:             return 0.0
+        if not binary_data:
+            return 0.0
 
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         total_bytes = len(binary_data)
-# DISABLED:         max_possible_runs = total_bytes  # Alternating bytes
-# DISABLED:         actual_runs = len(runs)
+        runs = self._analyze_runs(binary_data)
+        total_bytes = len(binary_data)
+        max_possible_runs = total_bytes  # Alternating bytes
+        actual_runs = len(runs)
 
         # Homogeneity = 1 - (actual_runs / max_possible_runs)
-# DISABLED:         homogeneity = 1.0 - (actual_runs / max_possible_runs)
-# DISABLED:         return max(0.0, homogeneity)
+        homogeneity = 1.0 - (actual_runs / max_possible_runs)
+        return max(0.0, homogeneity)
 
-# DISABLED:     def run_efficiency(self, binary_data: bytes) -> float:
+    def run_efficiency(self, binary_data: bytes) -> float:
         """Efficiency of run structure."""
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         if not runs:
-# DISABLED:             return 0.0
+        runs = self._analyze_runs(binary_data)
+        if not runs:
+            return 0.0
 
         # Efficiency based on average run length relative to maximum
-# DISABLED:         max_run = max(runs)
-# DISABLED:         avg_run = sum(runs) / len(runs)
+        max_run = max(runs)
+        avg_run = sum(runs) / len(runs)
 
-# DISABLED:         efficiency = avg_run / max_run if max_run > 0 else 0.0
-# DISABLED:         return efficiency
+        efficiency = avg_run / max_run if max_run > 0 else 0.0
+        return efficiency
 
-# DISABLED:     def compression_potential(self, binary_data: bytes) -> float:
+    def compression_potential(self, binary_data: bytes) -> float:
         """Potential for run-length compression."""
-# DISABLED:         runs = self._analyze_runs(binary_data)
-# DISABLED:         if not runs:
-# DISABLED:             return 0.0
+        runs = self._analyze_runs(binary_data)
+        if not runs:
+            return 0.0
 
         # Estimate compression ratio if run-length encoded
         # Each run needs: count byte + value byte = 2 bytes minimum
-# DISABLED:         compressed_size = len(runs) * 2  # Simplified
-# DISABLED:         original_size = len(binary_data)
+        compressed_size = len(runs) * 2  # Simplified
+        original_size = len(binary_data)
 
-# DISABLED:         compression_ratio = compressed_size / original_size if original_size > 0 else 1.0
-# DISABLED:         potential = max(0.0, 1.0 - compression_ratio)
+        compression_ratio = compressed_size / original_size if original_size > 0 else 1.0
+        potential = max(0.0, 1.0 - compression_ratio)
 
-# DISABLED:         return potential
+        return potential

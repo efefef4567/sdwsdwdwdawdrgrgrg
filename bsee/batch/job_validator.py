@@ -1,452 +1,452 @@
 """
-# DISABLED: Job Validator Implementation
-# DISABLED: Validation and health checking for job configurations.
+Job Validator Implementation
+Validation and health checking for job configurations.
 """
 
-# DISABLED: import os
-# DISABLED: import yaml
-# DISABLED: import json
-# DISABLED: from typing import Dict, Any, List, Optional, Tuple
-# DISABLED: from pathlib import Path
-# DISABLED: import re
+import os
+import yaml
+import json
+from typing import Dict, Any, List, Optional, Tuple
+from pathlib import Path
+import re
 
-# DISABLED: from bsee.utils.logger import get_logger
+from bsee.utils.logger import get_logger
 
-# DISABLED: logger = get_logger(__name__)
+logger = get_logger(__name__)
 
 
-# DISABLED: class ValidationError(Exception):
+class ValidationError(Exception):
     """Job validation error"""
-# DISABLED:     pass
+    pass
 
 
-# DISABLED: class JobValidator:
+class JobValidator:
     """Validate job configurations and provide detailed error reporting"""
 
-# DISABLED:     def __init__(self):
+    def __init__(self):
         """Initialize job validator"""
-# DISABLED:         self.required_config_fields = [
-# DISABLED:             'name',
-# DISABLED:             'description'
-# DISABLED:         ]
+        self.required_config_fields = [
+            'name',
+            'description'
+        ]
 
-# DISABLED:         self.valid_strategies = [
-# DISABLED:             'greedy', 'random', 'genetic', 'simulated_annealing',
-# DISABLED:             'hill_climbing', 'beam_search', 'depth_first', 'breadth_first'
-# DISABLED:         ]
+        self.valid_strategies = [
+            'greedy', 'random', 'genetic', 'simulated_annealing',
+            'hill_climbing', 'beam_search', 'depth_first', 'breadth_first'
+        ]
 
-# DISABLED:         self.valid_metrics = [
-# DISABLED:             'file_ideality_score', 'entropy_global', 'entropy_local',
-# DISABLED:             'lz77_ratio', 'bzip2_ratio', 'gzip_ratio', 'compression_ratio',
-# DISABLED:             'pattern_density', 'repetitiveness', 'complexity_score'
-# DISABLED:         ]
+        self.valid_metrics = [
+            'file_ideality_score', 'entropy_global', 'entropy_local',
+            'lz77_ratio', 'bzip2_ratio', 'gzip_ratio', 'compression_ratio',
+            'pattern_density', 'repetitiveness', 'complexity_score'
+        ]
 
-# DISABLED:         self.valid_cost_models = [
-# DISABLED:             'linear', 'exponential', 'logarithmic', 'custom'
-# DISABLED:         ]
+        self.valid_cost_models = [
+            'linear', 'exponential', 'logarithmic', 'custom'
+        ]
 
-# DISABLED:     def validate_job_folder(self, folder_path: str) -> bool:
+    def validate_job_folder(self, folder_path: str) -> bool:
         """
-# DISABLED:         Validate job folder and all configuration files
+        Validate job folder and all configuration files
 
-# DISABLED:         Args:
-# DISABLED:             folder_path: Path to job configuration folder
+        Args:
+            folder_path: Path to job configuration folder
 
-# DISABLED:         Returns:
-# DISABLED:             bool: True if valid
+        Returns:
+            bool: True if valid
         """
-# DISABLED:         try:
-# DISABLED:             folder = Path(folder_path)
+        try:
+            folder = Path(folder_path)
 
-# DISABLED:             if not folder.exists():
-# DISABLED:                 logger.error(f"Job folder does not exist: {folder_path}")
-# DISABLED:                 return False
+            if not folder.exists():
+                logger.error(f"Job folder does not exist: {folder_path}")
+                return False
 
-# DISABLED:             if not folder.is_dir():
-# DISABLED:                 logger.error(f"Job path is not a directory: {folder_path}")
-# DISABLED:                 return False
+            if not folder.is_dir():
+                logger.error(f"Job path is not a directory: {folder_path}")
+                return False
 
             # Validate required files exist
-# DISABLED:             if not self._validate_required_files(folder):
-# DISABLED:                 return False
+            if not self._validate_required_files(folder):
+                return False
 
             # Validate configuration files
-# DISABLED:             config_valid, config_errors = self._validate_config_file(folder)
-# DISABLED:             if not config_valid:
-# DISABLED:                 logger.error(f"Configuration validation failed: {config_errors}")
-# DISABLED:                 return False
+            config_valid, config_errors = self._validate_config_file(folder)
+            if not config_valid:
+                logger.error(f"Configuration validation failed: {config_errors}")
+                return False
 
             # Validate optional files if they exist
-# DISABLED:             strategy_valid, strategy_errors = self._validate_strategy_file(folder)
-# DISABLED:             if not strategy_valid:
-# DISABLED:                 logger.error(f"Strategy validation failed: {strategy_errors}")
-# DISABLED:                 return False
+            strategy_valid, strategy_errors = self._validate_strategy_file(folder)
+            if not strategy_valid:
+                logger.error(f"Strategy validation failed: {strategy_errors}")
+                return False
 
-# DISABLED:             cost_valid, cost_errors = self._validate_cost_model_file(folder)
-# DISABLED:             if not cost_valid:
-# DISABLED:                 logger.error(f"Cost model validation failed: {cost_errors}")
-# DISABLED:                 return False
+            cost_valid, cost_errors = self._validate_cost_model_file(folder)
+            if not cost_valid:
+                logger.error(f"Cost model validation failed: {cost_errors}")
+                return False
 
-# DISABLED:             metrics_valid, metrics_errors = self._validate_metrics_file(folder)
-# DISABLED:             if not metrics_valid:
-# DISABLED:                 logger.error(f"Metrics validation failed: {metrics_errors}")
-# DISABLED:                 return False
+            metrics_valid, metrics_errors = self._validate_metrics_file(folder)
+            if not metrics_valid:
+                logger.error(f"Metrics validation failed: {metrics_errors}")
+                return False
 
             # Validate cross-file consistency
-# DISABLED:             consistency_valid, consistency_errors = self._validate_file_consistency(folder)
-# DISABLED:             if not consistency_valid:
-# DISABLED:                 logger.error(f"Consistency validation failed: {consistency_errors}")
-# DISABLED:                 return False
+            consistency_valid, consistency_errors = self._validate_file_consistency(folder)
+            if not consistency_valid:
+                logger.error(f"Consistency validation failed: {consistency_errors}")
+                return False
 
-# DISABLED:             return True
+            return True
 
-# DISABLED:         except Exception as e:
-# DISABLED:             logger.error(f"Job folder validation error: {e}")
-# DISABLED:             return False
+        except Exception as e:
+            logger.error(f"Job folder validation error: {e}")
+            return False
 
-# DISABLED:     def _validate_required_files(self, folder: Path) -> bool:
+    def _validate_required_files(self, folder: Path) -> bool:
         """Validate that required files exist"""
-# DISABLED:         required_files = ['config.yaml']
+        required_files = ['config.yaml']
 
-# DISABLED:         for required_file in required_files:
-# DISABLED:             file_path = folder / required_file
-# DISABLED:             if not file_path.exists():
-# DISABLED:                 logger.error(f"Required file missing: {file_path}")
-# DISABLED:                 return False
+        for required_file in required_files:
+            file_path = folder / required_file
+            if not file_path.exists():
+                logger.error(f"Required file missing: {file_path}")
+                return False
 
-# DISABLED:             if not file_path.is_file():
-# DISABLED:                 logger.error(f"Required path is not a file: {file_path}")
-# DISABLED:                 return False
+            if not file_path.is_file():
+                logger.error(f"Required path is not a file: {file_path}")
+                return False
 
-# DISABLED:         return True
+        return True
 
-# DISABLED:     def _validate_config_file(self, folder: Path) -> Tuple[bool, List[str]]:
+    def _validate_config_file(self, folder: Path) -> Tuple[bool, List[str]]:
         """Validate main configuration file"""
-# DISABLED:         errors = []
-# DISABLED:         config_file = folder / 'config.yaml'
+        errors = []
+        config_file = folder / 'config.yaml'
 
-# DISABLED:         try:
-# DISABLED:             with open(config_file, 'r') as f:
-# DISABLED:                 config = yaml.safe_load(f)
+        try:
+            with open(config_file, 'r') as f:
+                config = yaml.safe_load(f)
 
-# DISABLED:             if not config:
-# DISABLED:                 errors.append("Configuration file is empty")
-# DISABLED:                 return False, errors
+            if not config:
+                errors.append("Configuration file is empty")
+                return False, errors
 
             # Check required fields
-# DISABLED:             for field in self.required_config_fields:
-# DISABLED:                 if field not in config:
-# DISABLED:                     errors.append(f"Missing required field: {field}")
+            for field in self.required_config_fields:
+                if field not in config:
+                    errors.append(f"Missing required field: {field}")
 
             # Validate name
-# DISABLED:             if 'name' in config:
-# DISABLED:                 name = str(config['name'])
-# DISABLED:                 if not re.match(r'^[a-zA-Z0-9_-]+$', name):
-# DISABLED:                     errors.append("Job name contains invalid characters")
-# DISABLED:                 if len(name) > 50:
-# DISABLED:                     errors.append("Job name too long (max 50 characters)")
+            if 'name' in config:
+                name = str(config['name'])
+                if not re.match(r'^[a-zA-Z0-9_-]+$', name):
+                    errors.append("Job name contains invalid characters")
+                if len(name) > 50:
+                    errors.append("Job name too long (max 50 characters)")
 
             # Validate description
-# DISABLED:             if 'description' in config:
-# DISABLED:                 if len(str(config['description'])) > 500:
-# DISABLED:                     errors.append("Description too long (max 500 characters)")
+            if 'description' in config:
+                if len(str(config['description'])) > 500:
+                    errors.append("Description too long (max 500 characters)")
 
-# DISABLED:             return len(errors) == 0, errors
+            return len(errors) == 0, errors
 
-# DISABLED:         except yaml.YAMLError as e:
-# DISABLED:             errors.append(f"YAML parsing error: {e}")
-# DISABLED:             return False, errors
-# DISABLED:         except Exception as e:
-# DISABLED:             errors.append(f"Configuration file error: {e}")
-# DISABLED:             return False, errors
+        except yaml.YAMLError as e:
+            errors.append(f"YAML parsing error: {e}")
+            return False, errors
+        except Exception as e:
+            errors.append(f"Configuration file error: {e}")
+            return False, errors
 
-# DISABLED:     def _validate_strategy_file(self, folder: Path) -> Tuple[bool, List[str]]:
+    def _validate_strategy_file(self, folder: Path) -> Tuple[bool, List[str]]:
         """Validate strategy configuration file"""
-# DISABLED:         errors = []
-# DISABLED:         strategy_file = folder / 'strategy.yaml'
+        errors = []
+        strategy_file = folder / 'strategy.yaml'
 
-# DISABLED:         if not strategy_file.exists():
-# DISABLED:             return True, errors  # Optional file
+        if not strategy_file.exists():
+            return True, errors  # Optional file
 
-# DISABLED:         try:
-# DISABLED:             with open(strategy_file, 'r') as f:
-# DISABLED:                 strategy = yaml.safe_load(f)
+        try:
+            with open(strategy_file, 'r') as f:
+                strategy = yaml.safe_load(f)
 
-# DISABLED:             if not strategy:
-# DISABLED:                 errors.append("Strategy file is empty")
-# DISABLED:                 return False, errors
+            if not strategy:
+                errors.append("Strategy file is empty")
+                return False, errors
 
             # Validate strategy name
-# DISABLED:             if 'strategy' in strategy:
-# DISABLED:                 strategy_name = strategy['strategy']
-# DISABLED:                 if strategy_name not in self.valid_strategies:
-# DISABLED:                     errors.append(f"Invalid strategy: {strategy_name}")
+            if 'strategy' in strategy:
+                strategy_name = strategy['strategy']
+                if strategy_name not in self.valid_strategies:
+                    errors.append(f"Invalid strategy: {strategy_name}")
 
             # Validate strategy parameters
-# DISABLED:             if 'parameters' in strategy:
-# DISABLED:                 params = strategy['parameters']
-# DISABLED:                 if not isinstance(params, dict):
-# DISABLED:                     errors.append("Strategy parameters must be a dictionary")
+            if 'parameters' in strategy:
+                params = strategy['parameters']
+                if not isinstance(params, dict):
+                    errors.append("Strategy parameters must be a dictionary")
 
                 # Validate common parameters based on strategy
-# DISABLED:                 strategy_name = strategy.get('strategy', '')
-# DISABLED:                 if strategy_name == 'genetic':
-# DISABLED:                     genetic_params = ['population_size', 'generations', 'mutation_rate', 'crossover_rate']
-# DISABLED:                     for param in genetic_params:
-# DISABLED:                         if param in params and not isinstance(params[param], (int, float)):
-# DISABLED:                             errors.append(f"Invalid parameter type for {param}")
+                strategy_name = strategy.get('strategy', '')
+                if strategy_name == 'genetic':
+                    genetic_params = ['population_size', 'generations', 'mutation_rate', 'crossover_rate']
+                    for param in genetic_params:
+                        if param in params and not isinstance(params[param], (int, float)):
+                            errors.append(f"Invalid parameter type for {param}")
 
-# DISABLED:                 elif strategy_name == 'simulated_annealing':
-# DISABLED:                     sa_params = ['initial_temperature', 'cooling_rate', 'min_temperature']
-# DISABLED:                     for param in sa_params:
-# DISABLED:                         if param in params and not isinstance(params[param], (int, float)):
-# DISABLED:                             errors.append(f"Invalid parameter type for {param}")
+                elif strategy_name == 'simulated_annealing':
+                    sa_params = ['initial_temperature', 'cooling_rate', 'min_temperature']
+                    for param in sa_params:
+                        if param in params and not isinstance(params[param], (int, float)):
+                            errors.append(f"Invalid parameter type for {param}")
 
-# DISABLED:             return len(errors) == 0, errors
+            return len(errors) == 0, errors
 
-# DISABLED:         except yaml.YAMLError as e:
-# DISABLED:             errors.append(f"Strategy YAML parsing error: {e}")
-# DISABLED:             return False, errors
-# DISABLED:         except Exception as e:
-# DISABLED:             errors.append(f"Strategy file error: {e}")
-# DISABLED:             return False, errors
+        except yaml.YAMLError as e:
+            errors.append(f"Strategy YAML parsing error: {e}")
+            return False, errors
+        except Exception as e:
+            errors.append(f"Strategy file error: {e}")
+            return False, errors
 
-# DISABLED:     def _validate_cost_model_file(self, folder: Path) -> Tuple[bool, List[str]]:
+    def _validate_cost_model_file(self, folder: Path) -> Tuple[bool, List[str]]:
         """Validate cost model configuration file"""
-# DISABLED:         errors = []
-# DISABLED:         cost_file = folder / 'cost_model.yaml'
+        errors = []
+        cost_file = folder / 'cost_model.yaml'
 
-# DISABLED:         if not cost_file.exists():
-# DISABLED:             return True, errors  # Optional file
+        if not cost_file.exists():
+            return True, errors  # Optional file
 
-# DISABLED:         try:
-# DISABLED:             with open(cost_file, 'r') as f:
-# DISABLED:                 cost_model = yaml.safe_load(f)
+        try:
+            with open(cost_file, 'r') as f:
+                cost_model = yaml.safe_load(f)
 
-# DISABLED:             if not cost_model:
-# DISABLED:                 errors.append("Cost model file is empty")
-# DISABLED:                 return False, errors
+            if not cost_model:
+                errors.append("Cost model file is empty")
+                return False, errors
 
             # Validate cost model type
-# DISABLED:             if 'type' in cost_model:
-# DISABLED:                 cost_type = cost_model['type']
-# DISABLED:                 if cost_type not in self.valid_cost_models:
-# DISABLED:                     errors.append(f"Invalid cost model type: {cost_type}")
+            if 'type' in cost_model:
+                cost_type = cost_model['type']
+                if cost_type not in self.valid_cost_models:
+                    errors.append(f"Invalid cost model type: {cost_type}")
 
             # Validate cost parameters
-# DISABLED:             if 'parameters' in cost_model:
-# DISABLED:                 params = cost_model['parameters']
-# DISABLED:                 if not isinstance(params, dict):
-# DISABLED:                     errors.append("Cost model parameters must be a dictionary")
+            if 'parameters' in cost_model:
+                params = cost_model['parameters']
+                if not isinstance(params, dict):
+                    errors.append("Cost model parameters must be a dictionary")
 
                 # Validate parameter values are numeric
-# DISABLED:                 for key, value in params.items():
-# DISABLED:                     if not isinstance(value, (int, float)):
-# DISABLED:                         errors.append(f"Cost parameter {key} must be numeric")
+                for key, value in params.items():
+                    if not isinstance(value, (int, float)):
+                        errors.append(f"Cost parameter {key} must be numeric")
 
-# DISABLED:             return len(errors) == 0, errors
+            return len(errors) == 0, errors
 
-# DISABLED:         except yaml.YAMLError as e:
-# DISABLED:             errors.append(f"Cost model YAML parsing error: {e}")
-# DISABLED:             return False, errors
-# DISABLED:         except Exception as e:
-# DISABLED:             errors.append(f"Cost model file error: {e}")
-# DISABLED:             return False, errors
+        except yaml.YAMLError as e:
+            errors.append(f"Cost model YAML parsing error: {e}")
+            return False, errors
+        except Exception as e:
+            errors.append(f"Cost model file error: {e}")
+            return False, errors
 
-# DISABLED:     def _validate_metrics_file(self, folder: Path) -> Tuple[bool, List[str]]:
+    def _validate_metrics_file(self, folder: Path) -> Tuple[bool, List[str]]:
         """Validate metrics configuration file"""
-# DISABLED:         errors = []
-# DISABLED:         metrics_file = folder / 'metrics.yaml'
+        errors = []
+        metrics_file = folder / 'metrics.yaml'
 
-# DISABLED:         if not metrics_file.exists():
-# DISABLED:             return True, errors  # Optional file
+        if not metrics_file.exists():
+            return True, errors  # Optional file
 
-# DISABLED:         try:
-# DISABLED:             with open(metrics_file, 'r') as f:
-# DISABLED:                 metrics = yaml.safe_load(f)
+        try:
+            with open(metrics_file, 'r') as f:
+                metrics = yaml.safe_load(f)
 
-# DISABLED:             if not metrics:
-# DISABLED:                 errors.append("Metrics file is empty")
-# DISABLED:                 return False, errors
+            if not metrics:
+                errors.append("Metrics file is empty")
+                return False, errors
 
             # Validate metrics list
-# DISABLED:             if 'metrics' in metrics:
-# DISABLED:                 metrics_list = metrics['metrics']
-# DISABLED:                 if not isinstance(metrics_list, list):
-# DISABLED:                     errors.append("Metrics must be a list")
-# DISABLED:                 else:
-# DISABLED:                     for metric in metrics_list:
-# DISABLED:                         if metric not in self.valid_metrics:
-# DISABLED:                             errors.append(f"Invalid metric: {metric}")
+            if 'metrics' in metrics:
+                metrics_list = metrics['metrics']
+                if not isinstance(metrics_list, list):
+                    errors.append("Metrics must be a list")
+                else:
+                    for metric in metrics_list:
+                        if metric not in self.valid_metrics:
+                            errors.append(f"Invalid metric: {metric}")
 
             # Validate target metrics
-# DISABLED:             if 'target_metrics' in metrics:
-# DISABLED:                 target_metrics = metrics['target_metrics']
-# DISABLED:                 if not isinstance(target_metrics, dict):
-# DISABLED:                     errors.append("Target metrics must be a dictionary")
-# DISABLED:                 else:
-# DISABLED:                     for metric, target in target_metrics.items():
-# DISABLED:                         if metric not in self.valid_metrics:
-# DISABLED:                             errors.append(f"Invalid target metric: {metric}")
-# DISABLED:                         if target not in ['min', 'max']:
-# DISABLED:                             errors.append(f"Invalid target direction for {metric}: {target}")
+            if 'target_metrics' in metrics:
+                target_metrics = metrics['target_metrics']
+                if not isinstance(target_metrics, dict):
+                    errors.append("Target metrics must be a dictionary")
+                else:
+                    for metric, target in target_metrics.items():
+                        if metric not in self.valid_metrics:
+                            errors.append(f"Invalid target metric: {metric}")
+                        if target not in ['min', 'max']:
+                            errors.append(f"Invalid target direction for {metric}: {target}")
 
-# DISABLED:             return len(errors) == 0, errors
+            return len(errors) == 0, errors
 
-# DISABLED:         except yaml.YAMLError as e:
-# DISABLED:             errors.append(f"Metrics YAML parsing error: {e}")
-# DISABLED:             return False, errors
-# DISABLED:         except Exception as e:
-# DISABLED:             errors.append(f"Metrics file error: {e}")
-# DISABLED:             return False, errors
+        except yaml.YAMLError as e:
+            errors.append(f"Metrics YAML parsing error: {e}")
+            return False, errors
+        except Exception as e:
+            errors.append(f"Metrics file error: {e}")
+            return False, errors
 
-# DISABLED:     def _validate_file_consistency(self, folder: Path) -> Tuple[bool, List[str]]:
+    def _validate_file_consistency(self, folder: Path) -> Tuple[bool, List[str]]:
         """Validate consistency between configuration files"""
-# DISABLED:         errors = []
+        errors = []
 
-# DISABLED:         try:
+        try:
             # Load all configuration files
-# DISABLED:             config = self._load_yaml_safe(folder / 'config.yaml')
-# DISABLED:             strategy = self._load_yaml_safe(folder / 'strategy.yaml')
-# DISABLED:             cost_model = self._load_yaml_safe(folder / 'cost_model.yaml')
-# DISABLED:             metrics = self._load_yaml_safe(folder / 'metrics.yaml')
+            config = self._load_yaml_safe(folder / 'config.yaml')
+            strategy = self._load_yaml_safe(folder / 'strategy.yaml')
+            cost_model = self._load_yaml_safe(folder / 'cost_model.yaml')
+            metrics = self._load_yaml_safe(folder / 'metrics.yaml')
 
             # Check strategy referenced in config exists
-# DISABLED:             if strategy and 'strategy' in config and 'strategy' in strategy:
-# DISABLED:                 if config.get('strategy') != strategy.get('strategy'):
-# DISABLED:                     errors.append("Strategy mismatch between config and strategy files")
+            if strategy and 'strategy' in config and 'strategy' in strategy:
+                if config.get('strategy') != strategy.get('strategy'):
+                    errors.append("Strategy mismatch between config and strategy files")
 
             # Validate resource limits are reasonable
-# DISABLED:             if 'resource_limits' in config:
-# DISABLED:                 limits = config['resource_limits']
-# DISABLED:                 if 'max_memory_mb' in limits:
-# DISABLED:                     if not isinstance(limits['max_memory_mb'], int) or limits['max_memory_mb'] <= 0:
-# DISABLED:                         errors.append("Invalid max_memory_mb value")
-# DISABLED:                 if 'max_execution_time' in limits:
-# DISABLED:                     if not isinstance(limits['max_execution_time'], (int, float)) or limits['max_execution_time'] <= 0:
-# DISABLED:                         errors.append("Invalid max_execution_time value")
+            if 'resource_limits' in config:
+                limits = config['resource_limits']
+                if 'max_memory_mb' in limits:
+                    if not isinstance(limits['max_memory_mb'], int) or limits['max_memory_mb'] <= 0:
+                        errors.append("Invalid max_memory_mb value")
+                if 'max_execution_time' in limits:
+                    if not isinstance(limits['max_execution_time'], (int, float)) or limits['max_execution_time'] <= 0:
+                        errors.append("Invalid max_execution_time value")
 
-# DISABLED:             return len(errors) == 0, errors
+            return len(errors) == 0, errors
 
-# DISABLED:         except Exception as e:
-# DISABLED:             errors.append(f"Consistency validation error: {e}")
-# DISABLED:             return False, errors
+        except Exception as e:
+            errors.append(f"Consistency validation error: {e}")
+            return False, errors
 
-# DISABLED:     def _load_yaml_safe(self, file_path: Path) -> Optional[Dict[str, Any]]:
+    def _load_yaml_safe(self, file_path: Path) -> Optional[Dict[str, Any]]:
         """Safely load YAML file"""
-# DISABLED:         try:
-# DISABLED:             if file_path.exists():
-# DISABLED:                 with open(file_path, 'r') as f:
-# DISABLED:                     return yaml.safe_load(f)
-# DISABLED:             return None
-# DISABLED:         except Exception:
-# DISABLED:             return None
+        try:
+            if file_path.exists():
+                with open(file_path, 'r') as f:
+                    return yaml.safe_load(f)
+            return None
+        except Exception:
+            return None
 
-# DISABLED:     def estimate_resources(self, folder_path: str) -> Dict[str, Any]:
+    def estimate_resources(self, folder_path: str) -> Dict[str, Any]:
         """
-# DISABLED:         Estimate resource requirements for a job
+        Estimate resource requirements for a job
 
-# DISABLED:         Args:
-# DISABLED:             folder_path: Path to job folder
+        Args:
+            folder_path: Path to job folder
 
-# DISABLED:         Returns:
-# DISABLED:             Dict with resource estimates
+        Returns:
+            Dict with resource estimates
         """
-# DISABLED:         try:
-# DISABLED:             folder = Path(folder_path)
+        try:
+            folder = Path(folder_path)
 
             # Load configuration
-# DISABLED:             config = self._load_yaml_safe(folder / 'config.yaml')
-# DISABLED:             strategy = self._load_yaml_safe(folder / 'strategy.yaml')
-# DISABLED:             cost_model = self._load_yaml_safe(folder / 'cost_model.yaml')
+            config = self._load_yaml_safe(folder / 'config.yaml')
+            strategy = self._load_yaml_safe(folder / 'strategy.yaml')
+            cost_model = self._load_yaml_safe(folder / 'cost_model.yaml')
 
             # Base estimates
-# DISABLED:             estimates = {
-# DISABLED:                 'estimated_memory_mb': 512,
-# DISABLED:                 'estimated_execution_time': 300,  # 5 minutes
-# DISABLED:                 'estimated_cpu_cores': 2,
-# DISABLED:                 'estimated_disk_space_mb': 100
-# DISABLED:             }
+            estimates = {
+                'estimated_memory_mb': 512,
+                'estimated_execution_time': 300,  # 5 minutes
+                'estimated_cpu_cores': 2,
+                'estimated_disk_space_mb': 100
+            }
 
             # Adjust based on strategy
-# DISABLED:             if strategy:
-# DISABLED:                 strategy_name = strategy.get('strategy', '')
-# DISABLED:                 if strategy_name == 'genetic':
-# DISABLED:                     estimates['estimated_cpu_cores'] = 4
-# DISABLED:                     estimates['estimated_execution_time'] *= 2
-# DISABLED:                     estimates['estimated_memory_mb'] *= 1.5
-# DISABLED:                 elif strategy_name == 'simulated_annealing':
-# DISABLED:                     estimates['estimated_execution_time'] *= 1.5
+            if strategy:
+                strategy_name = strategy.get('strategy', '')
+                if strategy_name == 'genetic':
+                    estimates['estimated_cpu_cores'] = 4
+                    estimates['estimated_execution_time'] *= 2
+                    estimates['estimated_memory_mb'] *= 1.5
+                elif strategy_name == 'simulated_annealing':
+                    estimates['estimated_execution_time'] *= 1.5
 
             # Adjust based on resource limits in config
-# DISABLED:             if config and 'resource_limits' in config:
-# DISABLED:                 limits = config['resource_limits']
-# DISABLED:                 if 'max_memory_mb' in limits:
-# DISABLED:                     estimates['estimated_memory_mb'] = min(estimates['estimated_memory_mb'], limits['max_memory_mb'])
+            if config and 'resource_limits' in config:
+                limits = config['resource_limits']
+                if 'max_memory_mb' in limits:
+                    estimates['estimated_memory_mb'] = min(estimates['estimated_memory_mb'], limits['max_memory_mb'])
 
-# DISABLED:             return estimates
+            return estimates
 
-# DISABLED:         except Exception as e:
-# DISABLED:             logger.error(f"Error estimating resources: {e}")
-# DISABLED:             return {
-# DISABLED:                 'estimated_memory_mb': 512,
-# DISABLED:                 'estimated_execution_time': 300,
-# DISABLED:                 'estimated_cpu_cores': 2,
-# DISABLED:                 'estimated_disk_space_mb': 100
-# DISABLED:             }
+        except Exception as e:
+            logger.error(f"Error estimating resources: {e}")
+            return {
+                'estimated_memory_mb': 512,
+                'estimated_execution_time': 300,
+                'estimated_cpu_cores': 2,
+                'estimated_disk_space_mb': 100
+            }
 
-# DISABLED:     def get_validation_summary(self, folder_path: str) -> Dict[str, Any]:
+    def get_validation_summary(self, folder_path: str) -> Dict[str, Any]:
         """
-# DISABLED:         Get detailed validation summary for a job folder
+        Get detailed validation summary for a job folder
 
-# DISABLED:         Args:
-# DISABLED:             folder_path: Path to job folder
+        Args:
+            folder_path: Path to job folder
 
-# DISABLED:         Returns:
-# DISABLED:             Dict with validation results
+        Returns:
+            Dict with validation results
         """
-# DISABLED:         folder = Path(folder_path)
+        folder = Path(folder_path)
 
-# DISABLED:         summary = {
-# DISABLED:             'valid': False,
-# DISABLED:             'folder_exists': folder.exists() and folder.is_dir(),
-# DISABLED:             'required_files': {},
-# DISABLED:             'optional_files': {},
-# DISABLED:             'errors': [],
-# DISABLED:             'warnings': [],
-# DISABLED:             'resource_estimates': {}
-# DISABLED:         }
+        summary = {
+            'valid': False,
+            'folder_exists': folder.exists() and folder.is_dir(),
+            'required_files': {},
+            'optional_files': {},
+            'errors': [],
+            'warnings': [],
+            'resource_estimates': {}
+        }
 
-# DISABLED:         if not summary['folder_exists']:
-# DISABLED:             summary['errors'].append("Job folder does not exist")
-# DISABLED:             return summary
+        if not summary['folder_exists']:
+            summary['errors'].append("Job folder does not exist")
+            return summary
 
         # Check file existence
-# DISABLED:         required_files = ['config.yaml']
-# DISABLED:         optional_files = ['strategy.yaml', 'cost_model.yaml', 'metrics.yaml', 'queue_settings.yaml']
+        required_files = ['config.yaml']
+        optional_files = ['strategy.yaml', 'cost_model.yaml', 'metrics.yaml', 'queue_settings.yaml']
 
-# DISABLED:         for file_name in required_files:
-# DISABLED:             file_path = folder / file_name
-# DISABLED:             summary['required_files'][file_name] = file_path.exists()
+        for file_name in required_files:
+            file_path = folder / file_name
+            summary['required_files'][file_name] = file_path.exists()
 
-# DISABLED:         for file_name in optional_files:
-# DISABLED:             file_path = folder / file_name
-# DISABLED:             summary['optional_files'][file_name] = file_path.exists()
+        for file_name in optional_files:
+            file_path = folder / file_name
+            summary['optional_files'][file_name] = file_path.exists()
 
         # Validate configuration
-# DISABLED:         config_valid, config_errors = self._validate_config_file(folder)
-# DISABLED:         summary['errors'].extend(config_errors)
+        config_valid, config_errors = self._validate_config_file(folder)
+        summary['errors'].extend(config_errors)
 
         # Validate strategy if exists
-# DISABLED:         strategy_file = folder / 'strategy.yaml'
-# DISABLED:         if strategy_file.exists():
-# DISABLED:             strategy_valid, strategy_errors = self._validate_strategy_file(folder)
-# DISABLED:             summary['errors'].extend(strategy_errors)
+        strategy_file = folder / 'strategy.yaml'
+        if strategy_file.exists():
+            strategy_valid, strategy_errors = self._validate_strategy_file(folder)
+            summary['errors'].extend(strategy_errors)
 
         # Get resource estimates
-# DISABLED:         if all(summary['required_files'].values()):
-# DISABLED:             summary['resource_estimates'] = self.estimate_resources(folder_path)
+        if all(summary['required_files'].values()):
+            summary['resource_estimates'] = self.estimate_resources(folder_path)
 
-# DISABLED:         summary['valid'] = len(summary['errors']) == 0 and all(summary['required_files'].values())
+        summary['valid'] = len(summary['errors']) == 0 and all(summary['required_files'].values())
 
-# DISABLED:         return summary
+        return summary
