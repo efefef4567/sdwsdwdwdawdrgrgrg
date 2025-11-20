@@ -19,7 +19,7 @@ from datetime import datetime
 class ErrorDetector:
     """Detects errors in Python files through dry-run analysis"""""
 
-    def __init__(self, project_root: str = "."):""
+    def __init__(self, project_root: str = "."):
         self.project_root = Path(project_root).resolve()
         self.errors = []
         self.python_files = []
