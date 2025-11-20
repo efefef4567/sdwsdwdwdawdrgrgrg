@@ -86,6 +86,10 @@ class AppController:
         """Get results folder path."""
         return str(self.directories['results'])
 
+    def get_batch_jobs_folder(self) -> str:
+        """Get batch jobs folder path."""
+        return str(self.directories['batch_jobs'])
+
     def create_test_file(self, filename: str) -> None:
         """Create a test binary file with known patterns."""
         test_data = self._generate_test_data()
