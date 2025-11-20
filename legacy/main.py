@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""""
+"""
 Binary Structure Exploration Engine (BSEE)
 
 A CLI tool for analyzing binary files by applying reversible transformations
 to optimize user-specified metrics.
-"""""
+"""
 
 import argparse
 import sys
