@@ -181,6 +181,9 @@ test_results.json
 virtualenv/
 .ve/
 
+# Note: .venv/ is deliberately excluded from gitignore to include packages
+# This ensures all required packages are available when cloning/downloading
+
 # IDE files
 .vscode/
 .idea/
