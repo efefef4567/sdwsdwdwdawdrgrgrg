@@ -79,6 +79,8 @@ class MainWindow:
         tools_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Tools", menu=tools_menu)
         tools_menu.add_command(label="Create Test File...", command=self._create_test_file)
+        tools_menu.add_separator()
+        tools_menu.add_command(label="Batch Processing...", command=self._open_batch_gui, accelerator="Ctrl+B")
 
         # Help menu
         help_menu = tk.Menu(menubar, tearoff=0)
