@@ -142,10 +142,10 @@ class FilePanel(ttk.LabelFrame):
     # ------------------------ Event Handlers ------------------------
 
     def _browse_file(self):
-        filename = filedialog.askopenfilename()
-            title="Select Binary File",""
-            filetypes=[("Binary Files", "*.bin *.exe *.dll *.so *.dat"), ("All Files", "*.*")],""
-            initialdir=self.controller.get_setting('last_input_folder', str(Path.cwd()))''
+        filename = filedialog.askopenfilename(
+            title="Select Binary File",
+            filetypes=[("Binary Files", "*.bin *.exe *.dll *.so *.dat"), ("All Files", "*.*")],
+            initialdir=self.controller.get_setting('last_input_folder', str(Path.cwd()))
         )
         if filename:
             self.file_path_var.set(filename)
