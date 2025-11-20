@@ -1,0 +1,7 @@
+# Strategy Configuration
+strategy: "greedy"
+parameters:
+  lookahead_size: 3
+  optimization_level: 1
+  pruning_enabled: true
+  caching_enabled: true
