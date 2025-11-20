@@ -44,31 +44,47 @@ def comment_out_python_file(file_path):
         return False
 
 def main():
-    """Main function to comment out all BSEE batch processing code"""
-    print("🔧 Commenting out BSEE batch processing code...")
+    """Main function to comment out all BSEE functionality"""
+    print("🔧 Commenting out BSEE functionality...")
 
-    batch_dir = Path("./bsee/batch/")
+    # Define directories to comment out
+    bsee_dirs = [
+        Path("./bsee/batch/"),
+        Path("./bsee/processing/"),
+        Path("./bsee/engine/"),
+        Path("./bsee/operations/"),
+        Path("./bsee/strategies/"),
+        Path("./bsee/metrics/"),
+        Path("./bsee/scoring/"),
+        Path("./bsee/cost/"),
+        Path("./bsee/utils/"),
+    ]
 
-    if not batch_dir.exists():
-        print(f"❌ Batch directory not found: {batch_dir}")
+    all_files = []
+
+    # Collect all Python files from BSEE directories
+    for bsee_dir in bsee_dirs:
+        if bsee_dir.exists():
+            python_files = list(bsee_dir.rglob("*.py"))
+            all_files.extend(python_files)
+            print(f"📁 Found {len(python_files)} files in {bsee_dir}")
+
+    if not all_files:
+        print("❌ No BSEE Python files found")
         return
 
-    # Get all Python files in batch directory
-    python_files = list(batch_dir.glob("*.py"))
-
-    if not python_files:
-        print("❌ No Python files found in batch directory")
-        return
-
-    print(f"📁 Found {len(python_files)} Python files to process...")
+    print(f"📁 Total BSEE files to process: {len(all_files)}")
 
     success_count = 0
-    for py_file in python_files:
+    for py_file in all_files:
+        # Skip __pycache__ and already commented files
+        if "__pycache__" in str(py_file):
+            continue
         if comment_out_python_file(py_file):
             success_count += 1
 
-    print(f"✅ Successfully processed {success_count}/{len(python_files)} files")
-    print("🚫 BSEE batch processing functionality has been disabled")
+    print(f"✅ Successfully processed {success_count}/{len(all_files)} files")
+    print("🚫 BSEE functionality has been completely disabled")
     print("📝 Code structure preserved for future reactivation")
 
 if __name__ == "__main__":
