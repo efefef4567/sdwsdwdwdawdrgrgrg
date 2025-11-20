@@ -89,19 +89,14 @@ class TestJobManager(unittest.TestCase):
         job_dir = self._create_job_config("DuplicateJob")
 
         job1 = self.job_manager.add_job(str(job_dir))
-        self.assertIsNotNone(job1)
 
-        # Test adding a job with the same explicit job_id - this should be a duplicate
-        # Since Job generates UUIDs automatically, we need to manually create a duplicate scenario
-        # This test verifies that the JobManager correctly handles duplicate job_id checks
+        # Test adding a job with the same explicit job_id - this should return None
+        # Since the JobManager catches the ValueError and returns None for duplicates
         job2 = self.job_manager.add_job(str(job_dir), job_id=job1.job_id)
 
-        # The current implementation allows multiple jobs from same directory with different IDs
-        # which is actually correct behavior. Each job gets a unique UUID.
-        # So we should just verify both jobs exist and have different IDs
-        self.assertIsNotNone(job2)
-        self.assertNotEqual(job1.job_id, job2.job_id)
-        self.assertEqual(len(self.job_manager.get_all_jobs()), 2)
+        # Should return None for duplicate
+        self.assertIsNotNone(job1)
+        self.assertIsNone(job2)
 
     def test_remove_job(self):
         """Test removing a job"""
