@@ -1,0 +1,149 @@
+# Neural Network-Based Analysis Template
+# Optimized for neural network analysis and pattern recognition
+
+# Main configuration
+config:
+  name: "Neural Network Analysis"
+  description: "Analysis template optimized for neural network structures and patterns"
+  strategy: "genetic"
+  max_operations: 5000
+  max_cost: 50000
+
+# Strategy configuration
+strategy:
+  strategy: "genetic"
+  parameters:
+    population_size: 100
+    generations: 500
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+    elitism_rate: 0.1
+    tournament_size: 5
+    diversity_threshold: 0.3
+
+# Cost model configuration
+cost_model:
+  type: "exponential"
+  parameters:
+    base: 1.5
+    multiplier: 2.0
+    complexity_factor: 1.2
+    size_factor: 0.001
+
+# Metrics configuration
+metrics:
+  metrics:
+    - "file_ideality_score"
+    - "entropy_global"
+    - "entropy_local"
+    - "pattern_density"
+    - "repetitiveness"
+    - "complexity_score"
+    - "structural_similarity"
+    - "byte_distribution_variance"
+    - "run_length_entropy"
+
+  target_metrics:
+    "file_ideality_score": "max"
+    "pattern_density": "max"
+    "structural_similarity": "max"
+    "entropy_global": "min"
+    "complexity_score": "max"
+    "repetitiveness": "min"
+
+  weights:
+    "file_ideality_score": 0.3
+    "pattern_density": 0.25
+    "structural_similarity": 0.2
+    "entropy_global": 0.15
+    "complexity_score": 0.1
+
+# Queue settings
+queue_settings:
+  priority: "high"
+  estimated_time: 120  # minutes
+  memory_requirement: 4096  # MB
+  cpu_requirement: 4  # cores
+
+# Pipeline configuration
+pipeline_config:
+  analysis_stages:
+    - "preprocessing"
+    - "feature_extraction"
+    - "pattern_recognition"
+    - "neural_optimization"
+    - "result_validation"
+
+  preprocessing:
+    normalize_data: true
+    remove_noise: true
+    detect_anomalies: true
+
+  feature_extraction:
+    extract_ngrams: true
+    ngram_sizes: [2, 3, 4, 8, 16]
+    statistical_features: true
+    structural_features: true
+
+  neural_optimization:
+    network_architecture: "feedforward"
+    hidden_layers: [128, 64, 32]
+    activation: "relu"
+    optimizer: "adam"
+    learning_rate: 0.001
+    epochs: 100
+
+# Resource limits
+resource_limits:
+  max_memory_mb: 8192
+  max_execution_time: 180  # minutes
+  max_temp_files: 100
+  max_output_size: 104857600  # 100MB
+
+# Output configuration
+output:
+  save_intermediate_results: true
+  save_visualizations: true
+  save_performance_metrics: true
+  export_format: ["json", "csv", "binary"]
+
+  visualization:
+    include_heatmaps: true
+    include_network_graphs: true
+    include_progress_charts: true
+    resolution: "high"  # low, medium, high
+
+# Quality control
+quality_control:
+  validation_threshold: 0.8
+  convergence_threshold: 0.001
+  min_improvement_rate: 0.01
+  max_stagnation_generations: 50
+
+  cross_validation:
+    enabled: true
+    folds: 5
+    shuffle: true
+    stratify: true
+
+# Advanced settings
+advanced:
+  parallel_processing:
+    enabled: true
+    num_workers: 4
+    chunk_size: 1024
+
+  caching:
+    enabled: true
+    cache_intermediate: true
+    cache_size_mb: 512
+
+  early_stopping:
+    enabled: true
+    patience: 20
+    min_delta: 0.0001
+
+  ensemble_methods:
+    enabled: true
+    methods: ["bagging", "boosting"]
+    voting_strategy: "weighted"
