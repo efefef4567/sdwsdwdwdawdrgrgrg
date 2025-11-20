@@ -1,0 +1,6 @@
+# Queue Settings
+priority: "normal"
+scheduled_time: null  # Immediate execution
+retry_on_failure: true
+max_retries: 3
+dependencies: []  # No dependencies
