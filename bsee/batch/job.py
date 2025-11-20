@@ -147,11 +147,22 @@ class Job:
                         return {}
                 return {}
 
+            # Merge main config with additional files
+            strategy_config = config_data.get('strategy', {})
+            if isinstance(strategy_config, str):
+                # Convert simple strategy string to config format
+                strategy_config = {"strategy": strategy_config}
+
+            # Merge with strategy file if exists
+            file_strategy_config = safe_load_yaml(strategy_file)
+            if file_strategy_config:
+                strategy_config.update(file_strategy_config)
+
             self.config = JobConfiguration(
                 job_id=self.job_id,
                 name=config_data.get('name', self.name),
                 description=config_data.get('description', ''),
-                strategy_config=safe_load_yaml(strategy_file),
+                strategy_config=strategy_config,
                 cost_model=safe_load_yaml(cost_file),
                 metrics_config=safe_load_yaml(metrics_file),
                 queue_settings=safe_load_yaml(queue_file),
