@@ -27,11 +27,11 @@
 # *.analysis.json
 # *.inverse_operations.json
 
-# BSEE Batch Processing Artifacts
-batch_jobs/
-job_results/
-batch_logs/
-batch_cache/
+# BSEE Batch Processing Artifacts - COMMENTED OUT TO INCLUDE
+# batch_jobs/
+# job_results/
+# batch_logs/
+# batch_cache/
 
 # BSEE Configuration backups
 *.config.backup
