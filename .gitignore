@@ -7,19 +7,19 @@
 # BSEE PROJECT-SPECIFIC DIRECTORIES AND FILES
 # ================================================================
 
-# Core BSEE Data Directories - These contain generated analysis data
-results/
-history/
-inputs/
-cache/
-temp/
-tmp/
-models/
-figures/
-reports/
-experiments/
-mlruns/
-wandb/
+# Core BSEE Data Directories - These contain generated analysis data - COMMENTED OUT TO INCLUDE
+# results/
+# history/
+# inputs/
+# cache/
+# temp/
+# tmp/
+# models/
+# figures/
+# reports/
+# experiments/
+# mlruns/
+# wandb/
 
 # BSEE Generated Files
 production_report.json
