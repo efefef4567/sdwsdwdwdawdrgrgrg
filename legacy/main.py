@@ -260,7 +260,7 @@ def run_batch_daemon():
         logger.info("Starting BSEE Batch Processing Daemon")
 
         # BSEE modules are working
-from bsee.batch import JobManager
+        from bsee.batch import JobManager
 
         job_manager = JobManager()
         job_manager.start_folder_monitoring()
