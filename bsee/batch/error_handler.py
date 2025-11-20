@@ -6,6 +6,7 @@ Error handling and recovery mechanisms for batch job operations.
 import time
 import traceback
 import threading
+import functools
 from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, asdict
 from enum import Enum
