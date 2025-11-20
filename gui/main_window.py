@@ -128,6 +128,7 @@ class MainWindow:
 
         # Bind keyboard shortcuts
         self.root.bind('<Control-o>', lambda e: self._open_file())
+        self.root.bind('<Control-b>', lambda e: self._open_batch_gui())
         self.root.bind('<Control-q>', lambda e: self._on_closing())
 
     def _setup_status_bar(self):
