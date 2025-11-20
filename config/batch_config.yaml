@@ -1,0 +1,269 @@
+# BSEE Batch Processing Configuration
+# Global settings for the batch processing system
+
+# System Settings
+system:
+  # Maximum number of concurrent jobs to run
+  max_concurrent_jobs: 4
+
+  # Auto-refresh interval for GUI (milliseconds)
+  gui_refresh_interval: 2000
+
+  # Default job template for new jobs
+  default_template: "neural_analysis"
+
+  # Auto-start jobs when discovered in batch_jobs folder
+  auto_start_discovered: false
+
+  # Maximum job history to keep
+  max_job_history: 100
+
+# Resource Management
+resources:
+  # Default memory limit per job (MB)
+  default_memory_limit: 2048
+
+  # Maximum memory limit per job (MB)
+  max_memory_limit: 16384
+
+  # Default execution time limit (minutes)
+  default_execution_time_limit: 60
+
+  # Maximum execution time limit (minutes)
+  max_execution_time_limit: 480
+
+  # CPU affinity settings (optional)
+  cpu_affinity: null
+
+# Logging Configuration
+logging:
+  # Log level for batch operations
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+
+  # Log file settings
+  file:
+    enabled: true
+    path: "logs/batch_operations.log"
+    max_size_mb: 50
+    backup_count: 5
+
+  # Console logging
+  console:
+    enabled: true
+
+  # Performance logging
+  performance:
+    enabled: true
+    log_interval: 300  # seconds
+
+# Folder Monitoring
+folder_monitoring:
+  # Enable automatic job discovery
+  enabled: true
+
+  # Check interval (seconds)
+  check_interval: 2
+
+  # File patterns to ignore
+  ignore_patterns:
+    - "*.tmp"
+    - "*.bak"
+    - "*~"
+    - ".*"
+
+  # Validation settings
+  validation:
+    # Require validation before adding jobs
+    require_validation: true
+
+    # Skip invalid jobs vs. show error
+    skip_invalid: true
+
+# Analytics and Profiling
+analytics:
+  # Enable analytics collection
+  enabled: true
+
+  # Maximum data points to keep in memory
+  max_data_points: 10000
+
+  # Data retention (days)
+  retention_days: 30
+
+  # Performance profiling
+  profiling:
+    enabled: true
+    max_functions: 1000
+
+  # Export settings
+  export:
+    default_format: "json"  # json, csv
+    auto_export: false
+    export_interval: 86400  # seconds (24 hours)
+
+# Pipeline Validation
+validation:
+  # Enable pipeline validation
+  enabled: true
+
+  # Validation rules
+  strict_mode: false
+
+  # Auto-fix minor configuration issues
+  auto_fix: true
+
+  # Validation cache
+  cache_results: true
+  cache_duration: 3600  # seconds
+
+# Error Handling
+error_handling:
+  # Maximum retry attempts for failed jobs
+  max_retries: 3
+
+  # Retry delay (seconds)
+  retry_delay: 60
+
+  # Exponential backoff
+  exponential_backoff: true
+
+  # Error isolation (continue other jobs if one fails)
+  error_isolation: true
+
+  # Auto-cleanup on failure
+  auto_cleanup: false
+
+# Job Queue Management
+queue:
+  # Default priority for new jobs
+  default_priority: "normal"  # low, normal, high, urgent
+
+  # Queue processing strategy
+  strategy: "priority_fifo"  # fifo, priority_fifo, round_robin
+
+  # Maximum queue length
+  max_queue_length: 50
+
+  # Scheduled jobs settings
+  scheduling:
+    enabled: true
+    check_interval: 60  # seconds
+
+    # Time zone for scheduled jobs (system default)
+    timezone: null
+
+# GUI Settings
+gui:
+  # Window settings
+  window:
+    default_width: 1400
+    default_height: 900
+    remember_position: true
+    remember_size: true
+
+  # Display settings
+  display:
+    # Show resource usage in real-time
+    show_real_time_resources: true
+
+    # Show detailed job information
+    show_detailed_info: true
+
+    # Auto-collapse completed jobs
+    auto_collapse_completed: false
+
+    # Number of log lines to display
+    max_log_lines: 100
+
+  # Theme settings
+  theme:
+    name: "default"  # default, dark, light
+    custom_colors: {}
+
+# Integration Settings
+integration:
+  # CLI integration
+  cli:
+    enabled: true
+    default_command: "bsee batch"
+
+  # External tools integration
+  external_tools:
+    # Binary viewer integration
+    binary_viewer:
+      enabled: false
+      command: null
+      args: []
+
+    # Text editor integration
+    text_editor:
+      enabled: false
+      command: null
+      args: []
+
+# Performance Optimization
+optimization:
+  # Thread pool settings
+  thread_pool:
+    min_threads: 2
+    max_threads: 16
+    thread_idle_timeout: 300  # seconds
+
+  # Memory optimization
+  memory:
+    # Enable garbage collection optimization
+    gc_optimization: true
+
+    # Memory threshold for cleanup (MB)
+    cleanup_threshold: 1024
+
+  # Caching
+  caching:
+    enabled: true
+    max_cache_size: 100  # MB
+    cache_ttl: 3600  # seconds
+
+# Security Settings
+security:
+  # Job sandboxing
+  sandboxing:
+    enabled: false
+    isolate_filesystem: false
+    limit_network_access: false
+
+  # Input validation
+  input_validation:
+    enabled: true
+    validate_file_paths: true
+    max_file_size: 1073741824  # 1GB
+
+  # Access control
+  access_control:
+    enabled: false
+    allowed_users: []
+    allowed_groups: []
+
+# Notifications
+notifications:
+  # Enable desktop notifications
+  desktop:
+    enabled: false
+
+  # Email notifications
+  email:
+    enabled: false
+    smtp_server: null
+    smtp_port: 587
+    username: null
+    password: null
+    recipients: []
+
+  # Webhook notifications
+  webhook:
+    enabled: false
+    url: null
+    headers: {}
+    events:
+      - "job_completed"
+      - "job_failed"
+      - "system_error"
