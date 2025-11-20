@@ -42,14 +42,14 @@
 # BEE REQUIREMENTS AND DEPENDENCIES
 # ================================================================
 
-# Package files - keep but ignore locks/backups
-requirements.txt
-requirements-dev.txt
-environment.yml
-conda.yml
-Pipfile
-Pipfile.lock
-poetry.lock
+# Package files - COMMENTED OUT TO INCLUDE
+# requirements.txt
+# requirements-dev.txt
+# environment.yml
+# conda.yml
+# Pipfile
+# Pipfile.lock
+# poetry.lock
 
 # Virtual environments - COMMENTED OUT TO INCLUDE PACKAGES
 # Note: Including .venv/ ensures all packages are available for download
