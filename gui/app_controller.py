@@ -71,7 +71,11 @@ class AppController:
             'bit_display_bytes_per_row': 16,
             'theme': 'winnative',
             'recent_files': [],
-            'presets': {}
+            'presets': {},
+            'batch_auto_start': False,
+            'batch_max_concurrent': 4,
+            'batch_refresh_interval': 2000,
+            'batch_default_template': 'neural_analysis'
         }
 
     def get_input_folder(self) -> str:
