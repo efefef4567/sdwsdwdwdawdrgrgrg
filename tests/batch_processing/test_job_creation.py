@@ -227,6 +227,9 @@ class TestJobCreation(unittest.TestCase):
         job_dir = self._create_job_config("LoggingJob")
         job = Job(str(job_dir))
 
+        # Clear initial logs from job creation
+        job.logs.clear()
+
         # Add a log entry
         job._log("Test log message")
 
