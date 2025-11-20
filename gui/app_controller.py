@@ -26,7 +26,8 @@ class AppController:
             'presets': self.app_dir / 'presets',
             'history': self.app_dir / 'history',
             'logs': self.app_dir / 'logs',
-            'temp': self.app_dir / 'temp'
+            'temp': self.app_dir / 'temp',
+            'batch_jobs': self.app_dir / 'batch_jobs'
         }
 
         for directory in self.directories.values():
