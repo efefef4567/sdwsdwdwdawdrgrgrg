@@ -259,8 +259,8 @@ def run_batch_daemon():
     try:
         logger.info("Starting BSEE Batch Processing Daemon")
 
-        # BSEE modules are disabled
-# from bsee.batch import JobManager
+        # BSEE modules are working
+from bsee.batch import JobManager
 
         job_manager = JobManager()
         job_manager.start_folder_monitoring()
