@@ -136,3 +136,8 @@ class TimestampedLogger:
         self.logger.critical(message)
         self.last_timestamp = timestamp
         return timestamp
+
+
+def get_logger(name: str):
+    """Get a logger instance with the specified name."""
+    return logging.getLogger(name)
