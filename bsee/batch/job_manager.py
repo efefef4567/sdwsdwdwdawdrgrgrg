@@ -471,6 +471,27 @@ class JobManager:
 
         logger.info("Job manager shutdown complete")
 
+    @classmethod
+    def reset_singleton_for_testing(cls):
+        """Reset singleton instance for testing purposes only"""
+        with cls._lock:
+            if cls._instance is not None:
+                # Clear jobs and reset state
+                cls._instance.jobs.clear()
+                cls._instance.running_jobs.clear()
+                # Clear queue
+                while not cls._instance.job_queue.empty():
+                    try:
+                        cls._instance.job_queue.get_nowait()
+                    except queue.Empty:
+                        break
+                # Reset other state
+                cls._instance.job_callbacks.clear()
+                cls._instance.shutdown_event.clear()
+
+            # Reset singleton to None
+            cls._instance = None
+
     def get_statistics(self) -> Dict[str, Any]:
         """Get job manager statistics"""
         status_counts = defaultdict(int)
