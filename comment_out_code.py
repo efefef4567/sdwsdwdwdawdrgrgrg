@@ -47,7 +47,7 @@ def main():
     """Main function to comment out all BSEE batch processing code"""
     print("🔧 Commenting out BSEE batch processing code...")
 
-    batch_dir = Path("./sdwsdwdwdawdrgrgrg/bsee/batch/")
+    batch_dir = Path("./bsee/batch/")
 
     if not batch_dir.exists():
         print(f"❌ Batch directory not found: {batch_dir}")
