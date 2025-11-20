@@ -17,7 +17,7 @@ try:
 except ImportError:
     WATCHDOG_AVAILABLE = False
 
-from ...utils.logger import get_logger
+from bsee.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
