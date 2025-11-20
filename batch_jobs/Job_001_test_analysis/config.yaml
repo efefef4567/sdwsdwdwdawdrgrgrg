@@ -1,0 +1,12 @@
+# Job Configuration
+name: "Test Analysis Job"
+description: "Test job for batch processing system demonstration"
+strategy: "greedy"
+max_operations: 500
+max_cost: 5000
+
+# Queue settings
+priority: "normal"
+estimated_time: 15  # minutes
+memory_requirement: 512  # MB
+cpu_requirement: 1  # cores
