@@ -130,16 +130,27 @@ class Job:
             pipeline_file = self.job_folder / 'pipeline_config.yaml'
             resource_file = self.job_folder / 'resource_limits.yaml'
 
+            def safe_load_yaml(file_path):
+                """Safely load YAML file with error handling"""
+                if file_path.exists():
+                    try:
+                        with open(file_path, 'r') as f:
+                            return yaml.safe_load(f) or {}
+                    except Exception as e:
+                        self._log(f"Warning: Failed to load {file_path.name}: {e}")
+                        return {}
+                return {}
+
             self.config = JobConfiguration(
                 job_id=self.job_id,
                 name=config_data.get('name', self.name),
                 description=config_data.get('description', ''),
-                strategy_config=yaml.safe_load(strategy_file) if strategy_file.exists() else {},
-                cost_model=yaml.safe_load(cost_file) if cost_file.exists() else {},
-                metrics_config=yaml.safe_load(metrics_file) if metrics_file.exists() else {},
-                queue_settings=yaml.safe_load(queue_file) if queue_file.exists() else {},
-                pipeline_config=yaml.safe_load(pipeline_file) if pipeline_file.exists() else {},
-                resource_limits=yaml.safe_load(resource_file) if resource_file.exists() else {}
+                strategy_config=safe_load_yaml(strategy_file),
+                cost_model=safe_load_yaml(cost_file),
+                metrics_config=safe_load_yaml(metrics_file),
+                queue_settings=safe_load_yaml(queue_file),
+                pipeline_config=safe_load_yaml(pipeline_file),
+                resource_limits=safe_load_yaml(resource_file)
             )
 
             # Extract priority from queue settings
