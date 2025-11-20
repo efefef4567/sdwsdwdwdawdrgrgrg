@@ -1,419 +1,419 @@
 """
-Structure metrics for binary analysis.
+# DISABLED: Structure metrics for binary analysis.
 """
 
-import numpy as np
-from typing import Dict, List, Tuple
+# DISABLED: import numpy as np
+# DISABLED: from typing import Dict, List, Tuple
 
 
-class StructureMetrics:
+# DISABLED: class StructureMetrics:
     """Collection of structure-based metrics."""
 
-    def __init__(self):
+# DISABLED:     def __init__(self):
         """Initialize structure metrics."""
-        self.metrics = self._create_metrics()
+# DISABLED:         self.metrics = self._create_metrics()
 
-    def _create_metrics(self) -> Dict[str, callable]:
+# DISABLED:     def _create_metrics(self) -> Dict[str, callable]:
         """Create all structure metrics."""
-        return {
-            'alignment_score': self.alignment_score,
-            'block_detection_score': self.block_detection_score,
-            'repeating_block_count': self.repeating_block_count,
-            'block_size_variance': self.block_size_variance,
-            'structure_regularity': self.structure_regularity,
-            'segmentation_score': self.segmentation_score,
-            'pattern_coherence': self.pattern_coherence,
-            'hierarchical_structure': self.hierarchical_structure,
-            'byte_alignment_index': self.byte_alignment_index,
-            'structural_entropy': self.structural_entropy
-        }
+# DISABLED:         return {
+# DISABLED:             'alignment_score': self.alignment_score,
+# DISABLED:             'block_detection_score': self.block_detection_score,
+# DISABLED:             'repeating_block_count': self.repeating_block_count,
+# DISABLED:             'block_size_variance': self.block_size_variance,
+# DISABLED:             'structure_regularity': self.structure_regularity,
+# DISABLED:             'segmentation_score': self.segmentation_score,
+# DISABLED:             'pattern_coherence': self.pattern_coherence,
+# DISABLED:             'hierarchical_structure': self.hierarchical_structure,
+# DISABLED:             'byte_alignment_index': self.byte_alignment_index,
+# DISABLED:             'structural_entropy': self.structural_entropy
+# DISABLED:         }
 
-    def get_metrics(self) -> Dict[str, callable]:
+# DISABLED:     def get_metrics(self) -> Dict[str, callable]:
         """Get all metrics."""
-        return self.metrics
+# DISABLED:         return self.metrics
 
-    def get_metadata(self, metric_name: str) -> Dict[str, any]:
+# DISABLED:     def get_metadata(self, metric_name: str) -> Dict[str, any]:
         """Get metadata for a metric."""
-        metadata_map = {
-            'alignment_score': {
-                'category': 'structure',
-                'description': 'Score based on byte alignment patterns',
-                'range': [0, 1],
-                'higher_better': True
-            },
-            'block_detection_score': {
-                'category': 'structure',
-                'description': 'Score for detectable block structures',
-                'range': [0, 1],
-                'higher_better': True
-            },
-            'repeating_block_count': {
-                'category': 'structure',
-                'description': 'Count of repeating blocks',
-                'range': [0, 'file_size/block_size'],
-                'higher_better': True
-            },
-            'block_size_variance': {
-                'category': 'structure',
-                'description': 'Variance of detected block sizes',
-                'range': [0, 'file_size²'],
-                'higher_better': False
-            },
-            'structure_regularity': {
-                'category': 'structure',
-                'description': 'Regularity of structural patterns',
-                'range': [0, 1],
-                'higher_better': True
-            },
-            'segmentation_score': {
-                'category': 'structure',
-                'description': 'Score for natural segmentation points',
-                'range': [0, 1],
-                'higher_better': True
-            },
-            'pattern_coherence': {
-                'category': 'structure',
-                'description': 'Coherence of patterns across segments',
-                'range': [0, 1],
-                'higher_better': True
-            },
-            'hierarchical_structure': {
-                'category': 'structure',
-                'description': 'Score for hierarchical structure',
-                'range': [0, 1],
-                'higher_better': True
-            },
-            'byte_alignment_index': {
-                'category': 'structure',
-                'description': 'Index of byte alignment patterns',
-                'range': [0, 1],
-                'higher_better': True
-            },
-            'structural_entropy': {
-                'category': 'structure',
-                'description': 'Entropy of structural features',
-                'range': [0, 'log2(n_structures)'],
-                'higher_better': False
-            }
-        }
-        return metadata_map.get(metric_name, {})
+# DISABLED:         metadata_map = {
+# DISABLED:             'alignment_score': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Score based on byte alignment patterns',
+# DISABLED:                 'range': [0, 1],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'block_detection_score': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Score for detectable block structures',
+# DISABLED:                 'range': [0, 1],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'repeating_block_count': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Count of repeating blocks',
+# DISABLED:                 'range': [0, 'file_size/block_size'],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'block_size_variance': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Variance of detected block sizes',
+# DISABLED:                 'range': [0, 'file_size²'],
+# DISABLED:                 'higher_better': False
+# DISABLED:             },
+# DISABLED:             'structure_regularity': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Regularity of structural patterns',
+# DISABLED:                 'range': [0, 1],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'segmentation_score': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Score for natural segmentation points',
+# DISABLED:                 'range': [0, 1],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'pattern_coherence': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Coherence of patterns across segments',
+# DISABLED:                 'range': [0, 1],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'hierarchical_structure': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Score for hierarchical structure',
+# DISABLED:                 'range': [0, 1],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'byte_alignment_index': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Index of byte alignment patterns',
+# DISABLED:                 'range': [0, 1],
+# DISABLED:                 'higher_better': True
+# DISABLED:             },
+# DISABLED:             'structural_entropy': {
+# DISABLED:                 'category': 'structure',
+# DISABLED:                 'description': 'Entropy of structural features',
+# DISABLED:                 'range': [0, 'log2(n_structures)'],
+# DISABLED:                 'higher_better': False
+# DISABLED:             }
+# DISABLED:         }
+# DISABLED:         return metadata_map.get(metric_name, {})
 
-    def alignment_score(self, binary_data: bytes) -> float:
+# DISABLED:     def alignment_score(self, binary_data: bytes) -> float:
         """Score based on byte alignment patterns."""
-        if len(binary_data) < 16:
-            return 0.0
+# DISABLED:         if len(binary_data) < 16:
+# DISABLED:             return 0.0
 
         # Check for alignment at common boundaries (4, 8, 16, 32 bytes)
-        alignment_scores = []
+# DISABLED:         alignment_scores = []
 
-        for alignment in [4, 8, 16, 32]:
-            if len(binary_data) >= alignment * 2:
+# DISABLED:         for alignment in [4, 8, 16, 32]:
+# DISABLED:             if len(binary_data) >= alignment * 2:
                 # Count aligned positions
-                aligned_positions = 0
-                total_positions = len(binary_data) // alignment
+# DISABLED:                 aligned_positions = 0
+# DISABLED:                 total_positions = len(binary_data) // alignment
 
-                for i in range(total_positions):
-                    pos = i * alignment
-                    if pos < len(binary_data):
+# DISABLED:                 for i in range(total_positions):
+# DISABLED:                     pos = i * alignment
+# DISABLED:                     if pos < len(binary_data):
                         # Check if this position shows alignment characteristics
-                        if self._is_aligned_position(binary_data, pos, alignment):
-                            aligned_positions += 1
+# DISABLED:                         if self._is_aligned_position(binary_data, pos, alignment):
+# DISABLED:                             aligned_positions += 1
 
-                score = aligned_positions / total_positions if total_positions > 0 else 0.0
-                alignment_scores.append(score)
+# DISABLED:                 score = aligned_positions / total_positions if total_positions > 0 else 0.0
+# DISABLED:                 alignment_scores.append(score)
 
-        return sum(alignment_scores) / len(alignment_scores) if alignment_scores else 0.0
+# DISABLED:         return sum(alignment_scores) / len(alignment_scores) if alignment_scores else 0.0
 
-    def _is_aligned_position(self, binary_data: bytes, pos: int, alignment: int) -> bool:
+# DISABLED:     def _is_aligned_position(self, binary_data: bytes, pos: int, alignment: int) -> bool:
         """Check if a position shows alignment characteristics."""
-        if pos + alignment > len(binary_data):
-            return False
+# DISABLED:         if pos + alignment > len(binary_data):
+# DISABLED:             return False
 
         # Simple heuristic: check if the position starts a repeated pattern
-        if pos + alignment * 2 <= len(binary_data):
-            pattern1 = binary_data[pos:pos + alignment]
-            pattern2 = binary_data[pos + alignment:pos + alignment * 2]
-            similarity = sum(a == b for a, b in zip(pattern1, pattern2)) / alignment
-            return similarity > 0.8
+# DISABLED:         if pos + alignment * 2 <= len(binary_data):
+# DISABLED:             pattern1 = binary_data[pos:pos + alignment]
+# DISABLED:             pattern2 = binary_data[pos + alignment:pos + alignment * 2]
+# DISABLED:             similarity = sum(a == b for a, b in zip(pattern1, pattern2)) / alignment
+# DISABLED:             return similarity > 0.8
 
-        return False
+# DISABLED:         return False
 
-    def block_detection_score(self, binary_data: bytes) -> float:
+# DISABLED:     def block_detection_score(self, binary_data: bytes) -> float:
         """Score for detectable block structures."""
-        if len(binary_data) < 32:
-            return 0.0
+# DISABLED:         if len(binary_data) < 32:
+# DISABLED:             return 0.0
 
         # Try different block sizes
-        block_sizes = [4, 8, 16, 32, 64, 128, 256]
-        block_scores = []
+# DISABLED:         block_sizes = [4, 8, 16, 32, 64, 128, 256]
+# DISABLED:         block_scores = []
 
-        for block_size in block_sizes:
-            if len(binary_data) >= block_size * 2:
-                score = self._detect_blocks_of_size(binary_data, block_size)
-                block_scores.append(score)
+# DISABLED:         for block_size in block_sizes:
+# DISABLED:             if len(binary_data) >= block_size * 2:
+# DISABLED:                 score = self._detect_blocks_of_size(binary_data, block_size)
+# DISABLED:                 block_scores.append(score)
 
-        return max(block_scores) if block_scores else 0.0
+# DISABLED:         return max(block_scores) if block_scores else 0.0
 
-    def _detect_blocks_of_size(self, binary_data: bytes, block_size: int) -> float:
+# DISABLED:     def _detect_blocks_of_size(self, binary_data: bytes, block_size: int) -> float:
         """Detect blocks of a specific size."""
         # Count unique blocks
-        blocks = set()
-        for i in range(0, len(binary_data) - block_size + 1, block_size):
-            block = binary_data[i:i + block_size]
-            blocks.add(block)
+# DISABLED:         blocks = set()
+# DISABLED:         for i in range(0, len(binary_data) - block_size + 1, block_size):
+# DISABLED:             block = binary_data[i:i + block_size]
+# DISABLED:             blocks.add(block)
 
-        total_blocks = len(binary_data) // block_size
-        unique_blocks = len(blocks)
+# DISABLED:         total_blocks = len(binary_data) // block_size
+# DISABLED:         unique_blocks = len(blocks)
 
         # Score based on repetition (fewer unique blocks = more structure)
-        if total_blocks > 0:
-            repetition_score = 1.0 - (unique_blocks / total_blocks)
-            return repetition_score
+# DISABLED:         if total_blocks > 0:
+# DISABLED:             repetition_score = 1.0 - (unique_blocks / total_blocks)
+# DISABLED:             return repetition_score
 
-        return 0.0
+# DISABLED:         return 0.0
 
-    def repeating_block_count(self, binary_data: bytes) -> float:
+# DISABLED:     def repeating_block_count(self, binary_data: bytes) -> float:
         """Count of repeating blocks."""
-        if len(binary_data) < 8:
-            return 0.0
+# DISABLED:         if len(binary_data) < 8:
+# DISABLED:             return 0.0
 
         # Use default block size of 16 bytes
-        block_size = min(16, len(binary_data) // 4)
-        if block_size < 4:
-            return 0.0
+# DISABLED:         block_size = min(16, len(binary_data) // 4)
+# DISABLED:         if block_size < 4:
+# DISABLED:             return 0.0
 
-        block_counts = {}
-        for i in range(0, len(binary_data) - block_size + 1, block_size):
-            block = binary_data[i:i + block_size]
-            block_counts[block] = block_counts.get(block, 0) + 1
+# DISABLED:         block_counts = {}
+# DISABLED:         for i in range(0, len(binary_data) - block_size + 1, block_size):
+# DISABLED:             block = binary_data[i:i + block_size]
+# DISABLED:             block_counts[block] = block_counts.get(block, 0) + 1
 
         # Count blocks that appear more than once
-        repeating_blocks = sum(1 for count in block_counts.values() if count > 1)
-        return float(repeating_blocks)
+# DISABLED:         repeating_blocks = sum(1 for count in block_counts.values() if count > 1)
+# DISABLED:         return float(repeating_blocks)
 
-    def block_size_variance(self, binary_data: bytes) -> float:
+# DISABLED:     def block_size_variance(self, binary_data: bytes) -> float:
         """Variance of detected block sizes."""
-        if len(binary_data) < 16:
-            return 0.0
+# DISABLED:         if len(binary_data) < 16:
+# DISABLED:             return 0.0
 
         # Detect multiple block sizes
-        detected_sizes = []
-        for block_size in [4, 8, 16, 32, 64]:
-            if len(binary_data) >= block_size * 3:
-                score = self._detect_blocks_of_size(binary_data, block_size)
-                if score > 0.3:  # Threshold for considering this size significant
-                    detected_sizes.append(block_size)
+# DISABLED:         detected_sizes = []
+# DISABLED:         for block_size in [4, 8, 16, 32, 64]:
+# DISABLED:             if len(binary_data) >= block_size * 3:
+# DISABLED:                 score = self._detect_blocks_of_size(binary_data, block_size)
+# DISABLED:                 if score > 0.3:  # Threshold for considering this size significant
+# DISABLED:                     detected_sizes.append(block_size)
 
-        if len(detected_sizes) < 2:
-            return 0.0
+# DISABLED:         if len(detected_sizes) < 2:
+# DISABLED:             return 0.0
 
         # Calculate variance
-        mean_size = sum(detected_sizes) / len(detected_sizes)
-        variance = sum((size - mean_size) ** 2 for size in detected_sizes) / len(detected_sizes)
+# DISABLED:         mean_size = sum(detected_sizes) / len(detected_sizes)
+# DISABLED:         variance = sum((size - mean_size) ** 2 for size in detected_sizes) / len(detected_sizes)
 
-        return variance
+# DISABLED:         return variance
 
-    def structure_regularity(self, binary_data: bytes) -> float:
+# DISABLED:     def structure_regularity(self, binary_data: bytes) -> float:
         """Regularity of structural patterns."""
-        if len(binary_data) < 32:
-            return 0.0
+# DISABLED:         if len(binary_data) < 32:
+# DISABLED:             return 0.0
 
         # Divide data into chunks and look for regular patterns
-        chunk_size = min(32, len(binary_data) // 8)
-        if chunk_size < 4:
-            return 0.0
+# DISABLED:         chunk_size = min(32, len(binary_data) // 8)
+# DISABLED:         if chunk_size < 4:
+# DISABLED:             return 0.0
 
-        similarities = []
-        chunks = []
+# DISABLED:         similarities = []
+# DISABLED:         chunks = []
 
         # Collect chunks
-        for i in range(0, len(binary_data), chunk_size):
-            chunk = binary_data[i:i + chunk_size]
-            if len(chunk) == chunk_size:
-                chunks.append(chunk)
+# DISABLED:         for i in range(0, len(binary_data), chunk_size):
+# DISABLED:             chunk = binary_data[i:i + chunk_size]
+# DISABLED:             if len(chunk) == chunk_size:
+# DISABLED:                 chunks.append(chunk)
 
         # Compare consecutive chunks
-        for i in range(len(chunks) - 1):
-            similarity = sum(a == b for a, b in zip(chunks[i], chunks[i + 1])) / chunk_size
-            similarities.append(similarity)
+# DISABLED:         for i in range(len(chunks) - 1):
+# DISABLED:             similarity = sum(a == b for a, b in zip(chunks[i], chunks[i + 1])) / chunk_size
+# DISABLED:             similarities.append(similarity)
 
-        return sum(similarities) / len(similarities) if similarities else 0.0
+# DISABLED:         return sum(similarities) / len(similarities) if similarities else 0.0
 
-    def segmentation_score(self, binary_data: bytes) -> float:
+# DISABLED:     def segmentation_score(self, binary_data: bytes) -> float:
         """Score for natural segmentation points."""
-        if len(binary_data) < 64:
-            return 0.0
+# DISABLED:         if len(binary_data) < 64:
+# DISABLED:             return 0.0
 
         # Look for natural break points based on byte distribution changes
-        window_size = min(32, len(binary_data) // 8)
-        if window_size < 8:
-            return 0.0
+# DISABLED:         window_size = min(32, len(binary_data) // 8)
+# DISABLED:         if window_size < 8:
+# DISABLED:             return 0.0
 
-        segment_scores = []
-        for i in range(window_size, len(binary_data) - window_size, window_size // 2):
+# DISABLED:         segment_scores = []
+# DISABLED:         for i in range(window_size, len(binary_data) - window_size, window_size // 2):
             # Compare distributions before and after this point
-            before_window = binary_data[i - window_size:i]
-            after_window = binary_data[i:i + window_size]
+# DISABLED:             before_window = binary_data[i - window_size:i]
+# DISABLED:             after_window = binary_data[i:i + window_size]
 
             # Simple distribution similarity
-            before_counts = [0] * 256
-            after_counts = [0] * 256
+# DISABLED:             before_counts = [0] * 256
+# DISABLED:             after_counts = [0] * 256
 
-            for byte_val in before_window:
-                before_counts[byte_val] += 1
-            for byte_val in after_window:
-                after_counts[byte_val] += 1
+# DISABLED:             for byte_val in before_window:
+# DISABLED:                 before_counts[byte_val] += 1
+# DISABLED:             for byte_val in after_window:
+# DISABLED:                 after_counts[byte_val] += 1
 
             # Calculate similarity
-            similarity = sum(min(before_counts[j], after_counts[j]) for j in range(256))
-            total_before = sum(before_counts)
-            total_after = sum(after_counts)
-            total_min = min(total_before, total_after)
+# DISABLED:             similarity = sum(min(before_counts[j], after_counts[j]) for j in range(256))
+# DISABLED:             total_before = sum(before_counts)
+# DISABLED:             total_after = sum(after_counts)
+# DISABLED:             total_min = min(total_before, total_after)
 
-            if total_min > 0:
-                segment_score = 1.0 - (similarity / total_min)
-                segment_scores.append(segment_score)
+# DISABLED:             if total_min > 0:
+# DISABLED:                 segment_score = 1.0 - (similarity / total_min)
+# DISABLED:                 segment_scores.append(segment_score)
 
-        return sum(segment_scores) / len(segment_scores) if segment_scores else 0.0
+# DISABLED:         return sum(segment_scores) / len(segment_scores) if segment_scores else 0.0
 
-    def pattern_coherence(self, binary_data: bytes) -> float:
+# DISABLED:     def pattern_coherence(self, binary_data: bytes) -> float:
         """Coherence of patterns across segments."""
-        if len(binary_data) < 64:
-            return 0.0
+# DISABLED:         if len(binary_data) < 64:
+# DISABLED:             return 0.0
 
         # Divide into segments and check for consistent patterns
-        num_segments = min(8, len(binary_data) // 16)
-        if num_segments < 2:
-            return 0.0
+# DISABLED:         num_segments = min(8, len(binary_data) // 16)
+# DISABLED:         if num_segments < 2:
+# DISABLED:             return 0.0
 
-        segment_size = len(binary_data) // num_segments
-        patterns = []
+# DISABLED:         segment_size = len(binary_data) // num_segments
+# DISABLED:         patterns = []
 
-        for i in range(num_segments):
-            start = i * segment_size
-            end = start + segment_size
-            segment = binary_data[start:end]
+# DISABLED:         for i in range(num_segments):
+# DISABLED:             start = i * segment_size
+# DISABLED:             end = start + segment_size
+# DISABLED:             segment = binary_data[start:end]
 
             # Extract simple pattern (first 8 bytes)
-            if len(segment) >= 8:
-                pattern = segment[:8]
-                patterns.append(pattern)
+# DISABLED:             if len(segment) >= 8:
+# DISABLED:                 pattern = segment[:8]
+# DISABLED:                 patterns.append(pattern)
 
-        if len(patterns) < 2:
-            return 0.0
+# DISABLED:         if len(patterns) < 2:
+# DISABLED:             return 0.0
 
         # Calculate coherence based on pattern similarity
-        total_similarity = 0
-        comparisons = 0
+# DISABLED:         total_similarity = 0
+# DISABLED:         comparisons = 0
 
-        for i in range(len(patterns)):
-            for j in range(i + 1, len(patterns)):
-                similarity = sum(a == b for a, b in zip(patterns[i], patterns[j])) / len(patterns[i])
-                total_similarity += similarity
-                comparisons += 1
+# DISABLED:         for i in range(len(patterns)):
+# DISABLED:             for j in range(i + 1, len(patterns)):
+# DISABLED:                 similarity = sum(a == b for a, b in zip(patterns[i], patterns[j])) / len(patterns[i])
+# DISABLED:                 total_similarity += similarity
+# DISABLED:                 comparisons += 1
 
-        return total_similarity / comparisons if comparisons > 0 else 0.0
+# DISABLED:         return total_similarity / comparisons if comparisons > 0 else 0.0
 
-    def hierarchical_structure(self, binary_data: bytes) -> float:
+# DISABLED:     def hierarchical_structure(self, binary_data: bytes) -> float:
         """Score for hierarchical structure."""
-        if len(binary_data) < 64:
-            return 0.0
+# DISABLED:         if len(binary_data) < 64:
+# DISABLED:             return 0.0
 
         # Look for structure at multiple scales
-        scale_scores = []
+# DISABLED:         scale_scores = []
 
-        for scale in [8, 16, 32, 64]:
-            if len(binary_data) >= scale * 4:
-                score = self._analyze_scale_structure(binary_data, scale)
-                scale_scores.append(score)
+# DISABLED:         for scale in [8, 16, 32, 64]:
+# DISABLED:             if len(binary_data) >= scale * 4:
+# DISABLED:                 score = self._analyze_scale_structure(binary_data, scale)
+# DISABLED:                 scale_scores.append(score)
 
-        return sum(scale_scores) / len(scale_scores) if scale_scores else 0.0
+# DISABLED:         return sum(scale_scores) / len(scale_scores) if scale_scores else 0.0
 
-    def _analyze_scale_structure(self, binary_data: bytes, scale: int) -> float:
+# DISABLED:     def _analyze_scale_structure(self, binary_data: bytes, scale: int) -> float:
         """Analyze structure at a specific scale."""
         # Count patterns at this scale
-        patterns = set()
-        for i in range(0, len(binary_data) - scale + 1, scale):
-            pattern = binary_data[i:i + scale]
-            patterns.add(pattern)
+# DISABLED:         patterns = set()
+# DISABLED:         for i in range(0, len(binary_data) - scale + 1, scale):
+# DISABLED:             pattern = binary_data[i:i + scale]
+# DISABLED:             patterns.add(pattern)
 
-        total_patterns = len(binary_data) // scale
-        unique_patterns = len(patterns)
+# DISABLED:         total_patterns = len(binary_data) // scale
+# DISABLED:         unique_patterns = len(patterns)
 
-        if total_patterns == 0:
-            return 0.0
+# DISABLED:         if total_patterns == 0:
+# DISABLED:             return 0.0
 
         # Structure score based on pattern repetition
-        structure_score = 1.0 - (unique_patterns / total_patterns)
-        return structure_score
+# DISABLED:         structure_score = 1.0 - (unique_patterns / total_patterns)
+# DISABLED:         return structure_score
 
-    def byte_alignment_index(self, binary_data: bytes) -> float:
+# DISABLED:     def byte_alignment_index(self, binary_data: bytes) -> float:
         """Index of byte alignment patterns."""
         # Similar to alignment_score but focused on common alignments
-        common_alignments = [2, 4, 8, 16]  # Powers of 2
+# DISABLED:         common_alignments = [2, 4, 8, 16]  # Powers of 2
 
-        alignment_indices = []
-        for alignment in common_alignments:
-            if len(binary_data) >= alignment * 4:
+# DISABLED:         alignment_indices = []
+# DISABLED:         for alignment in common_alignments:
+# DISABLED:             if len(binary_data) >= alignment * 4:
                 # Check for periodicity at this alignment
-                periodic_score = self._check_periodicity_at_alignment(binary_data, alignment)
-                alignment_indices.append(periodic_score)
+# DISABLED:                 periodic_score = self._check_periodicity_at_alignment(binary_data, alignment)
+# DISABLED:                 alignment_indices.append(periodic_score)
 
-        return sum(alignment_indices) / len(alignment_indices) if alignment_indices else 0.0
+# DISABLED:         return sum(alignment_indices) / len(alignment_indices) if alignment_indices else 0.0
 
-    def _check_periodicity_at_alignment(self, binary_data: bytes, alignment: int) -> float:
+# DISABLED:     def _check_periodicity_at_alignment(self, binary_data: bytes, alignment: int) -> float:
         """Check for periodicity at a specific alignment."""
-        if len(binary_data) < alignment * 2:
-            return 0.0
+# DISABLED:         if len(binary_data) < alignment * 2:
+# DISABLED:             return 0.0
 
         # Compare bytes at alignment offsets
-        matches = 0
-        total_comparisons = 0
+# DISABLED:         matches = 0
+# DISABLED:         total_comparisons = 0
 
-        for i in range(len(binary_data) - alignment):
-            if binary_data[i] == binary_data[i + alignment]:
-                matches += 1
-            total_comparisons += 1
+# DISABLED:         for i in range(len(binary_data) - alignment):
+# DISABLED:             if binary_data[i] == binary_data[i + alignment]:
+# DISABLED:                 matches += 1
+# DISABLED:             total_comparisons += 1
 
-        return matches / total_comparisons if total_comparisons > 0 else 0.0
+# DISABLED:         return matches / total_comparisons if total_comparisons > 0 else 0.0
 
-    def structural_entropy(self, binary_data: bytes) -> float:
+# DISABLED:     def structural_entropy(self, binary_data: bytes) -> float:
         """Entropy of structural features."""
-        if len(binary_data) < 32:
-            return 0.0
+# DISABLED:         if len(binary_data) < 32:
+# DISABLED:             return 0.0
 
         # Extract structural features (byte changes, runs, etc.)
-        features = []
+# DISABLED:         features = []
 
         # Add byte change positions
-        for i in range(1, len(binary_data)):
-            if binary_data[i] != binary_data[i - 1]:
-                features.append(('change', i % 256))
+# DISABLED:         for i in range(1, len(binary_data)):
+# DISABLED:             if binary_data[i] != binary_data[i - 1]:
+# DISABLED:                 features.append(('change', i % 256))
 
         # Add run lengths
-        current_run = 1
-        for i in range(1, len(binary_data)):
-            if binary_data[i] == binary_data[i - 1]:
-                current_run += 1
-            else:
-                features.append(('run_length', min(current_run, 255)))
-                current_run = 1
+# DISABLED:         current_run = 1
+# DISABLED:         for i in range(1, len(binary_data)):
+# DISABLED:             if binary_data[i] == binary_data[i - 1]:
+# DISABLED:                 current_run += 1
+# DISABLED:             else:
+# DISABLED:                 features.append(('run_length', min(current_run, 255)))
+# DISABLED:                 current_run = 1
 
-        if current_run > 1:
-            features.append(('run_length', min(current_run, 255)))
+# DISABLED:         if current_run > 1:
+# DISABLED:             features.append(('run_length', min(current_run, 255)))
 
-        if not features:
-            return 0.0
+# DISABLED:         if not features:
+# DISABLED:             return 0.0
 
         # Calculate entropy of features
-        from collections import Counter
-        feature_counts = Counter(features)
-        total_features = len(features)
+# DISABLED:         from collections import Counter
+# DISABLED:         feature_counts = Counter(features)
+# DISABLED:         total_features = len(features)
 
-        import math
-        entropy = 0.0
-        for count in feature_counts.values():
-            probability = count / total_features
-            entropy -= probability * math.log2(probability)
+# DISABLED:         import math
+# DISABLED:         entropy = 0.0
+# DISABLED:         for count in feature_counts.values():
+# DISABLED:             probability = count / total_features
+# DISABLED:             entropy -= probability * math.log2(probability)
 
-        return entropy
+# DISABLED:         return entropy

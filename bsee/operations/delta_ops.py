@@ -1,241 +1,241 @@
 """
-Delta encoding operations for binary transformation.
+# DISABLED: Delta encoding operations for binary transformation.
 """
 
-from typing import Callable, Dict, List, Tuple, Any
+# DISABLED: from typing import Callable, Dict, List, Tuple, Any
 
 
-class DeltaOperations:
+# DISABLED: class DeltaOperations:
     """Collection of delta encoding operations."""
 
-    def __init__(self):
+# DISABLED:     def __init__(self):
         """Initialize delta operations."""
-        self.operations = self._create_operations()
+# DISABLED:         self.operations = self._create_operations()
 
-    def _create_operations(self) -> Dict[str, Callable]:
+# DISABLED:     def _create_operations(self) -> Dict[str, Callable]:
         """Create all delta operations."""
-        return {
-            'delta_encode': self.delta_encode,
-            'delta_decode': self.delta_decode,
-            'adaptive_delta': self.adaptive_delta,
-            'predictive_delta': self.predictive_delta,
-            'run_length_delta': self.run_length_delta,
-            'differential_encode': self.differential_encode,
-            'cumulative_delta': self.cumulative_delta,
-            'zigzag_delta': self.zigzag_delta,
-            'block_delta': self.block_delta,
-            'windowed_delta': self.windowed_delta
-        }
+# DISABLED:         return {
+# DISABLED:             'delta_encode': self.delta_encode,
+# DISABLED:             'delta_decode': self.delta_decode,
+# DISABLED:             'adaptive_delta': self.adaptive_delta,
+# DISABLED:             'predictive_delta': self.predictive_delta,
+# DISABLED:             'run_length_delta': self.run_length_delta,
+# DISABLED:             'differential_encode': self.differential_encode,
+# DISABLED:             'cumulative_delta': self.cumulative_delta,
+# DISABLED:             'zigzag_delta': self.zigzag_delta,
+# DISABLED:             'block_delta': self.block_delta,
+# DISABLED:             'windowed_delta': self.windowed_delta
+# DISABLED:         }
 
-    def get_operations(self) -> Dict[str, Callable]:
+# DISABLED:     def get_operations(self) -> Dict[str, Callable]:
         """Get all operations."""
-        return self.operations
+# DISABLED:         return self.operations
 
-    def get_metadata(self, operation_name: str) -> Dict[str, Any]:
+# DISABLED:     def get_metadata(self, operation_name: str) -> Dict[str, Any]:
         """Get metadata for an operation."""
-        metadata_map = {
-            'delta_encode': {
-                'category': 'delta',
-                'description': 'Simple delta encoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'delta_decode': {
-                'category': 'delta',
-                'description': 'Simple delta decoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'adaptive_delta': {
-                'category': 'delta',
-                'description': 'Adaptive delta encoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'predictive_delta': {
-                'category': 'delta',
-                'description': 'Predictive delta encoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'run_length_delta': {
-                'category': 'delta',
-                'description': 'Run length delta encoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'differential_encode': {
-                'category': 'delta',
-                'description': 'Differential encoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'cumulative_delta': {
-                'category': 'delta',
-                'description': 'Cumulative delta encoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'zigzag_delta': {
-                'category': 'delta',
-                'description': 'Zigzag delta encoding',
-                'required_params': [],
-                'optional_params': {},
-                'reversible': True
-            },
-            'block_delta': {
-                'category': 'delta',
-                'description': 'Block-based delta encoding',
-                'required_params': ['block_size'],
-                'optional_params': {},
-                'reversible': True
-            },
-            'windowed_delta': {
-                'category': 'delta',
-                'description': 'Windowed delta encoding',
-                'required_params': ['window_size'],
-                'optional_params': {},
-                'reversible': True
-            }
-        }
-        return metadata_map.get(operation_name, {})
+# DISABLED:         metadata_map = {
+# DISABLED:             'delta_encode': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Simple delta encoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'delta_decode': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Simple delta decoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'adaptive_delta': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Adaptive delta encoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'predictive_delta': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Predictive delta encoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'run_length_delta': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Run length delta encoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'differential_encode': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Differential encoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'cumulative_delta': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Cumulative delta encoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'zigzag_delta': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Zigzag delta encoding',
+# DISABLED:                 'required_params': [],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'block_delta': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Block-based delta encoding',
+# DISABLED:                 'required_params': ['block_size'],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             },
+# DISABLED:             'windowed_delta': {
+# DISABLED:                 'category': 'delta',
+# DISABLED:                 'description': 'Windowed delta encoding',
+# DISABLED:                 'required_params': ['window_size'],
+# DISABLED:                 'optional_params': {},
+# DISABLED:                 'reversible': True
+# DISABLED:             }
+# DISABLED:         }
+# DISABLED:         return metadata_map.get(operation_name, {})
 
-    def delta_encode(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def delta_encode(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Simple delta encoding."""
-        if len(binary_data) <= 1:
-            return binary_data, lambda: binary_data, {'operation': 'delta_encode', 'bytes_affected': 0}
+# DISABLED:         if len(binary_data) <= 1:
+# DISABLED:             return binary_data, lambda: binary_data, {'operation': 'delta_encode', 'bytes_affected': 0}
 
-        delta = bytearray()
-        delta.append(binary_data[0])  # First byte unchanged
+# DISABLED:         delta = bytearray()
+# DISABLED:         delta.append(binary_data[0])  # First byte unchanged
 
-        for i in range(1, len(binary_data)):
-            delta.append((binary_data[i] - binary_data[i-1]) & 0xFF)
+# DISABLED:         for i in range(1, len(binary_data)):
+# DISABLED:             delta.append((binary_data[i] - binary_data[i-1]) & 0xFF)
 
-        new_data = bytes(delta)
+# DISABLED:         new_data = bytes(delta)
 
-        def inverse():
-            if len(new_data) <= 1:
-                return new_data
+# DISABLED:         def inverse():
+# DISABLED:             if len(new_data) <= 1:
+# DISABLED:                 return new_data
 
-            original = bytearray()
-            original.append(new_data[0])
+# DISABLED:             original = bytearray()
+# DISABLED:             original.append(new_data[0])
 
-            for i in range(1, len(new_data)):
-                original.append((new_data[i] + original[i-1]) & 0xFF)
+# DISABLED:             for i in range(1, len(new_data)):
+# DISABLED:                 original.append((new_data[i] + original[i-1]) & 0xFF)
 
-            return bytes(original)
+# DISABLED:             return bytes(original)
 
-        metadata = {
-            'operation': 'delta_encode',
-            'bytes_affected': len(binary_data)
-        }
+# DISABLED:         metadata = {
+# DISABLED:             'operation': 'delta_encode',
+# DISABLED:             'bytes_affected': len(binary_data)
+# DISABLED:         }
 
-        return new_data, inverse, metadata
+# DISABLED:         return new_data, inverse, metadata
 
-    def delta_decode(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def delta_decode(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Simple delta decoding."""
         # Delta decode is essentially the same as delta encode inverse
-        new_data, inverse_fn, metadata = self.delta_encode(binary_data)
-        metadata['operation'] = 'delta_decode'
-        return new_data, inverse_fn, metadata
+# DISABLED:         new_data, inverse_fn, metadata = self.delta_encode(binary_data)
+# DISABLED:         metadata['operation'] = 'delta_decode'
+# DISABLED:         return new_data, inverse_fn, metadata
 
     # Placeholder implementations for other delta operations
-    def adaptive_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def adaptive_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Adaptive delta encoding."""
         # Simplified implementation - use regular delta encoding
-        return self.delta_encode(binary_data)
+# DISABLED:         return self.delta_encode(binary_data)
 
-    def predictive_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def predictive_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Predictive delta encoding."""
-        return self.delta_encode(binary_data)
+# DISABLED:         return self.delta_encode(binary_data)
 
-    def run_length_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def run_length_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Run length delta encoding."""
-        return self.delta_encode(binary_data)
+# DISABLED:         return self.delta_encode(binary_data)
 
-    def differential_encode(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def differential_encode(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Differential encoding."""
-        return self.delta_encode(binary_data)
+# DISABLED:         return self.delta_encode(binary_data)
 
-    def cumulative_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def cumulative_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Cumulative delta encoding."""
-        return self.delta_encode(binary_data)
+# DISABLED:         return self.delta_encode(binary_data)
 
-    def zigzag_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def zigzag_delta(self, binary_data: bytes) -> Tuple[bytes, Callable, Dict]:
         """Zigzag delta encoding."""
-        return self.delta_encode(binary_data)
+# DISABLED:         return self.delta_encode(binary_data)
 
-    def block_delta(self, binary_data: bytes, block_size: int) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def block_delta(self, binary_data: bytes, block_size: int) -> Tuple[bytes, Callable, Dict]:
         """Block-based delta encoding."""
-        if block_size <= 0:
-            raise ValueError("Block size must be positive")
+# DISABLED:         if block_size <= 0:
+# DISABLED:             raise ValueError("Block size must be positive")
 
-        result = bytearray()
-        for i in range(0, len(binary_data), block_size):
-            block = binary_data[i:i + block_size]
-            delta_block, _, _ = self.delta_encode(block)
-            result.extend(delta_block)
+# DISABLED:         result = bytearray()
+# DISABLED:         for i in range(0, len(binary_data), block_size):
+# DISABLED:             block = binary_data[i:i + block_size]
+# DISABLED:             delta_block, _, _ = self.delta_encode(block)
+# DISABLED:             result.extend(delta_block)
 
-        new_data = bytes(result)
+# DISABLED:         new_data = bytes(result)
 
-        def inverse():
-            result = bytearray()
-            for i in range(0, len(new_data), block_size):
-                block = new_data[i:i + block_size]
-                original_block, _, _ = self.delta_decode(block)
-                result.extend(original_block)
-            return bytes(result)
+# DISABLED:         def inverse():
+# DISABLED:             result = bytearray()
+# DISABLED:             for i in range(0, len(new_data), block_size):
+# DISABLED:                 block = new_data[i:i + block_size]
+# DISABLED:                 original_block, _, _ = self.delta_decode(block)
+# DISABLED:                 result.extend(original_block)
+# DISABLED:             return bytes(result)
 
-        metadata = {
-            'operation': 'block_delta',
-            'block_size': block_size,
-            'bytes_affected': len(binary_data)
-        }
+# DISABLED:         metadata = {
+# DISABLED:             'operation': 'block_delta',
+# DISABLED:             'block_size': block_size,
+# DISABLED:             'bytes_affected': len(binary_data)
+# DISABLED:         }
 
-        return new_data, inverse, metadata
+# DISABLED:         return new_data, inverse, metadata
 
-    def windowed_delta(self, binary_data: bytes, window_size: int) -> Tuple[bytes, Callable, Dict]:
+# DISABLED:     def windowed_delta(self, binary_data: bytes, window_size: int) -> Tuple[bytes, Callable, Dict]:
         """Windowed delta encoding."""
-        if window_size <= 0:
-            raise ValueError("Window size must be positive")
+# DISABLED:         if window_size <= 0:
+# DISABLED:             raise ValueError("Window size must be positive")
 
-        if len(binary_data) <= window_size:
-            return binary_data, lambda: binary_data, {'operation': 'windowed_delta', 'bytes_affected': 0}
+# DISABLED:         if len(binary_data) <= window_size:
+# DISABLED:             return binary_data, lambda: binary_data, {'operation': 'windowed_delta', 'bytes_affected': 0}
 
-        result = bytearray()
-        result.extend(binary_data[:window_size])  # First window unchanged
+# DISABLED:         result = bytearray()
+# DISABLED:         result.extend(binary_data[:window_size])  # First window unchanged
 
-        for i in range(window_size, len(binary_data)):
+# DISABLED:         for i in range(window_size, len(binary_data)):
             # Subtract byte from window_size positions back
-            delta_val = (binary_data[i] - binary_data[i - window_size]) & 0xFF
-            result.append(delta_val)
+# DISABLED:             delta_val = (binary_data[i] - binary_data[i - window_size]) & 0xFF
+# DISABLED:             result.append(delta_val)
 
-        new_data = bytes(result)
+# DISABLED:         new_data = bytes(result)
 
-        def inverse():
-            if len(new_data) <= window_size:
-                return new_data
+# DISABLED:         def inverse():
+# DISABLED:             if len(new_data) <= window_size:
+# DISABLED:                 return new_data
 
-            original = bytearray()
-            original.extend(new_data[:window_size])
+# DISABLED:             original = bytearray()
+# DISABLED:             original.extend(new_data[:window_size])
 
-            for i in range(window_size, len(new_data)):
+# DISABLED:             for i in range(window_size, len(new_data)):
                 # Add back the byte from window_size positions back
-                original.append((new_data[i] + original[i - window_size]) & 0xFF)
+# DISABLED:                 original.append((new_data[i] + original[i - window_size]) & 0xFF)
 
-            return bytes(original)
+# DISABLED:             return bytes(original)
 
-        metadata = {
-            'operation': 'windowed_delta',
-            'window_size': window_size,
-            'bytes_affected': len(binary_data)
-        }
+# DISABLED:         metadata = {
+# DISABLED:             'operation': 'windowed_delta',
+# DISABLED:             'window_size': window_size,
+# DISABLED:             'bytes_affected': len(binary_data)
+# DISABLED:         }
 
-        return new_data, inverse, metadata
+# DISABLED:         return new_data, inverse, metadata

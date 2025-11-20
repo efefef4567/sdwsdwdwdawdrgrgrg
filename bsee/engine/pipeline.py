@@ -1,142 +1,142 @@
 """
-Main execution pipeline for BSEE analysis.
+# DISABLED: Main execution pipeline for BSEE analysis.
 """
 
-from typing import Dict, List, Optional, Any, Callable
-from pathlib import Path
+# DISABLED: from typing import Dict, List, Optional, Any, Callable
+# DISABLED: from pathlib import Path
 
 
-class Pipeline:
+# DISABLED: class Pipeline:
     """Simplified pipeline for batch processing."""
 
-    def __init__(self, strategy_config: Optional[Dict[str, Any]] = None,
-                 cost_model: Optional[Dict[str, Any]] = None,
-                 metrics_config: Optional[Dict[str, Any]] = None,
-                 **kwargs):
+# DISABLED:     def __init__(self, strategy_config: Optional[Dict[str, Any]] = None,
+# DISABLED:                  cost_model: Optional[Dict[str, Any]] = None,
+# DISABLED:                  metrics_config: Optional[Dict[str, Any]] = None,
+# DISABLED:                  **kwargs):
         """Initialize pipeline with configuration."""
-        self.strategy_config = strategy_config or {}
-        self.cost_model = cost_model or {}
-        self.metrics_config = metrics_config or {}
-        self.kwargs = kwargs
+# DISABLED:         self.strategy_config = strategy_config or {}
+# DISABLED:         self.cost_model = cost_model or {}
+# DISABLED:         self.metrics_config = metrics_config or {}
+# DISABLED:         self.kwargs = kwargs
 
-    def analyze_files(self, input_files: List[Path], progress_callback: Optional[Callable] = None) -> Dict[str, Any]:
+# DISABLED:     def analyze_files(self, input_files: List[Path], progress_callback: Optional[Callable] = None) -> Dict[str, Any]:
         """
-        Analyze input files and return results.
+# DISABLED:         Analyze input files and return results.
 
-        Args:
-            input_files: List of input file paths
-            progress_callback: Optional callback for progress updates
+# DISABLED:         Args:
+# DISABLED:             input_files: List of input file paths
+# DISABLED:             progress_callback: Optional callback for progress updates
 
-        Returns:
-            Dict containing analysis results
+# DISABLED:         Returns:
+# DISABLED:             Dict containing analysis results
         """
-        results = {
-            'total_files': len(input_files),
-            'processed_files': 0,
-            'results': [],
-            'summary': {}
-        }
+# DISABLED:         results = {
+# DISABLED:             'total_files': len(input_files),
+# DISABLED:             'processed_files': 0,
+# DISABLED:             'results': [],
+# DISABLED:             'summary': {}
+# DISABLED:         }
 
-        for i, file_path in enumerate(input_files):
-            try:
+# DISABLED:         for i, file_path in enumerate(input_files):
+# DISABLED:             try:
                 # Process each file
-                file_result = self._analyze_single_file(file_path)
-                results['results'].append(file_result)
-                results['processed_files'] += 1
+# DISABLED:                 file_result = self._analyze_single_file(file_path)
+# DISABLED:                 results['results'].append(file_result)
+# DISABLED:                 results['processed_files'] += 1
 
                 # Update progress
-                if progress_callback:
-                    progress = (i + 1) / len(input_files) * 100
-                    progress_callback(progress, f"Processing {file_path.name}")
+# DISABLED:                 if progress_callback:
+# DISABLED:                     progress = (i + 1) / len(input_files) * 100
+# DISABLED:                     progress_callback(progress, f"Processing {file_path.name}")
 
-            except Exception as e:
+# DISABLED:             except Exception as e:
                 # Add error result for failed file
-                results['results'].append({
-                    'file_path': str(file_path),
-                    'error': str(e),
-                    'success': False
-                })
+# DISABLED:                 results['results'].append({
+# DISABLED:                     'file_path': str(file_path),
+# DISABLED:                     'error': str(e),
+# DISABLED:                     'success': False
+# DISABLED:                 })
 
         # Create summary
-        results['summary'] = {
-            'success_count': sum(1 for r in results['results'] if r.get('success', True)),
-            'error_count': sum(1 for r in results['results'] if not r.get('success', True)),
-            'total_files': len(input_files)
-        }
+# DISABLED:         results['summary'] = {
+# DISABLED:             'success_count': sum(1 for r in results['results'] if r.get('success', True)),
+# DISABLED:             'error_count': sum(1 for r in results['results'] if not r.get('success', True)),
+# DISABLED:             'total_files': len(input_files)
+# DISABLED:         }
 
-        return results
+# DISABLED:         return results
 
-    def _analyze_single_file(self, file_path: Path) -> Dict[str, Any]:
+# DISABLED:     def _analyze_single_file(self, file_path: Path) -> Dict[str, Any]:
         """
-        Analyze a single file.
+# DISABLED:         Analyze a single file.
 
-        Args:
-            file_path: Path to file to analyze
+# DISABLED:         Args:
+# DISABLED:             file_path: Path to file to analyze
 
-        Returns:
-            Dict containing analysis results for the file
+# DISABLED:         Returns:
+# DISABLED:             Dict containing analysis results for the file
         """
-        try:
+# DISABLED:         try:
             # Check if file exists
-            if not file_path.exists():
-                raise FileNotFoundError(f"File not found: {file_path}")
+# DISABLED:             if not file_path.exists():
+# DISABLED:                 raise FileNotFoundError(f"File not found: {file_path}")
 
             # Read file
-            with open(file_path, 'rb') as f:
-                data = f.read()
+# DISABLED:             with open(file_path, 'rb') as f:
+# DISABLED:                 data = f.read()
 
             # Simple analysis - in a full implementation this would use
             # the actual BSEE analysis pipeline
-            file_size = len(data)
-            entropy = self._calculate_entropy(data)
+# DISABLED:             file_size = len(data)
+# DISABLED:             entropy = self._calculate_entropy(data)
 
-            return {
-                'file_path': str(file_path),
-                'success': True,
-                'file_size': file_size,
-                'entropy': entropy,
-                'analysis_time': 0.0,  # Placeholder
-                'operations_applied': 0,  # Placeholder
-                'final_score': entropy,  # Use entropy as simple score
-                'metadata': {
-                    'file_name': file_path.name,
-                    'file_extension': file_path.suffix,
-                    'analysis_timestamp': None  # Would add real timestamp
-                }
-            }
+# DISABLED:             return {
+# DISABLED:                 'file_path': str(file_path),
+# DISABLED:                 'success': True,
+# DISABLED:                 'file_size': file_size,
+# DISABLED:                 'entropy': entropy,
+# DISABLED:                 'analysis_time': 0.0,  # Placeholder
+# DISABLED:                 'operations_applied': 0,  # Placeholder
+# DISABLED:                 'final_score': entropy,  # Use entropy as simple score
+# DISABLED:                 'metadata': {
+# DISABLED:                     'file_name': file_path.name,
+# DISABLED:                     'file_extension': file_path.suffix,
+# DISABLED:                     'analysis_timestamp': None  # Would add real timestamp
+# DISABLED:                 }
+# DISABLED:             }
 
-        except Exception as e:
-            return {
-                'file_path': str(file_path),
-                'success': False,
-                'error': str(e)
-            }
+# DISABLED:         except Exception as e:
+# DISABLED:             return {
+# DISABLED:                 'file_path': str(file_path),
+# DISABLED:                 'success': False,
+# DISABLED:                 'error': str(e)
+# DISABLED:             }
 
-    def _calculate_entropy(self, data: bytes) -> float:
+# DISABLED:     def _calculate_entropy(self, data: bytes) -> float:
         """
-        Calculate Shannon entropy of data.
+# DISABLED:         Calculate Shannon entropy of data.
 
-        Args:
-            data: Binary data to analyze
+# DISABLED:         Args:
+# DISABLED:             data: Binary data to analyze
 
-        Returns:
-            Entropy value between 0 and 8
+# DISABLED:         Returns:
+# DISABLED:             Entropy value between 0 and 8
         """
-        if not data:
-            return 0.0
+# DISABLED:         if not data:
+# DISABLED:             return 0.0
 
         # Count byte frequencies
-        freq = [0] * 256
-        for byte in data:
-            freq[byte] += 1
+# DISABLED:         freq = [0] * 256
+# DISABLED:         for byte in data:
+# DISABLED:             freq[byte] += 1
 
         # Calculate entropy
-        import math
-        entropy = 0.0
-        data_len = len(data)
-        for count in freq:
-            if count > 0:
-                p = count / data_len
-                entropy -= p * math.log2(p)
+# DISABLED:         import math
+# DISABLED:         entropy = 0.0
+# DISABLED:         data_len = len(data)
+# DISABLED:         for count in freq:
+# DISABLED:             if count > 0:
+# DISABLED:                 p = count / data_len
+# DISABLED:                 entropy -= p * math.log2(p)
 
-        return entropy
+# DISABLED:         return entropy

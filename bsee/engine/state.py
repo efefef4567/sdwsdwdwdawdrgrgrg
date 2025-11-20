@@ -1,166 +1,166 @@
 """
-State object for representing binary data at each step of analysis.
+# DISABLED: State object for representing binary data at each step of analysis.
 """
 
-import hashlib
-from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional
+# DISABLED: import hashlib
+# DISABLED: from dataclasses import dataclass, field
+# DISABLED: from datetime import datetime
+# DISABLED: from typing import Any, Callable, Dict, List, Optional
 
 
-@dataclass
-class State:
+# DISABLED: @dataclass
+# DISABLED: class State:
     """Represents binary data at each step of the analysis pipeline."""
 
-    state_id: str = field(default="")
-    binary_data: bytes = field(default_factory=bytes)
-    data: bytes = field(default_factory=bytes)
-    parent_state_id: Optional[str] = None
-    operation_applied: Optional[Dict] = None
-    operation_history: List[Dict] = field(default_factory=list)
-    inverse_operations: List[Callable] = field(default_factory=list)
-    metrics: Dict[str, float] = field(default_factory=dict)
-    score: float = 0.0
-    timestamp: datetime = field(default_factory=datetime.now)
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    generation: int = 0
+# DISABLED:     state_id: str = field(default="")
+# DISABLED:     binary_data: bytes = field(default_factory=bytes)
+# DISABLED:     data: bytes = field(default_factory=bytes)
+# DISABLED:     parent_state_id: Optional[str] = None
+# DISABLED:     operation_applied: Optional[Dict] = None
+# DISABLED:     operation_history: List[Dict] = field(default_factory=list)
+# DISABLED:     inverse_operations: List[Callable] = field(default_factory=list)
+# DISABLED:     metrics: Dict[str, float] = field(default_factory=dict)
+# DISABLED:     score: float = 0.0
+# DISABLED:     timestamp: datetime = field(default_factory=datetime.now)
+# DISABLED:     metadata: Dict[str, Any] = field(default_factory=dict)
+# DISABLED:     generation: int = 0
 
-    def __init__(self,
-                 binary_data: bytes = None,
-                 parent_state_id: Optional[str] = None,
-                 operation_applied: Optional[Dict] = None,
-                 operation_history: Optional[List[Dict]] = None,
-                 inverse_operations: Optional[List[Callable]] = None,
-                 metadata: Optional[Dict[str, Any]] = None,
-                 generation: int = 0):
+# DISABLED:     def __init__(self,
+# DISABLED:                  binary_data: bytes = None,
+# DISABLED:                  parent_state_id: Optional[str] = None,
+# DISABLED:                  operation_applied: Optional[Dict] = None,
+# DISABLED:                  operation_history: Optional[List[Dict]] = None,
+# DISABLED:                  inverse_operations: Optional[List[Callable]] = None,
+# DISABLED:                  metadata: Optional[Dict[str, Any]] = None,
+# DISABLED:                  generation: int = 0):
         """Initialize a new state."""
-        self.binary_data = binary_data or bytes()
-        self.data = self.binary_data  # Keep data and binary_data synchronized
-        self.state_id = self.calculate_hash(self.binary_data)
-        self.parent_state_id = parent_state_id
-        self.operation_applied = operation_applied
-        self.operation_history = operation_history or []
-        self.inverse_operations = inverse_operations or []
-        self.metrics = {}
-        self.score = 0.0
-        self.timestamp = datetime.now()
-        self.metadata = metadata or {}
-        self.generation = generation
+# DISABLED:         self.binary_data = binary_data or bytes()
+# DISABLED:         self.data = self.binary_data  # Keep data and binary_data synchronized
+# DISABLED:         self.state_id = self.calculate_hash(self.binary_data)
+# DISABLED:         self.parent_state_id = parent_state_id
+# DISABLED:         self.operation_applied = operation_applied
+# DISABLED:         self.operation_history = operation_history or []
+# DISABLED:         self.inverse_operations = inverse_operations or []
+# DISABLED:         self.metrics = {}
+# DISABLED:         self.score = 0.0
+# DISABLED:         self.timestamp = datetime.now()
+# DISABLED:         self.metadata = metadata or {}
+# DISABLED:         self.generation = generation
 
-    @staticmethod
-    def calculate_hash(binary_data: bytes) -> str:
+# DISABLED:     @staticmethod
+# DISABLED:     def calculate_hash(binary_data: bytes) -> str:
         """Generate SHA-256 hash for state identification."""
-        return hashlib.sha256(binary_data).hexdigest()
+# DISABLED:         return hashlib.sha256(binary_data).hexdigest()
 
-    def apply_operation(self,
-                       operation_name: str,
-                       params: Dict[str, Any],
-                       inverse_function: Callable,
-                       cost: float) -> 'State':
+# DISABLED:     def apply_operation(self,
+# DISABLED:                        operation_name: str,
+# DISABLED:                        params: Dict[str, Any],
+# DISABLED:                        inverse_function: Callable,
+# DISABLED:                        cost: float) -> 'State':
         """Apply an operation and create a new state."""
         # Record operation in history
-        operation_entry = {
-            'operation': operation_name,
-            'params': params,
-            'cost': cost,
-            'timestamp': datetime.now().isoformat()
-        }
+# DISABLED:         operation_entry = {
+# DISABLED:             'operation': operation_name,
+# DISABLED:             'params': params,
+# DISABLED:             'cost': cost,
+# DISABLED:             'timestamp': datetime.now().isoformat()
+# DISABLED:         }
 
         # Create new state with updated information
-        new_state = State(
-            binary_data=self.binary_data,
-            parent_state_id=self.state_id,
-            operation_applied=operation_entry,
-            operation_history=self.operation_history + [operation_entry],
-            inverse_operations=self.inverse_operations + [inverse_function],
-            metadata=self.metadata.copy(),
-            generation=self.generation + 1
-        )
+# DISABLED:         new_state = State(
+# DISABLED:             binary_data=self.binary_data,
+# DISABLED:             parent_state_id=self.state_id,
+# DISABLED:             operation_applied=operation_entry,
+# DISABLED:             operation_history=self.operation_history + [operation_entry],
+# DISABLED:             inverse_operations=self.inverse_operations + [inverse_function],
+# DISABLED:             metadata=self.metadata.copy(),
+# DISABLED:             generation=self.generation + 1
+# DISABLED:         )
 
-        return new_state
+# DISABLED:         return new_state
 
-    def add_to_history(self, operation: Dict[str, Any]) -> None:
+# DISABLED:     def add_to_history(self, operation: Dict[str, Any]) -> None:
         """Record operation in history."""
-        self.operation_history.append(operation)
+# DISABLED:         self.operation_history.append(operation)
 
-    def get_transformation_chain(self) -> List[Dict]:
+# DISABLED:     def get_transformation_chain(self) -> List[Dict]:
         """Get complete operation chain from root to current state."""
-        return self.operation_history.copy()
+# DISABLED:         return self.operation_history.copy()
 
-    def apply_inverse_chain(self) -> bytes:
+# DISABLED:     def apply_inverse_chain(self) -> bytes:
         """Apply all inverse operations to get original data."""
-        current_data = self.binary_data
+# DISABLED:         current_data = self.binary_data
 
         # Apply inverse operations in reverse order
-        for inverse_fn in reversed(self.inverse_operations):
-            current_data = inverse_fn(current_data)
+# DISABLED:         for inverse_fn in reversed(self.inverse_operations):
+# DISABLED:             current_data = inverse_fn(current_data)
 
-        return current_data
+# DISABLED:         return current_data
 
-    def validate(self) -> bool:
+# DISABLED:     def validate(self) -> bool:
         """Validate state consistency."""
         # Check if binary_data is not empty
-        if not self.binary_data:
-            return False
+# DISABLED:         if not self.binary_data:
+# DISABLED:             return False
 
         # Verify state_id matches binary hash
-        if self.state_id != self.calculate_hash(self.binary_data):
-            return False
+# DISABLED:         if self.state_id != self.calculate_hash(self.binary_data):
+# DISABLED:             return False
 
         # Check operation_history consistency
-        if len(self.operation_history) != self.generation:
-            return False
+# DISABLED:         if len(self.operation_history) != self.generation:
+# DISABLED:             return False
 
         # Check inverse_operations stack matches history length
-        if len(self.inverse_operations) != len(self.operation_history):
-            return False
+# DISABLED:         if len(self.inverse_operations) != len(self.operation_history):
+# DISABLED:             return False
 
-        return True
+# DISABLED:         return True
 
-    def get_size(self) -> int:
+# DISABLED:     def get_size(self) -> int:
         """Get size of binary data in bytes."""
-        return len(self.binary_data)
+# DISABLED:         return len(self.binary_data)
 
-    def get_bit_length(self) -> int:
+# DISABLED:     def get_bit_length(self) -> int:
         """Get size of binary data in bits."""
-        return len(self.binary_data) * 8
+# DISABLED:         return len(self.binary_data) * 8
 
-    def get_id(self) -> str:
+# DISABLED:     def get_id(self) -> str:
         """Get the state ID."""
-        return self.state_id
+# DISABLED:         return self.state_id
 
-    def copy(self) -> 'State':
+# DISABLED:     def copy(self) -> 'State':
         """Create a shallow copy of the state."""
-        new_state = State(
-            binary_data=self.binary_data,
-            parent_state_id=self.parent_state_id,
-            operation_applied=self.operation_applied,
-            operation_history=self.operation_history.copy(),
-            inverse_operations=self.inverse_operations.copy(),
-            metadata=self.metadata.copy(),
-            generation=self.generation
-        )
-        new_state.metrics = self.metrics.copy()
-        new_state.score = self.score
-        new_state.timestamp = self.timestamp
+# DISABLED:         new_state = State(
+# DISABLED:             binary_data=self.binary_data,
+# DISABLED:             parent_state_id=self.parent_state_id,
+# DISABLED:             operation_applied=self.operation_applied,
+# DISABLED:             operation_history=self.operation_history.copy(),
+# DISABLED:             inverse_operations=self.inverse_operations.copy(),
+# DISABLED:             metadata=self.metadata.copy(),
+# DISABLED:             generation=self.generation
+# DISABLED:         )
+# DISABLED:         new_state.metrics = self.metrics.copy()
+# DISABLED:         new_state.score = self.score
+# DISABLED:         new_state.timestamp = self.timestamp
 
-        return new_state
+# DISABLED:         return new_state
 
-    def __str__(self) -> str:
+# DISABLED:     def __str__(self) -> str:
         """String representation of state."""
-        return (f"State(id={self.state_id[:8]}..., "
-                f"size={len(self.binary_data)} bytes, "
-                f"generation={self.generation}, "
-                f"score={self.score:.2f})")
+# DISABLED:         return (f"State(id={self.state_id[:8]}..., "
+# DISABLED:                 f"size={len(self.binary_data)} bytes, "
+# DISABLED:                 f"generation={self.generation}, "
+# DISABLED:                 f"score={self.score:.2f})")
 
-    def __repr__(self) -> str:
+# DISABLED:     def __repr__(self) -> str:
         """Detailed string representation of state."""
-        return (f"State(state_id='{self.state_id}', "
-                f"binary_data_size={len(self.binary_data)}, "
-                f"parent_state_id='{self.parent_state_id}', "
-                f"generation={self.generation}, "
-                f"score={self.score:.4f})")
+# DISABLED:         return (f"State(state_id='{self.state_id}', "
+# DISABLED:                 f"binary_data_size={len(self.binary_data)}, "
+# DISABLED:                 f"parent_state_id='{self.parent_state_id}', "
+# DISABLED:                 f"generation={self.generation}, "
+# DISABLED:                 f"score={self.score:.4f})")
 
 
 # Create alias for BinaryState to match the expected interface
-BinaryState = State
+# DISABLED: BinaryState = State

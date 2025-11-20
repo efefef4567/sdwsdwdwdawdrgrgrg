@@ -1,365 +1,365 @@
 """
-Global Error Handler for BSEE
+# DISABLED: Global Error Handler for BSEE
 
-Centralized error handling with automatic recovery strategies for the
-Binary Structure Exploration Engine.
+# DISABLED: Centralized error handling with automatic recovery strategies for the
+# DISABLED: Binary Structure Exploration Engine.
 """
 
-import gc
-import time
-import traceback
-import logging
-from enum import Enum
-from typing import Dict, Callable, Any, Optional, List
-from dataclasses import dataclass, field
+# DISABLED: import gc
+# DISABLED: import time
+# DISABLED: import traceback
+# DISABLED: import logging
+# DISABLED: from enum import Enum
+# DISABLED: from typing import Dict, Callable, Any, Optional, List
+# DISABLED: from dataclasses import dataclass, field
 
 
-class ErrorCategory(Enum):
+# DISABLED: class ErrorCategory(Enum):
     """Categories of errors for different handling strategies."""
-    RECOVERABLE = "recoverable"  # Can continue with fallback
-    FATAL = "fatal"              # Must stop execution
-    WARNING = "warning"          # Log and continue
+# DISABLED:     RECOVERABLE = "recoverable"  # Can continue with fallback
+# DISABLED:     FATAL = "fatal"              # Must stop execution
+# DISABLED:     WARNING = "warning"          # Log and continue
 
 
-@dataclass
-class ErrorContext:
+# DISABLED: @dataclass
+# DISABLED: class ErrorContext:
     """Context information for error handling."""
-    strategy: Optional[str] = None
-    operation: Optional[str] = None
-    iteration: Optional[int] = None
-    state_score: Optional[float] = None
-    file_path: Optional[str] = None
-    additional_info: Dict[str, Any] = field(default_factory=dict)
+# DISABLED:     strategy: Optional[str] = None
+# DISABLED:     operation: Optional[str] = None
+# DISABLED:     iteration: Optional[int] = None
+# DISABLED:     state_score: Optional[float] = None
+# DISABLED:     file_path: Optional[str] = None
+# DISABLED:     additional_info: Dict[str, Any] = field(default_factory=dict)
 
 
-@dataclass
-class ErrorRecord:
+# DISABLED: @dataclass
+# DISABLED: class ErrorRecord:
     """Record of an error that occurred."""
-    timestamp: float
-    exception_type: str
-    exception_message: str
-    context: ErrorContext
-    recovery_attempted: bool
-    recovery_successful: bool
-    stack_trace: str
+# DISABLED:     timestamp: float
+# DISABLED:     exception_type: str
+# DISABLED:     exception_message: str
+# DISABLED:     context: ErrorContext
+# DISABLED:     recovery_attempted: bool
+# DISABLED:     recovery_successful: bool
+# DISABLED:     stack_trace: str
 
 
-class GlobalErrorHandler:
+# DISABLED: class GlobalErrorHandler:
     """Centralized error handling with automatic recovery strategies."""
 
-    def __init__(self, logger: Optional[logging.Logger] = None):
+# DISABLED:     def __init__(self, logger: Optional[logging.Logger] = None):
         """Initialize global error handler."""
-        self.logger = logger or logging.getLogger(__name__)
-        self.error_counts: Dict[str, int] = {}
-        self.recovery_strategies: Dict[str, Callable] = {}
-        self.error_history: List[ErrorRecord] = []
-        self.max_history_size = 1000
-        self._register_builtin_strategies()
+# DISABLED:         self.logger = logger or logging.getLogger(__name__)
+# DISABLED:         self.error_counts: Dict[str, int] = {}
+# DISABLED:         self.recovery_strategies: Dict[str, Callable] = {}
+# DISABLED:         self.error_history: List[ErrorRecord] = []
+# DISABLED:         self.max_history_size = 1000
+# DISABLED:         self._register_builtin_strategies()
 
-    def handle_exception(self, exception: Exception, context: Dict[str, Any]) -> bool:
+# DISABLED:     def handle_exception(self, exception: Exception, context: Dict[str, Any]) -> bool:
         """
-        Handle exception with appropriate recovery strategy.
+# DISABLED:         Handle exception with appropriate recovery strategy.
 
-        Args:
-            exception: The exception that occurred
-            context: Execution context (strategy, operation, iteration, etc.)
+# DISABLED:         Args:
+# DISABLED:             exception: The exception that occurred
+# DISABLED:             context: Execution context (strategy, operation, iteration, etc.)
 
-        Returns:
-            bool: True if recovery successful, False if execution should stop
+# DISABLED:         Returns:
+# DISABLED:             bool: True if recovery successful, False if execution should stop
         """
-        exception_type = type(exception).__name__
-        error_context = ErrorContext(**context)
+# DISABLED:         exception_type = type(exception).__name__
+# DISABLED:         error_context = ErrorContext(**context)
 
         # Log error with full context
-        self._log_error(exception, error_context)
+# DISABLED:         self._log_error(exception, error_context)
 
         # Update error statistics
-        self._update_error_stats(exception_type)
+# DISABLED:         self._update_error_stats(exception_type)
 
         # Get recovery strategy
-        strategy = self.recovery_strategies.get(exception_type)
-        if not strategy:
+# DISABLED:         strategy = self.recovery_strategies.get(exception_type)
+# DISABLED:         if not strategy:
             # Default handling based on exception type
-            return self._default_recovery(exception, error_context)
+# DISABLED:             return self._default_recovery(exception, error_context)
 
         # Execute recovery strategy
-        recovery_success = False
-        try:
-            recovery_success = strategy(exception, error_context, self.logger)
-        except Exception as recovery_error:
-            self.logger.error(f"Recovery strategy failed for {exception_type}: {recovery_error}")
-            recovery_success = False
+# DISABLED:         recovery_success = False
+# DISABLED:         try:
+# DISABLED:             recovery_success = strategy(exception, error_context, self.logger)
+# DISABLED:         except Exception as recovery_error:
+# DISABLED:             self.logger.error(f"Recovery strategy failed for {exception_type}: {recovery_error}")
+# DISABLED:             recovery_success = False
 
         # Record the error
-        error_record = ErrorRecord(
-            timestamp=time.time(),
-            exception_type=exception_type,
-            exception_message=str(exception),
-            context=error_context,
-            recovery_attempted=True,
-            recovery_successful=recovery_success,
-            stack_trace=traceback.format_exc()
-        )
-        self._add_error_record(error_record)
+# DISABLED:         error_record = ErrorRecord(
+# DISABLED:             timestamp=time.time(),
+# DISABLED:             exception_type=exception_type,
+# DISABLED:             exception_message=str(exception),
+# DISABLED:             context=error_context,
+# DISABLED:             recovery_attempted=True,
+# DISABLED:             recovery_successful=recovery_success,
+# DISABLED:             stack_trace=traceback.format_exc()
+# DISABLED:         )
+# DISABLED:         self._add_error_record(error_record)
 
-        return recovery_success
+# DISABLED:         return recovery_success
 
-    def register_recovery_strategy(self, exception_type: str, strategy: Callable) -> None:
+# DISABLED:     def register_recovery_strategy(self, exception_type: str, strategy: Callable) -> None:
         """Register custom recovery strategy for exception type."""
-        self.recovery_strategies[exception_type] = strategy
-        self.logger.info(f"Registered recovery strategy for {exception_type}")
+# DISABLED:         self.recovery_strategies[exception_type] = strategy
+# DISABLED:         self.logger.info(f"Registered recovery strategy for {exception_type}")
 
-    def get_error_statistics(self) -> Dict[str, Any]:
+# DISABLED:     def get_error_statistics(self) -> Dict[str, Any]:
         """Return comprehensive statistics about handled errors."""
-        total_errors = sum(self.error_counts.values())
+# DISABLED:         total_errors = sum(self.error_counts.values())
 
         # Calculate recovery success rate
-        recovery_attempts = [r for r in self.error_history if r.recovery_attempted]
-        successful_recoveries = [r for r in recovery_attempts if r.recovery_successful]
-        recovery_success_rate = (
-            len(successful_recoveries) / len(recovery_attempts) * 100
-            if recovery_attempts else 0
-        )
+# DISABLED:         recovery_attempts = [r for r in self.error_history if r.recovery_attempted]
+# DISABLED:         successful_recoveries = [r for r in recovery_attempts if r.recovery_successful]
+# DISABLED:         recovery_success_rate = (
+# DISABLED:             len(successful_recoveries) / len(recovery_attempts) * 100
+# DISABLED:             if recovery_attempts else 0
+# DISABLED:         )
 
         # Most common errors
-        sorted_errors = sorted(self.error_counts.items(), key=lambda x: x[1], reverse=True)
+# DISABLED:         sorted_errors = sorted(self.error_counts.items(), key=lambda x: x[1], reverse=True)
 
-        return {
-            'total_errors': total_errors,
-            'error_types': dict(self.error_counts),
-            'most_common_errors': sorted_errors[:10],
-            'recent_errors': self.error_history[-10:],  # Last 10 errors
-            'recovery_success_rate': recovery_success_rate,
-            'total_recovery_attempts': len(recovery_attempts),
-            'successful_recoveries': len(successful_recoveries),
-            'registered_strategies': list(self.recovery_strategies.keys())
-        }
+# DISABLED:         return {
+# DISABLED:             'total_errors': total_errors,
+# DISABLED:             'error_types': dict(self.error_counts),
+# DISABLED:             'most_common_errors': sorted_errors[:10],
+# DISABLED:             'recent_errors': self.error_history[-10:],  # Last 10 errors
+# DISABLED:             'recovery_success_rate': recovery_success_rate,
+# DISABLED:             'total_recovery_attempts': len(recovery_attempts),
+# DISABLED:             'successful_recoveries': len(successful_recoveries),
+# DISABLED:             'registered_strategies': list(self.recovery_strategies.keys())
+# DISABLED:         }
 
-    def get_recent_errors(self, count: int = 10, exception_type: str = None) -> List[ErrorRecord]:
+# DISABLED:     def get_recent_errors(self, count: int = 10, exception_type: str = None) -> List[ErrorRecord]:
         """Get recent errors, optionally filtered by type."""
-        errors = self.error_history
-        if exception_type:
-            errors = [e for e in errors if e.exception_type == exception_type]
-        return errors[-count:]
+# DISABLED:         errors = self.error_history
+# DISABLED:         if exception_type:
+# DISABLED:             errors = [e for e in errors if e.exception_type == exception_type]
+# DISABLED:         return errors[-count:]
 
-    def clear_error_history(self) -> None:
+# DISABLED:     def clear_error_history(self) -> None:
         """Clear error history."""
-        self.error_history.clear()
-        self.error_counts.clear()
-        self.logger.info("Error history cleared")
+# DISABLED:         self.error_history.clear()
+# DISABLED:         self.error_counts.clear()
+# DISABLED:         self.logger.info("Error history cleared")
 
-    def _register_builtin_strategies(self) -> None:
+# DISABLED:     def _register_builtin_strategies(self) -> None:
         """Register built-in recovery strategies."""
 
-        def memory_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
+# DISABLED:         def memory_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
             """Handle memory errors with cleanup and parameter reduction."""
-            logger.warning(f"Memory error detected in {ctx.strategy or 'unknown'}, attempting recovery")
+# DISABLED:             logger.warning(f"Memory error detected in {ctx.strategy or 'unknown'}, attempting recovery")
 
             # Force garbage collection
-            collected = gc.collect()
-            logger.info(f"Garbage collection freed {collected} objects")
+# DISABLED:             collected = gc.collect()
+# DISABLED:             logger.info(f"Garbage collection freed {collected} objects")
 
             # Suggest memory reduction strategies based on context
-            suggestions = []
-            if ctx.strategy:
-                if 'mcts' in ctx.strategy.lower():
-                    suggestions.append("Reduce max_children or simulation_count")
-                    suggestions.append("Prune tree more aggressively")
-                elif 'genetic' in ctx.strategy.lower():
-                    suggestions.append("Reduce population_size")
-                    suggestions.append("Remove less fit individuals")
-                elif 'beam' in ctx.strategy.lower():
-                    suggestions.append("Reduce beam_width")
-                elif 'annealing' in ctx.strategy.lower():
-                    suggestions.append("Reduce iteration_count")
+# DISABLED:             suggestions = []
+# DISABLED:             if ctx.strategy:
+# DISABLED:                 if 'mcts' in ctx.strategy.lower():
+# DISABLED:                     suggestions.append("Reduce max_children or simulation_count")
+# DISABLED:                     suggestions.append("Prune tree more aggressively")
+# DISABLED:                 elif 'genetic' in ctx.strategy.lower():
+# DISABLED:                     suggestions.append("Reduce population_size")
+# DISABLED:                     suggestions.append("Remove less fit individuals")
+# DISABLED:                 elif 'beam' in ctx.strategy.lower():
+# DISABLED:                     suggestions.append("Reduce beam_width")
+# DISABLED:                 elif 'annealing' in ctx.strategy.lower():
+# DISABLED:                     suggestions.append("Reduce iteration_count")
 
-            if suggestions:
-                logger.warning(f"Suggested parameter adjustments: {', '.join(suggestions)}")
+# DISABLED:             if suggestions:
+# DISABLED:                 logger.warning(f"Suggested parameter adjustments: {', '.join(suggestions)}")
 
-            return True  # Continue with reduced memory usage
+# DISABLED:             return True  # Continue with reduced memory usage
 
-        def timeout_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
+# DISABLED:         def timeout_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
             """Handle timeout errors by returning early."""
-            logger.warning(f"Timeout detected in {ctx.strategy or 'unknown'}, returning early")
+# DISABLED:             logger.warning(f"Timeout detected in {ctx.strategy or 'unknown'}, returning early")
 
-            if ctx.iteration and ctx.state_score:
-                logger.info(f"Returning best known solution at iteration {ctx.iteration} with score {ctx.state_score}")
+# DISABLED:             if ctx.iteration and ctx.state_score:
+# DISABLED:                 logger.info(f"Returning best known solution at iteration {ctx.iteration} with score {ctx.state_score}")
 
-            return True  # Continue with partial result
+# DISABLED:             return True  # Continue with partial result
 
-        def import_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
+# DISABLED:         def import_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
             """Handle import errors with fallback implementations."""
-            logger.warning(f"Import error: {exc}")
+# DISABLED:             logger.warning(f"Import error: {exc}")
 
-            if ctx.operation:
+# DISABLED:             if ctx.operation:
                 # Check if we have fallback for this operation
-                fallback_operations = {
-                    'dct_transform': 'numpy_fallback',
-                    'dwt_transform': 'haar_fallback',
-                    'fft_transform': 'numpy_only',
-                    'huffman_encode': 'pure_python',
-                    'run_length_encode': 'pure_python',
-                    'lz77_encode': 'pure_python',
-                    'arithmetic_encode': 'pure_python'
-                }
+# DISABLED:                 fallback_operations = {
+# DISABLED:                     'dct_transform': 'numpy_fallback',
+# DISABLED:                     'dwt_transform': 'haar_fallback',
+# DISABLED:                     'fft_transform': 'numpy_only',
+# DISABLED:                     'huffman_encode': 'pure_python',
+# DISABLED:                     'run_length_encode': 'pure_python',
+# DISABLED:                     'lz77_encode': 'pure_python',
+# DISABLED:                     'arithmetic_encode': 'pure_python'
+# DISABLED:                 }
 
-                if ctx.operation in fallback_operations:
-                    logger.warning(f"Using {fallback_operations[ctx.operation]} for {ctx.operation}")
-                    return True
+# DISABLED:                 if ctx.operation in fallback_operations:
+# DISABLED:                     logger.warning(f"Using {fallback_operations[ctx.operation]} for {ctx.operation}")
+# DISABLED:                     return True
 
-            return False  # Can't recover from this import error
+# DISABLED:             return False  # Can't recover from this import error
 
-        def value_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
+# DISABLED:         def value_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
             """Handle value errors with parameter validation and defaults."""
-            logger.warning(f"Value error in {ctx.operation or 'unknown operation'}: {exc}")
+# DISABLED:             logger.warning(f"Value error in {ctx.operation or 'unknown operation'}: {exc}")
 
             # Use default parameters for common value errors
-            error_msg = str(exc).lower()
-            if 'window size' in error_msg or 'buffer size' in error_msg:
-                logger.warning("Using default window/buffer sizes")
-                return True
-            elif 'run length' in error_msg:
-                logger.warning("Using default run length parameters")
-                return True
-            elif 'frequency' in error_msg or 'probability' in error_msg:
-                logger.warning("Using uniform probability distribution")
-                return True
+# DISABLED:             error_msg = str(exc).lower()
+# DISABLED:             if 'window size' in error_msg or 'buffer size' in error_msg:
+# DISABLED:                 logger.warning("Using default window/buffer sizes")
+# DISABLED:                 return True
+# DISABLED:             elif 'run length' in error_msg:
+# DISABLED:                 logger.warning("Using default run length parameters")
+# DISABLED:                 return True
+# DISABLED:             elif 'frequency' in error_msg or 'probability' in error_msg:
+# DISABLED:                 logger.warning("Using uniform probability distribution")
+# DISABLED:                 return True
 
-            return False
+# DISABLED:             return False
 
-        def io_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
+# DISABLED:         def io_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
             """Handle I/O errors with retries and fallbacks."""
-            logger.warning(f"I/O error: {exc}")
+# DISABLED:             logger.warning(f"I/O error: {exc}")
 
             # Retry with exponential backoff would be implemented here
             # For now, just log and continue
-            if ctx.file_path:
-                logger.warning(f"Failed to access {ctx.file_path}, will retry later")
+# DISABLED:             if ctx.file_path:
+# DISABLED:                 logger.warning(f"Failed to access {ctx.file_path}, will retry later")
 
-            return True  # Continue without the file
+# DISABLED:             return True  # Continue without the file
 
-        def overflow_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
+# DISABLED:         def overflow_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
             """Handle overflow errors with precision reduction."""
-            logger.warning(f"Overflow error in {ctx.operation or 'unknown'}, reducing precision")
+# DISABLED:             logger.warning(f"Overflow error in {ctx.operation or 'unknown'}, reducing precision")
 
             # Suggest precision adjustments
-            if 'arithmetic' in ctx.operation.lower():
-                logger.warning("Reduce arithmetic precision or use fixed-point arithmetic")
-            elif 'transform' in ctx.operation.lower():
-                logger.warning("Use smaller data chunks or reduce transform size")
+# DISABLED:             if 'arithmetic' in ctx.operation.lower():
+# DISABLED:                 logger.warning("Reduce arithmetic precision or use fixed-point arithmetic")
+# DISABLED:             elif 'transform' in ctx.operation.lower():
+# DISABLED:                 logger.warning("Use smaller data chunks or reduce transform size")
 
-            return True
+# DISABLED:             return True
 
-        def zero_division_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
+# DISABLED:         def zero_division_error_recovery(exc, ctx: ErrorContext, logger: logging.Logger) -> bool:
             """Handle division by zero with epsilon values."""
-            logger.warning(f"Division by zero in {ctx.operation or 'unknown'}, using epsilon")
+# DISABLED:             logger.warning(f"Division by zero in {ctx.operation or 'unknown'}, using epsilon")
 
             # Use small epsilon to avoid division by zero
-            logger.warning("Applying epsilon value to avoid division by zero")
-            return True
+# DISABLED:             logger.warning("Applying epsilon value to avoid division by zero")
+# DISABLED:             return True
 
         # Register strategies
-        self.register_recovery_strategy('MemoryError', memory_error_recovery)
-        self.register_recovery_strategy('TimeoutError', timeout_error_recovery)
-        self.register_recovery_strategy('ImportError', import_error_recovery)
-        self.register_recovery_strategy('ValueError', value_error_recovery)
-        self.register_recovery_strategy('IOError', io_error_recovery)
-        self.register_recovery_strategy('OverflowError', overflow_error_recovery)
-        self.register_recovery_strategy('ZeroDivisionError', zero_division_error_recovery)
+# DISABLED:         self.register_recovery_strategy('MemoryError', memory_error_recovery)
+# DISABLED:         self.register_recovery_strategy('TimeoutError', timeout_error_recovery)
+# DISABLED:         self.register_recovery_strategy('ImportError', import_error_recovery)
+# DISABLED:         self.register_recovery_strategy('ValueError', value_error_recovery)
+# DISABLED:         self.register_recovery_strategy('IOError', io_error_recovery)
+# DISABLED:         self.register_recovery_strategy('OverflowError', overflow_error_recovery)
+# DISABLED:         self.register_recovery_strategy('ZeroDivisionError', zero_division_error_recovery)
 
-    def _default_recovery(self, exception: Exception, context: ErrorContext) -> bool:
+# DISABLED:     def _default_recovery(self, exception: Exception, context: ErrorContext) -> bool:
         """Default recovery strategy when no specific strategy is registered."""
-        exception_type = type(exception).__name__
+# DISABLED:         exception_type = type(exception).__name__
 
         # Categorize exception type
-        if any(keyword in exception_type.lower() for keyword in ['fatal', 'critical', 'system']):
-            self.logger.error(f"Fatal error {exception_type}: {exception}")
-            return False
-        elif any(keyword in exception_type.lower() for keyword in ['warning', 'user']):
-            self.logger.warning(f"Warning error {exception_type}: {exception}")
-            return True
-        else:
+# DISABLED:         if any(keyword in exception_type.lower() for keyword in ['fatal', 'critical', 'system']):
+# DISABLED:             self.logger.error(f"Fatal error {exception_type}: {exception}")
+# DISABLED:             return False
+# DISABLED:         elif any(keyword in exception_type.lower() for keyword in ['warning', 'user']):
+# DISABLED:             self.logger.warning(f"Warning error {exception_type}: {exception}")
+# DISABLED:             return True
+# DISABLED:         else:
             # Try to continue with most errors
-            self.logger.error(f"Unhandled error {exception_type}: {exception}")
-            return True
+# DISABLED:             self.logger.error(f"Unhandled error {exception_type}: {exception}")
+# DISABLED:             return True
 
-    def _log_error(self, exception: Exception, context: ErrorContext) -> None:
+# DISABLED:     def _log_error(self, exception: Exception, context: ErrorContext) -> None:
         """Log error with full context."""
-        context_str = ", ".join([
-            f"{k}={v}" for k, v in {
-                'strategy': context.strategy,
-                'operation': context.operation,
-                'iteration': context.iteration,
-                'state_score': context.state_score
-            }.items() if v is not None
-        ])
+# DISABLED:         context_str = ", ".join([
+# DISABLED:             f"{k}={v}" for k, v in {
+# DISABLED:                 'strategy': context.strategy,
+# DISABLED:                 'operation': context.operation,
+# DISABLED:                 'iteration': context.iteration,
+# DISABLED:                 'state_score': context.state_score
+# DISABLED:             }.items() if v is not None
+# DISABLED:         ])
 
-        if context_str:
-            self.logger.error(f"{type(exception).__name__} in {context_str}: {exception}")
-        else:
-            self.logger.error(f"{type(exception).__name__}: {exception}")
+# DISABLED:         if context_str:
+# DISABLED:             self.logger.error(f"{type(exception).__name__} in {context_str}: {exception}")
+# DISABLED:         else:
+# DISABLED:             self.logger.error(f"{type(exception).__name__}: {exception}")
 
-    def _update_error_stats(self, exception_type: str) -> None:
+# DISABLED:     def _update_error_stats(self, exception_type: str) -> None:
         """Update error statistics."""
-        self.error_counts[exception_type] = self.error_counts.get(exception_type, 0) + 1
+# DISABLED:         self.error_counts[exception_type] = self.error_counts.get(exception_type, 0) + 1
 
-    def _add_error_record(self, record: ErrorRecord) -> None:
+# DISABLED:     def _add_error_record(self, record: ErrorRecord) -> None:
         """Add error record to history."""
-        self.error_history.append(record)
+# DISABLED:         self.error_history.append(record)
 
         # Limit history size
-        if len(self.error_history) > self.max_history_size:
-            self.error_history = self.error_history[-self.max_history_size:]
+# DISABLED:         if len(self.error_history) > self.max_history_size:
+# DISABLED:             self.error_history = self.error_history[-self.max_history_size:]
 
-    def export_error_log(self, filename: str = None) -> str:
+# DISABLED:     def export_error_log(self, filename: str = None) -> str:
         """Export error log to file."""
-        import json
-        from datetime import datetime
+# DISABLED:         import json
+# DISABLED:         from datetime import datetime
 
-        if filename is None:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"bsee_error_log_{timestamp}.json"
+# DISABLED:         if filename is None:
+# DISABLED:             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+# DISABLED:             filename = f"bsee_error_log_{timestamp}.json"
 
-        error_data = {
-            'export_timestamp': datetime.now().isoformat(),
-            'statistics': self.get_error_statistics(),
-            'error_history': [
-                {
-                    'timestamp': r.timestamp,
-                    'exception_type': r.exception_type,
-                    'exception_message': r.exception_message,
-                    'context': {
-                        'strategy': r.context.strategy,
-                        'operation': r.context.operation,
-                        'iteration': r.context.iteration,
-                        'state_score': r.context.state_score
-                    },
-                    'recovery_attempted': r.recovery_attempted,
-                    'recovery_successful': r.recovery_successful
-                }
-                for r in self.error_history
-            ]
-        }
+# DISABLED:         error_data = {
+# DISABLED:             'export_timestamp': datetime.now().isoformat(),
+# DISABLED:             'statistics': self.get_error_statistics(),
+# DISABLED:             'error_history': [
+# DISABLED:                 {
+# DISABLED:                     'timestamp': r.timestamp,
+# DISABLED:                     'exception_type': r.exception_type,
+# DISABLED:                     'exception_message': r.exception_message,
+# DISABLED:                     'context': {
+# DISABLED:                         'strategy': r.context.strategy,
+# DISABLED:                         'operation': r.context.operation,
+# DISABLED:                         'iteration': r.context.iteration,
+# DISABLED:                         'state_score': r.context.state_score
+# DISABLED:                     },
+# DISABLED:                     'recovery_attempted': r.recovery_attempted,
+# DISABLED:                     'recovery_successful': r.recovery_successful
+# DISABLED:                 }
+# DISABLED:                 for r in self.error_history
+# DISABLED:             ]
+# DISABLED:         }
 
-        with open(filename, 'w') as f:
-            json.dump(error_data, f, indent=2, default=str)
+# DISABLED:         with open(filename, 'w') as f:
+# DISABLED:             json.dump(error_data, f, indent=2, default=str)
 
-        self.logger.info(f"Error log exported to: {filename}")
-        return filename
+# DISABLED:         self.logger.info(f"Error log exported to: {filename}")
+# DISABLED:         return filename
 
 
 # Global instance for easy access
-_global_error_handler = None
+# DISABLED: _global_error_handler = None
 
 
-def get_global_error_handler() -> GlobalErrorHandler:
+# DISABLED: def get_global_error_handler() -> GlobalErrorHandler:
     """Get or create the global error handler instance."""
-    global _global_error_handler
-    if _global_error_handler is None:
-        _global_error_handler = GlobalErrorHandler()
-    return _global_error_handler
+# DISABLED:     global _global_error_handler
+# DISABLED:     if _global_error_handler is None:
+# DISABLED:         _global_error_handler = GlobalErrorHandler()
+# DISABLED:     return _global_error_handler
 
 
-def handle_exception(exception: Exception, **context) -> bool:
+# DISABLED: def handle_exception(exception: Exception, **context) -> bool:
     """Convenience function to handle exceptions using global handler."""
-    return get_global_error_handler().handle_exception(exception, context)
+# DISABLED:     return get_global_error_handler().handle_exception(exception, context)

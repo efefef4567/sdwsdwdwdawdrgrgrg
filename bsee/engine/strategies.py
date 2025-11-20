@@ -1,23 +1,23 @@
 """
-Strategies module for BSEE
-Contains search strategy implementations.
+# DISABLED: Strategies module for BSEE
+# DISABLED: Contains search strategy implementations.
 """
 
-from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, List
+# DISABLED: from abc import ABC, abstractmethod
+# DISABLED: from typing import Any, Dict, Optional, List
 
 
-class Strategy(ABC):
+# DISABLED: class Strategy(ABC):
     """Base class for search strategies"""
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
-        self.config = config or {}
-        self.name = self.__class__.__name__
+# DISABLED:     def __init__(self, config: Optional[Dict[str, Any]] = None):
+# DISABLED:         self.config = config or {}
+# DISABLED:         self.name = self.__class__.__name__
 
-    @abstractmethod
-    def analyze(self, initial_state, max_iterations: int = 100):
+# DISABLED:     @abstractmethod
+# DISABLED:     def analyze(self, initial_state, max_iterations: int = 100):
         """Run strategy analysis on initial state"""
-        pass
+# DISABLED:         pass
 
-    def __str__(self):
-        return f"Strategy({self.name})"
+# DISABLED:     def __str__(self):
+# DISABLED:         return f"Strategy({self.name})"

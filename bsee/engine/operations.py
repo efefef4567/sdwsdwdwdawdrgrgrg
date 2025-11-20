@@ -1,23 +1,23 @@
 """
-Operations module for BSEE
-Contains binary operation definitions.
+# DISABLED: Operations module for BSEE
+# DISABLED: Contains binary operation definitions.
 """
 
-from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional
+# DISABLED: from abc import ABC, abstractmethod
+# DISABLED: from typing import Any, Dict, Optional
 
 
-class Operation(ABC):
+# DISABLED: class Operation(ABC):
     """Base class for binary operations"""
 
-    def __init__(self, name: str, config: Optional[Dict[str, Any]] = None):
-        self.name = name
-        self.config = config or {}
+# DISABLED:     def __init__(self, name: str, config: Optional[Dict[str, Any]] = None):
+# DISABLED:         self.name = name
+# DISABLED:         self.config = config or {}
 
-    @abstractmethod
-    def apply(self, state):
+# DISABLED:     @abstractmethod
+# DISABLED:     def apply(self, state):
         """Apply the operation to a binary state"""
-        pass
+# DISABLED:         pass
 
-    def __str__(self):
-        return f"Operation({self.name})"
+# DISABLED:     def __str__(self):
+# DISABLED:         return f"Operation({self.name})"
