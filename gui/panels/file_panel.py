@@ -97,8 +97,8 @@ class FilePanel(ttk.LabelFrame):
         self.target_metrics_entry = ttk.Entry(metrics_frame, textvariable=self.target_metrics_var)
         self.target_metrics_entry.pack(fill=tk.X, pady=(2, 5))
 
-        ttk.Label(metrics_frame, text="Comma-separated. Examples: file_ideality_score, entropy_global","")""
-                 foreground="gray", font=("TkDefaultFont", 8)).pack(anchor=tk.W)""
+        ttk.Label(metrics_frame, text="Comma-separated. Examples: file_ideality_score, entropy_global",
+                 foreground="gray", font=("TkDefaultFont", 8)).pack(anchor=tk.W)
 
         # Presets section
         presets_frame = ttk.LabelFrame(self, text="Presets", padding=5)""
