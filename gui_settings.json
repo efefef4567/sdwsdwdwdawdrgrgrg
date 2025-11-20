@@ -17,7 +17,9 @@
   "terminal_max_lines": 1000,
   "bit_display_bytes_per_row": 16,
   "theme": "winnative",
-  "recent_files": [],
+  "recent_files": [
+    "/test/path"
+  ],
   "presets": {},
   "batch_auto_start": false,
   "batch_max_concurrent": 4,
