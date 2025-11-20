@@ -21,11 +21,11 @@
 # mlruns/
 # wandb/
 
-# BSEE Generated Files
-production_report.json
-*.report.json
-*.analysis.json
-*.inverse_operations.json
+# BSEE Generated Files - COMMENTED OUT TO INCLUDE
+# production_report.json
+# *.report.json
+# *.analysis.json
+# *.inverse_operations.json
 
 # BSEE Batch Processing Artifacts
 batch_jobs/
