@@ -5,8 +5,8 @@ Provides machine learning capabilities for discovering and learning optimal oper
 
 from .utils.simple_scorer import SimpleHomogeneityScorer
 
-__all__ = []
-    'SimpleHomogeneityScorer'''
+__all__ = [
+    'SimpleHomogeneityScorer'
 ]
 
 __version__ = "1.0.0"""
