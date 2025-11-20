@@ -359,9 +359,24 @@ Features:
 • Real-time visualization and monitoring
 • Professional Windows GUI interface
 • Bit-level operation tracking
-• Performance and complexity analysis"""
+• Performance and complexity analysis
+• Batch processing system with job management"""
 
         messagebox.showinfo("About BSEE", about_text)
+
+    def _open_batch_gui(self):
+        """Open batch processing GUI."""
+        try:
+            # Import batch window
+            from .batch_window import BatchWindow
+
+            if not self.batch_window or not self.batch_window.window.winfo_exists():
+                self.batch_window = BatchWindow(self.root)
+
+            self.batch_window.show()
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to open batch processing GUI: {str(e)}")
 
     def _on_closing(self):
         """Handle window closing."""
