@@ -1,0 +1,18 @@
+# Metrics Configuration
+metrics:
+  - "file_ideality_score"
+  - "entropy_global"
+  - "pattern_density"
+  - "structural_similarity"
+
+target_metrics:
+  "file_ideality_score": "max"
+  "pattern_density": "max"
+  "structural_similarity": "max"
+  "entropy_global": "min"
+
+weights:
+  "file_ideality_score": 0.3
+  "pattern_density": 0.3
+  "structural_similarity": 0.2
+  "entropy_global": 0.2
