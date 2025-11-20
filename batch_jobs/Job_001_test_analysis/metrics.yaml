@@ -1,0 +1,14 @@
+# Metrics Configuration
+metrics:
+  - "file_ideality_score"
+  - "entropy_global"
+  - "compression_ratio"
+
+target_metrics:
+  "file_ideality_score": "max"
+  "entropy_global": "min"
+
+weights:
+  "file_ideality_score": 0.6
+  "entropy_global": 0.2
+  "compression_ratio": 0.2
