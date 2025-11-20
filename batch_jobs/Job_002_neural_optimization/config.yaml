@@ -1,0 +1,12 @@
+# Job Configuration
+name: "Neural Optimization Job"
+description: "Neural network optimization job for demonstration"
+strategy: "genetic"
+max_operations: 2000
+max_cost: 15000
+
+# Queue settings
+priority: "high"
+estimated_time: 45  # minutes
+memory_requirement: 2048  # MB
+cpu_requirement: 2  # cores
