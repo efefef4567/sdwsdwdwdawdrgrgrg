@@ -1,8 +1,8 @@
 """
-# DISABLED: Processing module for BSEE
-# DISABLED: Contains parallel processing and analysis components.
+Processing module for BSEE
+Contains parallel processing and analysis components.
 """
 
-# DISABLED: from .parallel_processor import ParallelProcessor
+from .parallel_processor import ParallelProcessor
 
-# DISABLED: __all__ = ['ParallelProcessor']
+__all__ = ['ParallelProcessor']
