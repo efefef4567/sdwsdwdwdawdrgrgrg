@@ -154,3 +154,7 @@ class State:
                 f"parent_state_id='{self.parent_state_id}', "
                 f"generation={self.generation}, "
                 f"score={self.score:.4f})")
+
+
+# Create alias for BinaryState to match the expected interface
+BinaryState = State
