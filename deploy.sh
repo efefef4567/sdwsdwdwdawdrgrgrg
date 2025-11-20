@@ -125,6 +125,21 @@ create_directories() {
 run_tests() {
     print_status "Running production validation tests..."
 
+    # Run batch processing tests first
+    if [ -d "tests/batch_processing" ]; then
+        print_status "Running batch processing tests..."
+        python tests/batch_processing/run_batch_tests.py --verbose
+        if [ $? -eq 0 ]; then
+            print_success "Batch processing tests passed"
+        else
+            print_error "Batch processing tests failed"
+            exit 1
+        fi
+    else
+        print_warning "Batch processing tests not found. Skipping."
+    fi
+
+    # Run general production tests
     if [ -f "test_production_system.py" ]; then
         python test_production_system.py
         if [ $? -eq 0 ]; then
