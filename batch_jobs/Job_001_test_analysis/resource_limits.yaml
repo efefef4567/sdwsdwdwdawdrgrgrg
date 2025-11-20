@@ -1,0 +1,5 @@
+# Resource Limits
+max_memory_mb: 1024
+max_execution_time: 30  # minutes
+max_temp_files: 10
+max_output_size: 1048576  # 1MB
