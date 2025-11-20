@@ -119,8 +119,14 @@ class Job:
             if not config_file.exists():
                 raise FileNotFoundError(f"Job config not found: {config_file}")
 
-            with open(config_file, 'r') as f:
-                config_data = yaml.safe_load(f)
+            try:
+                with open(config_file, 'r') as f:
+                    config_data = yaml.safe_load(f)
+            except yaml.YAMLError as e:
+                self.error_message = f"Failed to load configuration: Invalid YAML syntax: {str(e)}"
+                self.status = JobStatus.FAILED
+                self._log(f"YAML parsing failed: {e}")
+                return  # Don't raise, just mark as failed
 
             # Load additional configuration files
             strategy_file = self.job_folder / 'strategy.yaml'
