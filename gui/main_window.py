@@ -41,6 +41,7 @@ class MainWindow:
         # Analysis state
         self.is_analyzing = False
         self.analysis_thread: Optional[threading.Thread] = None
+        self.batch_window: Optional[Any] = None
 
         # Setup GUI components
         self._setup_menu()
