@@ -14,6 +14,7 @@ class State:
 
     state_id: str = field(default="")
     binary_data: bytes = field(default_factory=bytes)
+    data: bytes = field(default_factory=bytes)
     parent_state_id: Optional[str] = None
     operation_applied: Optional[Dict] = None
     operation_history: List[Dict] = field(default_factory=list)
