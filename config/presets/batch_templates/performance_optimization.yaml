@@ -1,0 +1,151 @@
+# Performance Optimization Template
+# Optimized for speed and efficiency in binary analysis
+
+# Main configuration
+config:
+  name: "Performance Optimization"
+  description: "Fast and efficient binary analysis optimized for performance"
+  strategy: "greedy"
+  max_operations: 2000
+  max_cost: 10000
+
+# Strategy configuration
+strategy:
+  strategy: "greedy"
+  parameters:
+    lookahead_size: 5
+    optimization_level: 2
+    pruning_enabled: true
+    caching_enabled: true
+
+# Cost model configuration
+cost_model:
+  type: "linear"
+  parameters:
+    cost_per_operation: 1.0
+    base_cost: 0.1
+    complexity_multiplier: 0.1
+
+# Metrics configuration
+metrics:
+  metrics:
+    - "file_ideality_score"
+    - "compression_ratio"
+    - "lz77_ratio"
+    - "pattern_density"
+    - "execution_time"
+
+  target_metrics:
+    "file_ideality_score": "max"
+    "compression_ratio": "max"
+    "execution_time": "min"
+
+  weights:
+    "file_ideality_score": 0.4
+    "compression_ratio": 0.3
+    "execution_time": 0.3
+
+# Queue settings
+queue_settings:
+  priority: "normal"
+  estimated_time: 30  # minutes
+  memory_requirement: 1024  # MB
+  cpu_requirement: 2  # cores
+
+# Pipeline configuration
+pipeline_config:
+  analysis_stages:
+    - "fast_scan"
+    - "pattern_identification"
+    - "quick_optimization"
+
+  fast_scan:
+    sample_rate: 0.1  # Sample 10% for initial scan
+    chunk_size: 4096
+    parallel_chunks: 8
+
+  pattern_identification:
+    simple_patterns_only: true
+    max_pattern_length: 64
+    min_occurrences: 3
+
+  quick_optimization:
+    max_iterations: 100
+    convergence_threshold: 0.01
+    time_limit: 300  # seconds
+
+# Resource limits
+resource_limits:
+  max_memory_mb: 2048
+  max_execution_time: 60  # minutes
+  max_temp_files: 20
+  max_output_size: 10485760  # 10MB
+
+# Output configuration
+output:
+  save_intermediate_results: false
+  save_visualizations: false
+  save_performance_metrics: true
+  export_format: ["json", "csv"]
+
+  minimal_output:
+    enabled: true
+    include_only:
+      - "final_score"
+      - "total_operations"
+      - "execution_time"
+      - "compression_ratio"
+
+# Performance tuning
+performance_tuning:
+  # Parallel processing settings
+  parallel_processing:
+    enabled: true
+    num_workers: 2
+    process_pool: true
+    chunk_size: 2048
+
+  # Memory optimization
+  memory_optimization:
+    streaming_mode: true
+    buffer_size: 8192
+    gc_frequency: 100  # operations
+
+  # Algorithm optimization
+  algorithm_optimization:
+    use_lookup_tables: true
+    precompute_distances: true
+    early_termination: true
+    convergence_check_frequency: 10
+
+# Quality control (relaxed for performance)
+quality_control:
+  validation_threshold: 0.6
+  convergence_threshold: 0.01
+  min_improvement_rate: 0.005
+  max_stagnation_iterations: 20
+
+  # Skip expensive validation
+  skip_cross_validation: true
+  lightweight_validation: true
+
+# Advanced settings
+advanced:
+  # Caching
+  caching:
+    enabled: true
+    cache_results: true
+    cache_size_mb: 256
+    cache_ttl: 3600
+
+  # Monitoring
+  monitoring:
+    performance_tracking: true
+    memory_profiling: false  # Disabled for performance
+    progress_reporting: true
+
+  # Optimization flags
+  optimization_flags:
+    -O3  # Highest optimization level
+    -march=native  # Optimize for current CPU
+    -DNDEBUG  # Disable debug assertions
