@@ -125,6 +125,10 @@ class State:
         """Get size of binary data in bits."""
         return len(self.binary_data) * 8
 
+    def get_id(self) -> str:
+        """Get the state ID."""
+        return self.state_id
+
     def copy(self) -> 'State':
         """Create a shallow copy of the state."""
         new_state = State(
