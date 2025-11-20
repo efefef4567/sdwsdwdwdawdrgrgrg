@@ -14,9 +14,9 @@ from enum import Enum
 from pathlib import Path
 import uuid
 
-from ...processing.parallel_processor import ParallelProcessor
-from ...engine.pipeline import Pipeline
-from ...utils.logger import get_logger
+from bsee.processing.parallel_processor import ParallelProcessor
+from bsee.engine.pipeline import Pipeline
+from bsee.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
