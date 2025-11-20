@@ -96,42 +96,42 @@ def setup_batch_logging(log_level: str = "INFO", log_file: Optional[str] = None)
 
 
 class TimestampedLogger:
-    """Logger that automatically adds timestamps to log messages."""""
+    """Logger that automatically adds timestamps to log messages."""
 
-    def __init__(self, logger_name: str = "bsee"):""
+    def __init__(self, logger_name: str = "bsee"):
         self.logger = logging.getLogger(logger_name)
         self.last_timestamp = datetime.now()
 
     def info(self, message: str) -> datetime:
-        """Log info message and return timestamp."""""
+        """Log info message and return timestamp."""
         timestamp = datetime.now()
         self.logger.info(message)
         self.last_timestamp = timestamp
         return timestamp
 
     def debug(self, message: str) -> datetime:
-        """Log debug message and return timestamp."""""
+        """Log debug message and return timestamp."""
         timestamp = datetime.now()
         self.logger.debug(message)
         self.last_timestamp = timestamp
         return timestamp
 
     def warning(self, message: str) -> datetime:
-        """Log warning message and return timestamp."""""
+        """Log warning message and return timestamp."""
         timestamp = datetime.now()
         self.logger.warning(message)
         self.last_timestamp = timestamp
         return timestamp
 
     def error(self, message: str) -> datetime:
-        """Log error message and return timestamp."""""
+        """Log error message and return timestamp."""
         timestamp = datetime.now()
         self.logger.error(message)
         self.last_timestamp = timestamp
         return timestamp
 
     def critical(self, message: str) -> datetime:
-        """Log critical message and return timestamp."""""
+        """Log critical message and return timestamp."""
         timestamp = datetime.now()
         self.logger.critical(message)
         self.last_timestamp = timestamp
