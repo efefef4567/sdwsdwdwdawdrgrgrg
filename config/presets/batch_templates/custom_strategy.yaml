@@ -1,0 +1,192 @@
+# Custom Strategy Template
+# Template for defining custom analysis strategies and configurations
+
+# Main configuration
+config:
+  name: "Custom Strategy Analysis"
+  description: "Template for custom analysis strategies and configurations"
+  strategy: "custom"  # To be defined by user
+  max_operations: 3000
+  max_cost: 25000
+
+# Strategy configuration
+strategy:
+  strategy: "custom"  # User should specify one of: greedy, random, genetic, simulated_annealing, hill_climbing, beam_search, depth_first, breadth_first
+  parameters:
+    # Add custom strategy parameters here
+    # Example for genetic algorithm:
+    # population_size: 50
+    # generations: 200
+    # mutation_rate: 0.05
+    # crossover_rate: 0.7
+
+    # Example for simulated annealing:
+    # initial_temperature: 50.0
+    # cooling_rate: 0.9
+    # min_temperature: 0.01
+
+    # Add your custom parameters below:
+    custom_parameter_1: "value1"
+    custom_parameter_2: 42
+
+# Cost model configuration
+cost_model:
+  type: "custom"  # User should specify: linear, exponential, logarithmic, custom
+  parameters:
+    # Add custom cost model parameters here
+
+    # Example for linear model:
+    # cost_per_operation: 1.0
+    # base_cost: 0.1
+
+    # Example for exponential model:
+    # base: 1.2
+    # multiplier: 1.5
+
+    # Add your custom cost parameters below:
+    custom_cost_param_1: "cost_value1"
+    custom_cost_param_2: 3.14
+
+# Metrics configuration
+metrics:
+  metrics:
+    - "file_ideality_score"
+    - "entropy_global"
+    - "entropy_local"
+    - "lz77_ratio"
+    # Add additional metrics as needed:
+    # - "pattern_density"
+    # - "repetitiveness"
+    # - "complexity_score"
+    # - "byte_distribution_variance"
+    # - "run_length_entropy"
+
+  target_metrics:
+    "file_ideality_score": "max"
+    # Add your target metrics and optimization directions:
+    # "entropy_global": "min"
+    # "pattern_density": "max"
+
+  weights:
+    "file_ideality_score": 0.5
+    # Add custom weights for metrics:
+    # "entropy_global": 0.2
+    # "pattern_density": 0.3
+
+# Queue settings
+queue_settings:
+  priority: "normal"  # low, normal, high, urgent
+  estimated_time: 90  # minutes
+  memory_requirement: 3072  # MB
+  cpu_requirement: 3  # cores
+
+# Pipeline configuration
+pipeline_config:
+  analysis_stages:
+    - "custom_stage_1"
+    - "custom_stage_2"
+    - "custom_stage_3"
+    # Define your custom analysis stages
+
+  custom_stage_1:
+    # Add configuration for first stage
+    parameter_1: "value1"
+    parameter_2: 100
+
+  custom_stage_2:
+    # Add configuration for second stage
+    parameter_1: "value2"
+    parameter_2: 200
+
+  custom_stage_3:
+    # Add configuration for third stage
+    parameter_1: "value3"
+    parameter_2: 300
+
+# Resource limits
+resource_limits:
+  max_memory_mb: 4096
+  max_execution_time: 120  # minutes
+  max_temp_files: 50
+  max_output_size: 52428800  # 50MB
+
+# Output configuration
+output:
+  save_intermediate_results: true
+  save_visualizations: true
+  save_performance_metrics: true
+  export_format: ["json", "csv"]
+
+  custom_output_settings:
+    # Add custom output configuration
+    include_custom_data: true
+    custom_format_options: []
+
+# Quality control
+quality_control:
+  validation_threshold: 0.7
+  convergence_threshold: 0.01
+  min_improvement_rate: 0.01
+  max_stagnation_iterations: 50
+
+# Custom settings
+custom_settings:
+  # Add any custom configuration here
+  feature_flag_1: true
+  custom_algorithm: "my_algorithm"
+  experimental_mode: false
+
+  # User-defined functions (place holders)
+  # These would be implemented in actual code
+  custom_cost_function: "my_cost_function"
+  custom_evaluation_function: "my_evaluation_function"
+  custom_termination_criterion: "my_termination_criterion"
+
+# Documentation for customization:
+documentation:
+  strategy_options:
+    greedy: "Always choose the best immediate option"
+    random: "Make random choices from available options"
+    genetic: "Use evolutionary algorithm with population and selection"
+    simulated_annealing: "Use probabilistic technique for global optimization"
+    hill_climbing: "Iteratively improve by moving to better neighbors"
+    beam_search: "Maintain limited set of best partial solutions"
+    depth_first: "Explore as far as possible along each branch before backtracking"
+    breadth_first: "Explore all neighbor nodes at the present depth"
+
+  cost_model_options:
+    linear: "Cost increases linearly with operations"
+    exponential: "Cost increases exponentially with operations"
+    logarithmic: "Cost increases logarithmically with operations"
+    custom: "Define your own cost calculation function"
+
+  available_metrics:
+    file_ideality_score: "Overall file transformation quality score"
+    entropy_global: "Global entropy measurement"
+    entropy_local: "Local entropy measurement"
+    lz77_ratio: "Compression ratio using LZ77 algorithm"
+    pattern_density: "Density of repeating patterns"
+    repetitiveness: "Measure of repetitive content"
+    complexity_score: "Computational complexity score"
+    byte_distribution_variance: "Variance in byte distribution"
+    run_length_entropy: "Entropy of run-length encoding"
+
+  optimization_directions:
+    max: "Maximize the metric value"
+    min: "Minimize the metric value"
+
+# Example configurations (commented out)
+# examples:
+#   simple_optimization:
+#     strategy: "greedy"
+#     max_operations: 1000
+#     metrics: ["file_ideality_score", "compression_ratio"]
+#     target_metrics: {"file_ideality_score": "max"}
+#
+#   deep_analysis:
+#     strategy: "genetic"
+#     max_operations: 5000
+#     metrics: ["file_ideality_score", "entropy_global", "pattern_density"]
+#     strategy_parameters:
+#       population_size: 100
+#       generations: 500
