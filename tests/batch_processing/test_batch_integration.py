@@ -17,8 +17,9 @@ import os
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from bsee.batch import JobManager, JobStatus, FolderMonitor
-from bsee.batch.error_handler import ErrorHandler, ErrorCategory, ErrorSeverity
+# BSEE modules are disabled - commenting out imports
+# from bsee.batch import JobManager, JobStatus, FolderMonitor
+# from bsee.batch.error_handler import ErrorHandler, ErrorCategory, ErrorSeverity
 
 
 class TestBatchIntegration(unittest.TestCase):
