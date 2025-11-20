@@ -26,7 +26,7 @@ class State:
     generation: int = 0
 
     def __init__(self,
-                 binary_data: bytes,
+                 binary_data: bytes = None,
                  parent_state_id: Optional[str] = None,
                  operation_applied: Optional[Dict] = None,
                  operation_history: Optional[List[Dict]] = None,
@@ -34,8 +34,9 @@ class State:
                  metadata: Optional[Dict[str, Any]] = None,
                  generation: int = 0):
         """Initialize a new state."""
-        self.binary_data = binary_data
-        self.state_id = self.calculate_hash(binary_data)
+        self.binary_data = binary_data or bytes()
+        self.data = self.binary_data  # Keep data and binary_data synchronized
+        self.state_id = self.calculate_hash(self.binary_data)
         self.parent_state_id = parent_state_id
         self.operation_applied = operation_applied
         self.operation_history = operation_history or []
