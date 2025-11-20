@@ -15,8 +15,8 @@ from pathlib import Path
 from .job import Job, JobStatus, JobPriority
 from .folder_monitor import FolderMonitor
 from .job_validator import JobValidator
-from ...processing.parallel_processor import ParallelProcessor
-from ...utils.logger import get_logger
+from bsee.processing.parallel_processor import ParallelProcessor
+from bsee.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
