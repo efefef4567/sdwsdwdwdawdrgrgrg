@@ -396,7 +396,7 @@ class TestBatchPerformance(unittest.TestCase):
             "max_cost": 500
         }
 
-        with open(job_dir / "config.yaml', 'w') as f:
+        with open(job_dir / "config.yaml", 'w') as f:
             yaml.dump(config_data, f)
 
         return job_dir
