@@ -1,0 +1,6 @@
+# Cost Model Configuration
+type: "linear"
+parameters:
+  cost_per_operation: 1.0
+  base_cost: 0.1
+  complexity_multiplier: 0.1
